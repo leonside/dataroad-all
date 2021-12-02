@@ -1,0 +1,1 @@
+printWriter=com.leonside.dataroad.flink.writer.PrintItemWriter

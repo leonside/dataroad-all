@@ -1,0 +1,1 @@
+filterProcessor=com.leonside.dataroad.flink.processor.FilterItemProcessor

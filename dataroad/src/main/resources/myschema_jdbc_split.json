@@ -1,0 +1,98 @@
+{
+  "job": {
+    "content": [
+      {
+        "mysqlreader": {
+          "type": "reader",
+          "pluginName": "mysqlReader",
+          "parameter": {
+            "username": "duceap",
+            "password": "123",
+            "jdbcUrl": "jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai",
+            "table": [
+              "student"
+            ],
+            "column": [
+              "id",
+              "name",
+              "sex",
+              "age",
+              "address",
+              "idcard",
+              "phone",
+              "code",
+              "create_time",
+              "area_code"
+            ],
+            "customSql": "",
+            "splitPk": "id",
+            "queryTimeOut": 1000,
+            "fetchSize": 1000,
+            "requestAccumulatorInterval": 2
+          }
+        },
+        "myprocessor1": {
+          "type": "processor",
+          "pluginName": "filterProcessor",
+          "dependencies": [
+            "mysqlreader"
+          ],
+          "parameter": {
+            "expression": "row.getField('age')>=20"
+          }
+        },
+        "mywriter": {
+          "type": "writer",
+          "pluginName": "mysqlWriter",
+          "parameter": {
+              "username": "duceap",
+              "password": "123",
+              "jdbcUrl": "jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai",
+              "table": "student1",
+              "preSql": [
+                "truncate table student1"
+              ],
+              "postSql": [
+                "update student1 set code = '1000';"
+              ],
+              "writeMode": "insert",
+              "column": [
+                "id",
+                "name",
+                "sex",
+                "age",
+                "address",
+                "idcard",
+                "phone",
+                "code",
+                "create_time"
+              ],
+              "batchSize": 3
+          }
+        }
+      }
+    ],
+    "setting":{
+      "speed": {
+        "channel": 4,
+        "bytes": 0
+      },
+      "errorLimit": {
+        "record": 1
+      },
+      "restore": {
+        "maxRowNumForCheckpoint": 0,
+        "isRestore": false,
+        "restoreColumnName": "",
+        "restoreColumnIndex": 0
+      },
+      "log" : {
+        "isLogger": false,
+        "level" : "debug",
+        "path" : "",
+        "pattern":""
+      }
+    }
+  }
+}
+

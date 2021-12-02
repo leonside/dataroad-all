@@ -1,0 +1,1 @@
+mysqlReader=com.leonside.dataroad.plugin.mysql.reader.MysqlJdbcReader

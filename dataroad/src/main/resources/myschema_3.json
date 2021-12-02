@@ -1,0 +1,92 @@
+{
+  "job": {
+    "content": [
+      {
+        "mysqlreader": {
+          "type": "reader",
+          "pluginName": "jdbcreader",
+          "parameter": {
+            "username": "duceap",
+            "password": "123",
+            "connection": [{
+              "jdbcUrl": ["jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai"],
+              "table": ["job_execution_log"]
+            }],
+            "column": ["id","job_name","ip"],
+            "customSql": "",
+            "splitPk": "",
+            "queryTimeOut": 1000,
+            "requestAccumulatorInterval": 2
+          }
+        },
+        "myfilterprocessor1": {
+          "type": "processor",
+          "pluginName": "filterProcessor",
+          "dependencies": ["mysqlreader"],
+          "parameter": {
+            "expression": "row.getField('area_code').startsWith('35')",
+            "language": ""
+          }
+        },
+        "deciderOn_1" : {
+          "type": "deciderOn",
+          "pluginName": "expressionPredicate",
+          "dependencies": ["myfilterprocessor1"],
+          "parameter": {
+            "expression": "row.getField('sex')==1"
+          }
+        },
+        "on1Processor": {
+          "type": "processor",
+          "pluginName": "filterProcessor",
+          "dependencies": ["deciderOn_1"],
+          "parameter": {
+            "expression": "row.getField('age')>=22",
+            "language": ""
+          }
+        },
+        "deciderOn2" : {
+          "type": "deciderOn",
+          "pluginName": "otherwisePredicate",
+          "dependencies": ["myfilterprocessor1"]
+        },
+        "on2Processor": {
+          "type": "processor",
+          "pluginName": "filterProcessor",
+          "dependencies": ["deciderOn2"],
+          "parameter": {
+            "expression": "row.getField('age')>=17",
+            "language": ""
+          }
+        },
+        "myunion": {
+          "type": "union",
+          "pluginName": "unionProcessor",
+          "dependencies": ["on1Processor","on2Processor"]
+        },
+        "mywriter": {
+          "type": "writer",
+          "pluginName": "demoWriter",
+          "dependencies": ["myunion"],
+          "parameter": {
+            "username": "duceap",
+            "password": "123",
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai",
+                "table": ["job_execution_log2"]
+              }
+            ],
+            "writeMode": "insert",
+            "column": ["id","job_name","ip"],
+            "batchSize": 1024
+          }
+        }
+      }
+    ],
+    "setting":{
+      "name": "myJob"
+    }
+  }
+}
+

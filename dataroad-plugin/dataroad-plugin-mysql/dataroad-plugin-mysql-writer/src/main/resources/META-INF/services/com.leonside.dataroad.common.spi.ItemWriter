@@ -1,0 +1,1 @@
+mysqlWriter=com.leonside.dataroad.plugin.mysql.writer.MysqlJdbcWriter

@@ -1,0 +1,54 @@
+{
+  "job": {
+    "content": [
+      {
+        "mysqlreader": {
+          "type": "reader",
+          "pluginName": "mysqlReader",
+          "parameter": {
+            "username": "duceap",
+            "password": "123",
+            "jdbcUrl": "jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai",
+            "table": [
+              "student"
+            ],
+            "column": [
+              "id",
+              "name",
+              "sex",
+              "age",
+              "address",
+              "idcard",
+              "phone",
+              "code",
+              "create_time",
+              "area_code"
+            ],
+            "customSql": "",
+            "splitPk": "",
+            "queryTimeOut": 1000,
+            "requestAccumulatorInterval": 2
+          }
+        },
+        "myprocessor1": {
+          "type": "processor",
+          "pluginName": "filterProcessor",
+          "dependencies": [
+            "mysqlreader"
+          ],
+          "parameter": {
+            "expression": "row.getField('age')>=20"
+          }
+        },
+        "mywriter": {
+          "type": "writer",
+          "pluginName": "printWriter"
+        }
+      }
+    ],
+    "setting":{
+      "name": "myJob"
+    }
+  }
+}
+

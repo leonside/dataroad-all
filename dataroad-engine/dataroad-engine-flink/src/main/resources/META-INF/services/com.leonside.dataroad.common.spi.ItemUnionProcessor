@@ -1,0 +1,1 @@
+unionProcessor=com.leonside.dataroad.flink.processor.union.GenericItemUnionProcessor
