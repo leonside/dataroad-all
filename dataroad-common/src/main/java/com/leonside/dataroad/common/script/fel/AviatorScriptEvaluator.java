@@ -3,7 +3,7 @@ package com.leonside.dataroad.common.script.fel;
 import com.greenpineyu.fel.FelEngine;
 import com.greenpineyu.fel.FelEngineImpl;
 import com.greenpineyu.fel.context.FelContext;
-import com.leonside.dataroad.common.context.CommonConstant;
+import com.leonside.dataroad.common.constant.JobCommonConstant;
 import com.leonside.dataroad.common.script.ScriptEvaluator;
 
 import java.util.Map;
@@ -33,7 +33,7 @@ long l = System.currentTimeMillis();
                 felContext.set(key, params);
             });
         }
-        felContext.set(CommonConstant.SCRIPT_CONTEXT_KEY_ROW, row);
+        felContext.set(JobCommonConstant.SCRIPT_CONTEXT_KEY_ROW, row);
 
 System.out.println(System.currentTimeMillis() - l);
         return felEngine.eval(scriptSource);

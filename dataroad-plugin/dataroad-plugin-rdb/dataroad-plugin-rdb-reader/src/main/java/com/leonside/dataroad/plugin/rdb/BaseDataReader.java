@@ -66,7 +66,7 @@ public abstract class BaseDataReader extends ComponentNameable implements Compon
 //     */
 //    protected Map<String, Object> hadoopConfig;
 
-    protected static ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+//    protected static ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     public int getNumPartitions() {
         return numPartitions;

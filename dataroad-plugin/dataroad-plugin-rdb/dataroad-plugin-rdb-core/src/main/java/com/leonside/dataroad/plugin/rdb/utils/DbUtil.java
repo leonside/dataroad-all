@@ -17,7 +17,7 @@
  */
 package com.leonside.dataroad.plugin.rdb.utils;
 
-import com.leonside.dataroad.common.constant.JobConfigConstants;
+import com.leonside.dataroad.common.constant.JobCommonConstant;
 import com.leonside.dataroad.common.domain.MetaColumn;
 import com.leonside.dataroad.common.utils.ExceptionUtil;
 import com.leonside.dataroad.common.utils.JsonUtil;
@@ -126,7 +126,7 @@ public class DbUtil {
      * @throws SQLException
      */
     public static Connection getConnection(String url, String username, String password) throws SQLException {
-        if (!url.startsWith(JobConfigConstants.CONFIG_JDBC_PROTOCOL_MYSQL)) {
+        if (!url.startsWith(JobCommonConstant.JDBC_PROTOCOL_MYSQL)) {
             return getConnectionInternal(url, username, password);
         } else {
             boolean failed = true;
@@ -283,7 +283,7 @@ public class DbUtil {
                 nameTypeMap.put(rd.getColumnName(i+1),rd.getColumnTypeName(i+1));
             }
 
-            if (JobConfigConstants.CONFIG_STAR_SYMBOL.equals(metaColumns.get(0).getName())){
+            if (JobCommonConstant.STAR_SYMBOL.equals(metaColumns.get(0).getName())){
                 columnTypeList.addAll(nameTypeMap.values());
             }else{
                 for (MetaColumn metaColumn : metaColumns) {
@@ -434,8 +434,8 @@ public class DbUtil {
      */
     public static List<String> buildSelectColumns(DatabaseDialect databaseInterface, List<MetaColumn> metaColumns){
         List<String> selectColumns = new ArrayList<>();
-        if(metaColumns.size() == 1 && JobConfigConstants.CONFIG_STAR_SYMBOL.equals(metaColumns.get(0).getName())){
-            selectColumns.add(JobConfigConstants.CONFIG_STAR_SYMBOL);
+        if(metaColumns.size() == 1 && JobCommonConstant.STAR_SYMBOL.equals(metaColumns.get(0).getName())){
+            selectColumns.add(JobCommonConstant.STAR_SYMBOL);
         } else {
             for (MetaColumn metaColumn : metaColumns) {
                 if (metaColumn.getValue() != null){

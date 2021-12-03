@@ -18,7 +18,7 @@
 
 package com.leonside.dataroad.common.utils;
 
-import com.leonside.dataroad.common.constant.JobConfigConstants;
+import com.leonside.dataroad.common.constant.JobCommonConstant;
 import com.leonside.dataroad.common.domain.ColumnType;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -298,12 +298,12 @@ public class StringUtil {
      * @return dbo.schema1.table
      */
     public static String splitIgnoreQuotaAndJoinByPoint(String table) {
-        List<String> strings = StringUtil.splitIgnoreQuota(table, JobConfigConstants.CONFIG_POINT_SYMBOL.charAt(0));
+        List<String> strings = StringUtil.splitIgnoreQuota(table, JobCommonConstant.POINT_SYMBOL.charAt(0));
         StringBuffer stringBuffer = new StringBuffer(64);
         for(int i =0; i < strings.size(); i++){
             stringBuffer.append(strings.get(i));
             if(i != strings.size()-1){
-                stringBuffer.append(JobConfigConstants.CONFIG_POINT_SYMBOL);
+                stringBuffer.append(JobCommonConstant.POINT_SYMBOL);
             }
         }
         return stringBuffer.toString();

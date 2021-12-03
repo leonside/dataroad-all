@@ -1,7 +1,7 @@
 package com.leonside.dataroad.flink.processor.union;
 
+import com.leonside.dataroad.common.constant.JobConfigKeyConstants;
 import com.leonside.dataroad.common.spi.ItemUnionProcessor;
-import com.leonside.dataroad.core.constant.JobCoreConstants;
 import com.leonside.dataroad.core.component.ComponentNameAutoGenerator;
 import com.leonside.dataroad.flink.context.FlinkExecuteContext;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -20,7 +20,7 @@ public class GenericItemUnionProcessor extends ComponentNameAutoGenerator implem
     private int[] flowindexs;
 
     public GenericItemUnionProcessor(){
-        super(JobCoreConstants.JOBFLOW_NAME_PREFIX_UNION_PROCESSOR);
+        super(JobConfigKeyConstants.COMPONENT_PREFIX_UNION_PROCESSOR);
     }
 
     @Override

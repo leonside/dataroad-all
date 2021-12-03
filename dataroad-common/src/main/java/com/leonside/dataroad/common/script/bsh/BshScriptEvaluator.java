@@ -1,13 +1,10 @@
 package com.leonside.dataroad.common.script.bsh;
 
-import bsh.EvalError;
 import bsh.Interpreter;
-import com.leonside.dataroad.common.context.CommonConstant;
+import com.leonside.dataroad.common.constant.JobCommonConstant;
 import com.leonside.dataroad.common.exception.ScriptExecuteException;
 import com.leonside.dataroad.common.script.ScriptEvaluator;
 
-import java.io.IOException;
-import java.io.StringReader;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -38,7 +35,7 @@ public class BshScriptEvaluator implements ScriptEvaluator {
                 }
             }
 
-            interpreter.set(CommonConstant.SCRIPT_CONTEXT_KEY_ROW, record);
+            interpreter.set(JobCommonConstant.SCRIPT_CONTEXT_KEY_ROW, record);
 
             return interpreter.eval(scriptSource);
         } catch (Exception var7) {

@@ -1,6 +1,6 @@
 
 package com.leonside.dataroad.common.domain;
-import com.leonside.dataroad.common.constant.JobConfigConstants;
+import com.leonside.dataroad.common.constant.JobCommonConstant;
 import com.leonside.dataroad.common.utils.DateUtil;
 import com.leonside.dataroad.common.utils.StringUtil;
 import org.apache.commons.lang.StringUtils;
@@ -65,9 +65,9 @@ public class MetaColumn implements Serializable {
                     metaColumns.add(mc);
                 }
             } else if (columns.get(0) instanceof String) {
-                if(columns.size() == 1 && JobConfigConstants.CONFIG_STAR_SYMBOL.equals(columns.get(0))){
+                if(columns.size() == 1 && JobCommonConstant.STAR_SYMBOL.equals(columns.get(0))){
                     MetaColumn mc = new MetaColumn();
-                    mc.setName(JobConfigConstants.CONFIG_STAR_SYMBOL);
+                    mc.setName(JobCommonConstant.STAR_SYMBOL);
                     metaColumns.add(mc);
                 } else {
                     for (int i = 0; i < columns.size(); i++) {

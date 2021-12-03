@@ -1,19 +1,19 @@
 package com.leonside.dataroad.plugin.rdb;
 
-import com.leonside.dataroad.common.constant.JobConfigConstants;
+import com.leonside.dataroad.common.constant.JobCommonConstant;
+import com.leonside.dataroad.common.constant.JobConfigKeyConstants;
 import com.leonside.dataroad.common.domain.MetaColumn;
 import com.leonside.dataroad.plugin.rdb.reader.IncrementConfig;
 import com.leonside.dataroad.plugin.rdb.type.TypeConverterInterface;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 /**
  * @author leon
  */
-public class GenericJdbcInputFormatBuilder extends GenericRichInputFormatBuilder<GenericJdbcInputFormat>{
+public class GenericJdbcInputFormatBuilder extends GenericRichInputFormatBuilder<GenericJdbcInputFormat, GenericJdbcInputFormatBuilder>{
 
     protected GenericJdbcInputFormat format;
 
@@ -21,72 +21,88 @@ public class GenericJdbcInputFormatBuilder extends GenericRichInputFormatBuilder
         super.format = this.format = format;
     }
 
-    public void setDriverName(String driverName) {
+    public GenericJdbcInputFormatBuilder setDriverName(String driverName) {
         format.driverName = driverName;
+        return this;
     }
 
-    public void setDbUrl(String dbUrl) {
+    public GenericJdbcInputFormatBuilder setDbUrl(String dbUrl) {
         format.dbUrl = dbUrl;
+        return this;
     }
 
-    public void setQuery(String query) {
+    public GenericJdbcInputFormatBuilder setQuery(String query) {
         format.queryTemplate = query;
+        return this;
     }
 
-    public void setUsername(String username) {
+    public GenericJdbcInputFormatBuilder setUsername(String username) {
         format.username = username;
+        return this;
     }
 
-    public void setPassword(String password) {
+    public GenericJdbcInputFormatBuilder setPassword(String password) {
         format.password = password;
+        return this;
     }
 
-    public void setTable(String table) {
+    public GenericJdbcInputFormatBuilder setTable(String table) {
         format.table = table;
+        return this;
     }
 
-    public void setDatabaseDialect(DatabaseDialect databaseDialect) {
+    public GenericJdbcInputFormatBuilder setDatabaseDialect(DatabaseDialect databaseDialect) {
         format.databaseDialect = databaseDialect;
+        return this;
     }
 
-    public void setTypeConverter(TypeConverterInterface converter){
+    public GenericJdbcInputFormatBuilder setTypeConverter(TypeConverterInterface converter){
         format.typeConverter = converter;
+        return this;
     }
 
-    public void setMetaColumn(List<MetaColumn> metaColumns){
+    public GenericJdbcInputFormatBuilder setMetaColumn(List<MetaColumn> metaColumns){
         format.metaColumns = metaColumns;
+        return this;
     }
 
-    public void setFetchSize(int fetchSize){
+    public GenericJdbcInputFormatBuilder setFetchSize(int fetchSize){
         format.fetchSize = fetchSize;
+        return this;
     }
 
-    public void setQueryTimeOut(int queryTimeOut){
+    public GenericJdbcInputFormatBuilder setQueryTimeOut(int queryTimeOut){
         format.queryTimeOut = queryTimeOut;
+        return this;
     }
 
-    public void setSplitKey(String splitKey){
+    public GenericJdbcInputFormatBuilder setSplitKey(String splitKey){
         format.splitKey = splitKey;
+        return this;
     }
 
-    public void setNumPartitions(int numPartitions){
+    public GenericJdbcInputFormatBuilder setNumPartitions(int numPartitions){
         format.numPartitions = numPartitions;
+        return this;
     }
 
-    public void setCustomSql(String customSql){
+    public GenericJdbcInputFormatBuilder setCustomSql(String customSql){
         format.customSql = customSql;
+        return this;
     }
 
-    public void setProperties(Properties properties){
+    public GenericJdbcInputFormatBuilder setProperties(Properties properties){
         format.properties = properties;
+        return this;
     }
 
-    public void setHadoopConfig(Map<String,Object> dirtyHadoopConfig) {
-        format.hadoopConfig = dirtyHadoopConfig;
-    }
+//    public void setHadoopConfig(Map<String,Object> dirtyHadoopConfig) {
+//        format.hadoopConfig = dirtyHadoopConfig;
+//    }
 
-    public void setIncrementConfig(IncrementConfig incrementConfig){
+    public GenericJdbcInputFormatBuilder setIncrementConfig(IncrementConfig incrementConfig){
         format.incrementConfig = incrementConfig;
+        return this;
     }
 
     @Override
@@ -112,7 +128,7 @@ public class GenericJdbcInputFormatBuilder extends GenericRichInputFormatBuilder
             throw new IllegalArgumentException("Must specify the split column when the channel is greater than 1");
         }
 
-        if (format.fetchSize > JobConfigConstants.MAX_BATCH_SIZE) {
+        if (format.fetchSize > JobCommonConstant.MAX_BATCH_SIZE) {
             throw new IllegalArgumentException("批量读取条数必须小于[200000]条");
         }
     }

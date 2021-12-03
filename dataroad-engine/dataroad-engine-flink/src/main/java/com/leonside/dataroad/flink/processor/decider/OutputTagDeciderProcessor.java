@@ -1,8 +1,8 @@
 package com.leonside.dataroad.flink.processor.decider;
 
 
+import com.leonside.dataroad.common.constant.JobConfigKeyConstants;
 import com.leonside.dataroad.common.utils.Asserts;
-import com.leonside.dataroad.core.constant.JobCoreConstants;
 import com.leonside.dataroad.core.flow.JobFlow;
 import com.leonside.dataroad.core.spi.ItemDeciderProcessor;
 import com.leonside.dataroad.core.spi.JobPredicate;
@@ -33,7 +33,7 @@ public class OutputTagDeciderProcessor extends ComponentNameAutoGenerator implem
     private Map<JobPredicate, JobFlow> jobFlowDeciders;
 
     public OutputTagDeciderProcessor(){
-        super(JobCoreConstants.JOBFLOW_NAME_PREFIX_OUTPUTTAG_DECIDER);
+        super(JobConfigKeyConstants.JOBFLOW_NAME_PREFIX_OUTPUTTAG_DECIDER);
     }
 
     @Override

@@ -19,7 +19,7 @@
 
 package com.leonside.dataroad.plugin.rdb.reader;
 
-import com.leonside.dataroad.common.constant.JobConfigConstants;
+import com.leonside.dataroad.common.constant.JobCommonConstant;
 import com.leonside.dataroad.common.domain.MetaColumn;
 import com.leonside.dataroad.plugin.rdb.DatabaseDialect;
 import com.leonside.dataroad.plugin.rdb.GenericJdbcReader;
@@ -123,6 +123,7 @@ public class QuerySqlBuilder {
         }
 
         sb.append(filter);
+        sb.append(buildOrderSql());
 
         if(isSplitByKey && splitWithRowNum){
             return String.format(SQL_SPLIT_WITH_ROW_NUM, sb.toString(), databaseDialect.getSplitFilter(ROW_NUM_COLUMN_ALIAS));
@@ -132,16 +133,17 @@ public class QuerySqlBuilder {
     }
 
     protected String buildOrderSql(){
-        String column;
-        if(isIncrement){
-            column = incrementColumn;
-        } else if(isRestore){
-            column = restoreColumn;
-        } else {
-            column = orderByColumn;
-        }
+//        String column;
+        //todo
+//        if(isIncrement){
+//            column = incrementColumn;
+//        } else if(isRestore){
+//            column = restoreColumn;
+//        } else {
+//            column = orderByColumn;
+//        }
 
-        return StringUtils.isEmpty(column) ? "" : String.format(" order by %s", column);
+        return StringUtils.isEmpty(orderByColumn) ? "" : String.format(" order by %s", orderByColumn);
     }
 
     protected String buildQuerySqlWithCustomSql(){
@@ -172,11 +174,11 @@ public class QuerySqlBuilder {
     }
 
     protected static boolean addRowNumColumn(DatabaseDialect databaseInterface, List<String> selectColumns, boolean isSplitByKey, String splitKey){
-        if(!isSplitByKey || !splitKey.contains(JobConfigConstants.LEFT_PARENTHESIS_SYMBOL)){
+        if(!isSplitByKey || !splitKey.contains(JobCommonConstant.LEFT_PARENTHESIS_SYMBOL)){
             return false;
         }
 
-        String orderBy = splitKey.substring(splitKey.indexOf(JobConfigConstants.LEFT_PARENTHESIS_SYMBOL)+1, splitKey.indexOf(JobConfigConstants.RIGHT_PARENTHESIS_SYMBOL));
+        String orderBy = splitKey.substring(splitKey.indexOf(JobCommonConstant.LEFT_PARENTHESIS_SYMBOL)+1, splitKey.indexOf(JobCommonConstant.RIGHT_PARENTHESIS_SYMBOL));
         selectColumns.add(databaseInterface.getRowNumColumn(orderBy));
 
         return true;

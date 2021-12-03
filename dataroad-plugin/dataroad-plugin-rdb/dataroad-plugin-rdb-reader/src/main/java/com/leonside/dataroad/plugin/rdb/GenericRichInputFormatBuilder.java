@@ -9,22 +9,25 @@ import org.slf4j.LoggerFactory;
 /**
  * @author leon
  */
-public abstract class GenericRichInputFormatBuilder<T extends GenericRichInputFormat> {
+public abstract class GenericRichInputFormatBuilder<T extends GenericRichInputFormat, R extends GenericRichInputFormatBuilder> {
 
     protected final Logger LOG = LoggerFactory.getLogger(getClass());
 
     protected T format;
 
-    public void setMonitorUrls(String monitorUrls) {
+    public R setMonitorUrls(String monitorUrls) {
         format.monitorUrls = monitorUrls;
+        return (R)this;
     }
 
-    public void setBytes(long bytes) {
+    public R setBytes(long bytes) {
         format.bytes = bytes;
+        return (R) this;
     }
 
-    public void setRestoreConfig(RestoreConfig restoreConfig){
+    public R setRestoreConfig(RestoreConfig restoreConfig){
         format.restoreConfig = restoreConfig;
+        return (R) this;
     }
 
     /**

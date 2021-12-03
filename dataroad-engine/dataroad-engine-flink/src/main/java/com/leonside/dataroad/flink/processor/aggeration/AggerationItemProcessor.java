@@ -1,11 +1,11 @@
 package com.leonside.dataroad.flink.processor.aggeration;
 
+import com.leonside.dataroad.common.constant.JobConfigKeyConstants;
 import com.leonside.dataroad.common.extension.Activate;
 import com.leonside.dataroad.common.utils.Asserts;
 import com.leonside.dataroad.core.aggregations.AggerationEnum;
 import com.leonside.dataroad.core.aggregations.response.Aggeration;
 import com.leonside.dataroad.core.builder.AggerationBuilder;
-import com.leonside.dataroad.core.constant.JobCoreConstants;
 import com.leonside.dataroad.core.spi.ItemAggregationProcessor;
 import com.leonside.dataroad.core.component.ComponentNameAutoGenerator;
 import com.leonside.dataroad.flink.aggregation.GenericAggregateFunction;
@@ -39,7 +39,7 @@ public class AggerationItemProcessor extends ComponentNameAutoGenerator implemen
     public Map<String, List<AggerationEnum>> aggerations;
 
     public AggerationItemProcessor() {
-        super(JobCoreConstants.JOBFLOW_NAME_PREFIX_AGGERATION);
+        super(JobConfigKeyConstants.COMPONENT_NAME_PREFIX_AGGERATION);
     }
 
     @Override

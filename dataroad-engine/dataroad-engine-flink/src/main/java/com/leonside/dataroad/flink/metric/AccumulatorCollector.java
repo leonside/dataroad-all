@@ -5,7 +5,7 @@ package com.leonside.dataroad.flink.metric;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
-import com.leonside.dataroad.common.constant.JobConfigConstants;
+import com.leonside.dataroad.common.constant.JobCommonConstant;
 import com.leonside.dataroad.core.support.LoggerHelper;
 import com.leonside.dataroad.flink.utils.UrlUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -96,9 +96,9 @@ public class AccumulatorCollector {
     }
 
     private void formatMonitorUrl(String monitorUrlStr){
-        if(monitorUrlStr.startsWith(JobConfigConstants.KEY_HTTP)){
+        if(monitorUrlStr.startsWith(JobCommonConstant.KEY_HTTP)){
             String url;
-            if(monitorUrlStr.endsWith(JobConfigConstants.SINGLE_SLASH_SYMBOL)){
+            if(monitorUrlStr.endsWith(JobCommonConstant.SINGLE_SLASH_SYMBOL)){
                 url = monitorUrlStr + "jobs/" + jobId + "/accumulators";
             } else {
                 url = monitorUrlStr + "/jobs/" + jobId + "/accumulators";

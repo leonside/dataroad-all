@@ -18,7 +18,8 @@
 
 package com.leonside.dataroad.plugin.rbd;
 
-import com.leonside.dataroad.common.constant.JobConfigConstants;
+import com.leonside.dataroad.common.constant.JobCommonConstant;
+import com.leonside.dataroad.common.constant.JobConfigKeyConstants;
 import com.leonside.dataroad.common.context.RestoreConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -97,7 +98,7 @@ public abstract class GenericRichOutputFormatBuilder {
          * 在不考虑各插件批量写入对内存特殊要求并且只考虑插件缓存这么多条数据的情况下，batchInterval为400000条时出现fullGC，
          * 为了避免fullGC以及OOM，并且保证batchInterval有足够的配置空间，取最大值的一半200000。
          */
-        if (this.format.getBatchInterval() > JobConfigConstants.MAX_BATCH_SIZE) {
+        if (this.format.getBatchInterval() > JobCommonConstant.MAX_BATCH_SIZE) {
             throw new IllegalArgumentException("批量写入条数必须小于[200000]条");
         }
 

@@ -1,8 +1,8 @@
 package com.leonside.dataroad.core.aggregations.response;
 
+import com.leonside.dataroad.common.constant.JobConfigKeyConstants;
 import com.leonside.dataroad.core.aggregations.AggerationEnum;
 import com.leonside.dataroad.core.aggregations.NumberFunction;
-import com.leonside.dataroad.core.constant.JobCoreConstants;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -48,10 +48,10 @@ public abstract class Aggeration<IN,OUT,T extends Aggeration> implements Seriali
 
     protected Map<String,Object> getBasicRow() {
         Map<String,Object> basicMap = new LinkedHashMap<>();
-        basicMap.put(JobCoreConstants.AGGERATION_KEY_AGGFIELD, getAggField());
-        basicMap.put(JobCoreConstants.AGGERATION_KEY_BEGINTIME, getBeginTime());
-        basicMap.put(JobCoreConstants.AGGERATION_KEY_ENDTIME, getEndTime());
-        basicMap.put(JobCoreConstants.AGGERATION_KEY_DUMPTIME, getDumpTime());
+        basicMap.put(JobConfigKeyConstants.AGGERATION_KEY_AGGFIELD, getAggField());
+        basicMap.put(JobConfigKeyConstants.AGGERATION_KEY_BEGINTIME, getBeginTime());
+        basicMap.put(JobConfigKeyConstants.AGGERATION_KEY_ENDTIME, getEndTime());
+        basicMap.put(JobConfigKeyConstants.AGGERATION_KEY_DUMPTIME, getDumpTime());
         return basicMap;
     }
 

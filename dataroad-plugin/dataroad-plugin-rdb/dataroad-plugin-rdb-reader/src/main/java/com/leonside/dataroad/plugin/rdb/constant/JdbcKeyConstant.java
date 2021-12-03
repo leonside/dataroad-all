@@ -16,15 +16,12 @@
  * limitations under the License.
  */
 
-package com.leonside.dataroad.plugin.rdb.reader;
+package com.leonside.dataroad.plugin.rdb.constant;
 
 /**
  * Configuration Keys for JdbcDataReader
- *
- * Company: www.dtstack.com
- * @author huyifan.zju@163.com
  */
-public class JdbcConfigKeys {
+public class JdbcKeyConstant {
 
     public static final String KEY_JDBC_URL =  "jdbcUrl";
 
@@ -56,7 +53,7 @@ public class JdbcConfigKeys {
 
     public static final String KEY_POLLING_INTERVAL = "pollingInterval";
 
-    public static final String KEY_PROPERTIES = "properties";
+//    public static final String KEY_PROPERTIES = "properties";
     public static final String KEY_TABLE = "table";
     public static final String KEY_COLUMN = "column";
 }

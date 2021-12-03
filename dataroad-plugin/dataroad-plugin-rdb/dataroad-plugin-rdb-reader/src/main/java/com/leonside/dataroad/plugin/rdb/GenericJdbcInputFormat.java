@@ -1,6 +1,6 @@
 package com.leonside.dataroad.plugin.rdb;
 
-import com.leonside.dataroad.common.constant.JobConfigConstants;
+import com.leonside.dataroad.common.constant.JobCommonConstant;
 import com.leonside.dataroad.common.domain.ColumnType;
 import com.leonside.dataroad.common.domain.MetaColumn;
 import com.leonside.dataroad.common.utils.*;
@@ -145,7 +145,7 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
      * @param metaColumns
      */
     protected void checkSize(int columnCount, List<MetaColumn> metaColumns) {
-        if (!JobConfigConstants.CONFIG_STAR_SYMBOL.equals(metaColumns.get(0).getName()) && columnCount != metaColumns.size()) {
+        if (!JobCommonConstant.STAR_SYMBOL.equals(metaColumns.get(0).getName()) && columnCount != metaColumns.size()) {
             String message = String.format("error config: column = %s, column size = %s, but columns size for query result is %s. And the query sql is %s.",
                     JsonUtil.getInstance().writeJson(metaColumns),
                     metaColumns.size(),
@@ -192,9 +192,9 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
         StringBuilder builder = new StringBuilder(128);
         builder.append(querySql)
                 .append("ORDER BY ")
-                .append(JobConfigConstants.DOUBLE_QUOTE_MARK_SYMBOL)
+                .append(JobCommonConstant.DOUBLE_QUOTE_MARK_SYMBOL)
                 .append(incrementConfig.getColumnName())
-                .append(JobConfigConstants.DOUBLE_QUOTE_MARK_SYMBOL);
+                .append(JobCommonConstant.DOUBLE_QUOTE_MARK_SYMBOL);
         ps = dbConn.prepareStatement(builder.toString(), resultSetType, resultSetConcurrency);
         ps.setFetchSize(fetchSize);
         //第一次查询数据库中增量字段的最大值
@@ -230,7 +230,7 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
                 .append(databaseDialect.quoteColumn(incrementConfig.getColumnName()))
                 .append(" > ? ORDER BY \"")
                 .append(incrementConfig.getColumnName())
-                .append(JobConfigConstants.DOUBLE_QUOTE_MARK_SYMBOL);
+                .append(JobCommonConstant.DOUBLE_QUOTE_MARK_SYMBOL);
         querySql = builder.toString();
         ps = dbConn.prepareStatement(querySql, resultSetType, resultSetConcurrency);
         ps.setFetchDirection(ResultSet.FETCH_REVERSE);
@@ -367,7 +367,7 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
         }
 
         String url = monitorUrls;
-        if (monitorUrls.startsWith(JobConfigConstants.PROTOCOL_HTTP)) {
+        if (monitorUrls.startsWith(JobCommonConstant.PROTOCOL_HTTP)) {
             url = String.format("%s/jobs/%s/accumulators", monitorUrls, jobId);
         }
 
@@ -711,7 +711,7 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
     protected Row nextRecordInternal(Row row) throws IOException {
         try {
             updateColumnCount();
-            if (!JobConfigConstants.CONFIG_STAR_SYMBOL.equals(metaColumns.get(0).getName())) {
+            if (!JobCommonConstant.STAR_SYMBOL.equals(metaColumns.get(0).getName())) {
                 for (int i = 0; i < columnCount; i++) {
                     MetaColumn metaColumn = metaColumns.get(i);
                     Object val = row.getField(metaColumn.getName());
