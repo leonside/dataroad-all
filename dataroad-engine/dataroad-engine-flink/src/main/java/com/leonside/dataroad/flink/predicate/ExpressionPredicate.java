@@ -42,7 +42,7 @@ public class ExpressionPredicate extends ComponentNameable implements ComponentI
     }
 
     @Override
-    public void initialize(ExecuteContext executeContext, Map<String, Object> parameter) {
+    public void initialize(FlinkExecuteContext executeContext, Map<String, Object> parameter) {
         this.parameter = parameter;
         String language = (String)parameter.get(PARAM_LANGUAGE);
         ScriptEvaluatorFactory.ScriptEngine scriptEngine = StringUtils.isEmpty(language) ?

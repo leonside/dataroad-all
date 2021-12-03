@@ -27,7 +27,7 @@ public class FilterItemProcessor extends ComponentNameable implements ComponentI
     private ScriptEvaluator scriptEvalutor;
 
     @Override
-    public void initialize(ExecuteContext executeContext, Map<String, Object> parameter) {
+    public void initialize(FlinkExecuteContext executeContext, Map<String, Object> parameter) {
         Asserts.notEmpty(parameter, "filterItemProcessor parameter can not be null");
         this.parameter = parameter;
         String language = (String)parameter.get(JobConfigConstants.CONFIG_SCRIPT_LANGUAGE);

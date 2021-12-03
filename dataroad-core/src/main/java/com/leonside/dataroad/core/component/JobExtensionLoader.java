@@ -2,7 +2,6 @@ package com.leonside.dataroad.core.component;
 
 import com.leonside.dataroad.common.extension.ExtensionLoader;
 import com.leonside.dataroad.common.spi.Component;
-import com.leonside.dataroad.core.spi.JobEngineCreator;
 
 /**
  * @author leon

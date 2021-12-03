@@ -104,7 +104,7 @@ public abstract class GenericJdbcDataWriter extends BaseDataWriter implements It
     }
 
     @Override
-    public void initialize(ExecuteContext executeContext, Map<String, Object> parameter) {
+    public void initialize(FlinkExecuteContext executeContext, Map<String, Object> parameter) {
         super.initialize(executeContext, parameter);
 //        "writer": {
 //            "name": "mysqlwriter",

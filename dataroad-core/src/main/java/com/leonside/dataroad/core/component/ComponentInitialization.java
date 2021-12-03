@@ -9,6 +9,6 @@ import java.util.Map;
  */
 public interface ComponentInitialization<T extends ExecuteContext> {
 
-    void initialize(ExecuteContext executeContext, Map<String, Object> parameter);
+    void initialize(T executeContext, Map<String, Object> parameter);
 
 }

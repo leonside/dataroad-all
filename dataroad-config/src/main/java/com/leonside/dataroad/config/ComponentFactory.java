@@ -86,9 +86,9 @@ public class ComponentFactory {
         return jobPredicate;
     }
 
-    private static void initComponent(Object component, ExecuteContext executeContext,GenericComponentConfig componentConfig) {
+    private static <T extends ExecuteContext> void initComponent(Object component, T executeContext,GenericComponentConfig componentConfig) {
         if(component instanceof ComponentInitialization){
-            ((ComponentInitialization<?>) component).initialize( executeContext,componentConfig.getParameter());
+            ((ComponentInitialization<ExecuteContext>) component).initialize(executeContext,componentConfig.getParameter());
         }
     }
 }

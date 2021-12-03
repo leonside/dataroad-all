@@ -17,10 +17,10 @@ public class FlinkJob implements Job {
 
     private FlinkExecuteContext flinkExecuteContext;
 
-    public FlinkJob(FlinkExecuteContext context, SimpleJobFlow startJobFlow, StreamExecutionEnvironment environment) {
+    public FlinkJob(FlinkExecuteContext context, SimpleJobFlow startJobFlow) {
         this.simpleJobFlow = startJobFlow;
         this.flinkExecuteContext = context;
-        this.environment = environment;
+        this.environment = context.getEnvironment();
     }
 
     @Override
@@ -28,7 +28,7 @@ public class FlinkJob implements Job {
 
         simpleJobFlow.execute(flinkExecuteContext);
 
-        environment.execute("xx");
+        environment.execute(flinkExecuteContext.getJobSetting().getName());
     }
 
 }

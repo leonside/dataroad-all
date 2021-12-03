@@ -9,9 +9,8 @@
             "username": "duceap",
             "password": "123",
             "jdbcUrl": "jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai",
-            "table": [
-              "student"
-            ],
+            "table": "student",
+            "where": "id<10",
             "column": [
               "id",
               "name",
@@ -25,8 +24,9 @@
               "area_code"
             ],
             "customSql": "",
-            "splitPk": "",
+            "splitPk": "id",
             "queryTimeOut": 1000,
+            "fetchSize": 1000,
             "requestAccumulatorInterval": 2
           }
         },
@@ -42,23 +42,47 @@
         },
         "mywriter": {
           "type": "writer",
-          "pluginName": "printWriter"
+          "pluginName": "mysqlWriter",
+          "parameter": {
+              "username": "duceap",
+              "password": "123",
+              "jdbcUrl": "jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai",
+              "table": "student1",
+              "preSql": [],
+              "postSql": [
+                "update student1 set code = '1000';"
+              ],
+              "writeMode": "replace",
+              "column": [
+                "id",
+                "name",
+                "sex",
+                "age",
+                "address",
+                "idcard",
+                "phone",
+                "code",
+                "create_time"
+              ],
+              "batchSize": 3
+          }
         }
       }
     ],
     "setting":{
+      "monitorUrls": "",
       "speed": {
-        "channel": 4,
+        "channel": 1,
         "bytes": 0
       },
       "errorLimit": {
         "record": 1
       },
       "restore": {
-        "maxRowNumForCheckpoint": 0,
         "isRestore": true,
         "restoreColumnName": "id",
-        "restoreColumnIndex": 0
+        "restoreColumnType": "int",
+        "savepointPath": "D:\\conf\\checkpoint\\ce59c362c2b129231726c60cef4c2e50\\chk-19"
       },
       "log" : {
         "isLogger": false,

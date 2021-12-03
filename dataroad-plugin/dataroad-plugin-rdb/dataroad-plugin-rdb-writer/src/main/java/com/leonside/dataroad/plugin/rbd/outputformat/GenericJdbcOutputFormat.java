@@ -24,7 +24,7 @@ import com.leonside.dataroad.common.exception.WriteRecordException;
 import com.leonside.dataroad.common.utils.ClassUtil;
 import com.leonside.dataroad.common.utils.DateUtil;
 import com.leonside.dataroad.common.utils.ExceptionUtil;
-import com.leonside.dataroad.flink.outputformat.BaseRichOutputFormat;
+import com.leonside.dataroad.plugin.rbd.GenericRichOutputFormat;
 import com.leonside.dataroad.flink.restore.FormatState;
 import com.leonside.dataroad.plugin.rdb.DatabaseDialect;
 import com.leonside.dataroad.plugin.rdb.type.TypeConverterInterface;
@@ -45,7 +45,7 @@ import java.util.*;
  * Company: www.dtstack.com
  * @author huyifan.zju@163.com
  */
-public class GenericJdbcOutputFormat extends BaseRichOutputFormat {
+public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
 
     protected static final Logger LOG = LoggerFactory.getLogger(GenericJdbcOutputFormat.class);
 
@@ -67,7 +67,7 @@ public class GenericJdbcOutputFormat extends BaseRichOutputFormat {
 
     protected List<String> postSql;
 
-    protected DatabaseDialect databaseInterface;
+    protected DatabaseDialect databaseDialect;
 
     protected String mode = WriteMode.INSERT.name();
 
@@ -122,11 +122,11 @@ public class GenericJdbcOutputFormat extends BaseRichOutputFormat {
 
         String singleSql;
         if (WriteMode.INSERT.name().equalsIgnoreCase(mode)) {
-            singleSql = databaseInterface.getInsertStatement(column, table);
+            singleSql = databaseDialect.getInsertStatement(column, table);
         } else if (WriteMode.REPLACE.name().equalsIgnoreCase(mode)) {
-            singleSql = databaseInterface.getReplaceStatement(column, fullColumn, table, updateKey);
+            singleSql = databaseDialect.getReplaceStatement(column, fullColumn, table, updateKey);
         } else if (WriteMode.UPDATE.name().equalsIgnoreCase(mode)) {
-            singleSql = databaseInterface.getUpsertStatement(column, table, updateKey);
+            singleSql = databaseDialect.getUpsertStatement(column, table, updateKey);
         } else {
             throw new IllegalArgumentException("Unknown write mode:" + mode);
         }
@@ -185,7 +185,7 @@ public class GenericJdbcOutputFormat extends BaseRichOutputFormat {
         ResultSet rs = null;
         try {
             stmt = dbConn.createStatement();
-            rs = stmt.executeQuery(databaseInterface.getSqlQueryFields(databaseInterface.quoteTable(table)));
+            rs = stmt.executeQuery(databaseDialect.getSqlQueryFields(databaseDialect.quoteTable(table)));
             ResultSetMetaData rd = rs.getMetaData();
             for(int i = 0; i < rd.getColumnCount(); ++i) {
                 ret.add(rd.getColumnTypeName(i+1));
@@ -253,8 +253,8 @@ public class GenericJdbcOutputFormat extends BaseRichOutputFormat {
 
                 if (restoreConfig.isRestore()) {
                     if (lastRow != null){
-                        readyCheckpoint = !ObjectUtils.equals(lastRow.getField(restoreConfig.getRestoreColumnIndex()),
-                                row.getField(restoreConfig.getRestoreColumnIndex()));
+                        readyCheckpoint = !ObjectUtils.equals(lastRow.getField(restoreConfig.getRestoreColumnName()),
+                                row.getField(restoreConfig.getRestoreColumnName()));
                     }
 
                     lastRow = row;
@@ -311,7 +311,7 @@ public class GenericJdbcOutputFormat extends BaseRichOutputFormat {
                 numWriteCounter.add(rowsOfCurrentTransaction);
                 rowsOfCurrentTransaction = 0;
 
-                formatState.setState(lastRow.getField(restoreConfig.getRestoreColumnIndex()));
+                formatState.setState(lastRow.getField(restoreConfig.getRestoreColumnName()));
                 formatState.setNumberWrite(snapshotWriteCounter.getLocalValue());
                 LOG.info("format state:{}", formatState.getState());
 

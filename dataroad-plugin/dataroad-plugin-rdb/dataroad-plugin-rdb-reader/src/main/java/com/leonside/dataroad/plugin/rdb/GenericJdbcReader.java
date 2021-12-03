@@ -1,6 +1,5 @@
 package com.leonside.dataroad.plugin.rdb;
 
-import com.leonside.dataroad.common.context.ExecuteContext;
 import com.leonside.dataroad.common.context.JobSetting;
 import com.leonside.dataroad.common.domain.MetaColumn;
 import com.leonside.dataroad.common.spi.ItemReader;
@@ -72,7 +71,7 @@ public abstract class GenericJdbcReader extends BaseDataReader implements  ItemR
         builder.setBytes(bytes);
         builder.setMonitorUrls(monitorUrls);
         builder.setTable(table);
-        builder.setDatabaseInterface(databaseDialect);
+        builder.setDatabaseDialect(databaseDialect);
         builder.setTypeConverter(typeConverter);
         builder.setMetaColumn(metaColumns);
         builder.setFetchSize(fetchSize == 0 ? databaseDialect.getFetchSize() : fetchSize);
@@ -103,15 +102,18 @@ public abstract class GenericJdbcReader extends BaseDataReader implements  ItemR
         Preconditions.checkNotNull(sourceName);
         Preconditions.checkNotNull(inputFormat);
         TypeInformation typeInfo = TypeExtractor.getInputFormatTypes(inputFormat);
+        GenericInputFormatSourceFunction function = new GenericInputFormatSourceFunction(inputFormat, typeInfo);
+        return env.addSource(function, sourceName, typeInfo);
+
 //        DtInputFormatSourceFunction function = new DtInputFormatSourceFunction(inputFormat, typeInfo);
 //        return executeContext.getEnvironment().createInput(inputFormat, typeInfo, sourceName);
-        return executeContext.getEnvironment().createInput(inputFormat, typeInfo);
+//        return executeContext.getEnvironment().addSource(new GenericInputFormatSourceFunction<>(inputFormat, typeInfo), sourceName);
     }
 
     protected abstract GenericJdbcInputFormatBuilder getGenericJdbcInputFormatBuilder() ;
 
     @Override
-    public void initialize(ExecuteContext executeContext, Map<String, Object> parameter) {
+    public void initialize(FlinkExecuteContext executeContext, Map<String, Object> parameter) {
         super.initialize(executeContext,parameter);
         this.jobSetting = executeContext.getJobSetting();
         this.restoreConfig = jobSetting.getRestore();
@@ -138,7 +140,7 @@ public abstract class GenericJdbcReader extends BaseDataReader implements  ItemR
         dbUrl =MapParameterUtils.getString(parameter,JdbcConfigKeys.KEY_JDBC_URL);
         username = MapParameterUtils.getString(parameter,JdbcConfigKeys.KEY_USER_NAME);
         password = MapParameterUtils.getString(parameter,JdbcConfigKeys.KEY_PASSWORD);
-        table = (String) MapParameterUtils.getArrayListNullable(parameter,JdbcConfigKeys.KEY_TABLE).get(0);
+        table = MapParameterUtils.getStringNullable(parameter,JdbcConfigKeys.KEY_TABLE);
         where = MapParameterUtils.getStringNullable(parameter,JdbcConfigKeys.KEY_WHERE);
         metaColumns = MetaColumn.getMetaColumns(MapParameterUtils.getArrayListNullable(parameter, JdbcConfigKeys.KEY_COLUMN));
         fetchSize = MapParameterUtils.getIntegerNullable(parameter,JdbcConfigKeys.KEY_FETCH_SIZE,0);

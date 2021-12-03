@@ -324,6 +324,14 @@ public abstract class GenericRichInputFormat extends RichInputFormat<Row, InputS
      */
     protected abstract  void closeInternal() throws IOException;
 
+    public RestoreConfig getRestoreConfig() {
+        return restoreConfig;
+    }
+
+    public void setRestoreState(FormatState formatState) {
+        this.formatState = formatState;
+    }
+
 //    protected transient CustomPrometheusReporter customPrometheusReporter;
 
 //    protected long numReadeForTest;

@@ -26,6 +26,7 @@ import com.leonside.dataroad.common.domain.MetaColumn;
 import com.leonside.dataroad.core.component.ComponentInitialization;
 import com.leonside.dataroad.core.component.ComponentNameable;
 import com.leonside.dataroad.flink.context.FlinkExecuteContext;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 import java.util.ArrayList;
@@ -84,9 +85,9 @@ public abstract class BaseDataReader extends ComponentNameable implements Compon
     }
 
     @Override
-    public void initialize(ExecuteContext executeContext, Map<String, Object> parameter) {
+    public void initialize(FlinkExecuteContext executeContext, Map<String, Object> parameter) {
 
-        this.env = env;
+        this.env = executeContext.getEnvironment();
 //        this.dataTransferConfig = config;
         this.numPartitions = Math.max(executeContext.getJobSetting().getSpeed().getChannel(),
                 executeContext.getJobSetting().getSpeed().getReaderChannel());
@@ -115,7 +116,9 @@ public abstract class BaseDataReader extends ComponentNameable implements Compon
                 throw new RuntimeException("Can not find restore column from json with column name:" + restoreConfig.getRestoreColumnName());
             }
             restoreConfig.setRestoreColumnIndex(metaColumn.getIndex());
-            restoreConfig.setRestoreColumnType(metaColumn.getType());
+            if(StringUtils.isNotEmpty(metaColumn.getType())){
+                restoreConfig.setRestoreColumnType(metaColumn.getType());
+            }
         }
     }
 

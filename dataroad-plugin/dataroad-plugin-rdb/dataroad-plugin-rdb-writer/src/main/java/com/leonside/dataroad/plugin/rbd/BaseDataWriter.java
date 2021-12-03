@@ -73,7 +73,7 @@ public abstract class BaseDataWriter extends ComponentNameable implements Compon
     }
 
     @Override
-    public void initialize(ExecuteContext executeContext, Map<String, Object> parameter) {
+    public void initialize(FlinkExecuteContext executeContext, Map<String, Object> parameter) {
         this.monitorUrls = executeContext.getJobSetting().getMonitorUrls();
         this.restoreConfig = executeContext.getJobSetting().getRestore();
 //        this.errors = config.getJob().getSetting().getErrorLimit().getRecord();
@@ -164,7 +164,7 @@ public abstract class BaseDataWriter extends ComponentNameable implements Compon
         Preconditions.checkNotNull(outputFormat);
 
 //        DtOutputFormatSinkFunction sinkFunction = new DtOutputFormatSinkFunction(outputFormat);
-        DataStreamSink<?> dataStreamSink = dataSet.addSink(new OutputFormatSinkFunction(outputFormat));
+        DataStreamSink<?> dataStreamSink = dataSet.addSink(new GenericOutputFormatSinkFunction<>(outputFormat));
         dataStreamSink.name(sinkName);
 
         return dataStreamSink;

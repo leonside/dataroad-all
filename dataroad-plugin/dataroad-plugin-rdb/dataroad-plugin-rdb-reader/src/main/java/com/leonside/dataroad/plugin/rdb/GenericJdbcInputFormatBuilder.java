@@ -45,8 +45,8 @@ public class GenericJdbcInputFormatBuilder extends GenericRichInputFormatBuilder
         format.table = table;
     }
 
-    public void setDatabaseInterface(DatabaseDialect databaseInterface) {
-        format.databaseDialect = databaseInterface;
+    public void setDatabaseDialect(DatabaseDialect databaseDialect) {
+        format.databaseDialect = databaseDialect;
     }
 
     public void setTypeConverter(TypeConverterInterface converter){

@@ -18,7 +18,7 @@
 package com.leonside.dataroad.plugin.rbd.outputformat;
 
 
-import com.leonside.dataroad.flink.outputformat.BaseRichOutputFormatBuilder;
+import com.leonside.dataroad.plugin.rbd.GenericRichOutputFormatBuilder;
 import com.leonside.dataroad.plugin.rdb.DatabaseDialect;
 import com.leonside.dataroad.plugin.rdb.type.TypeConverterInterface;
 
@@ -30,7 +30,7 @@ import java.util.Properties;
  * @Company: www.dtstack.com
  * @author sishu.yss
  */
-public class GenericJdbcOutputFormatBuilder extends BaseRichOutputFormatBuilder {
+public class GenericJdbcOutputFormatBuilder extends GenericRichOutputFormatBuilder {
 
     private GenericJdbcOutputFormat format;
 
@@ -67,7 +67,7 @@ public class GenericJdbcOutputFormatBuilder extends BaseRichOutputFormatBuilder 
     }
 
     public void setDatabaseInterface(DatabaseDialect databaseDialect) {
-        format.databaseInterface = databaseDialect;
+        format.databaseDialect = databaseDialect;
     }
 
     public void setProperties(Properties properties){

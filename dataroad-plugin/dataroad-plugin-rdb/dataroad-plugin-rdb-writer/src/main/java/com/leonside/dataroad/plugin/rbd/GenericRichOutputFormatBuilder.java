@@ -16,11 +16,10 @@
  * limitations under the License.
  */
 
-package com.leonside.dataroad.flink.outputformat;
+package com.leonside.dataroad.plugin.rbd;
 
 import com.leonside.dataroad.common.constant.JobConfigConstants;
 import com.leonside.dataroad.common.context.RestoreConfig;
-import com.sun.org.apache.bcel.internal.classfile.ConstantValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,10 +32,10 @@ import java.util.Map;
  * Company: www.dtstack.com
  * @author huyifan.zju@163.com
  */
-public abstract class BaseRichOutputFormatBuilder {
+public abstract class GenericRichOutputFormatBuilder {
 
     protected final Logger LOG = LoggerFactory.getLogger(getClass());
-    protected BaseRichOutputFormat format;
+    protected GenericRichOutputFormat format;
 
     public void setDirtyPath(String dirtyPath) {
         format.setDirtyPath(dirtyPath);
@@ -89,7 +88,7 @@ public abstract class BaseRichOutputFormatBuilder {
      */
     protected abstract void checkFormat();
 
-    public BaseRichOutputFormat finish() {
+    public GenericRichOutputFormat finish() {
         checkFormat();
 
         /**

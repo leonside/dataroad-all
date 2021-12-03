@@ -10,7 +10,7 @@ import com.leonside.dataroad.core.Job;
 import com.leonside.dataroad.core.component.JobExtensionLoader;
 import com.leonside.dataroad.core.component.ComponentType;
 import com.leonside.dataroad.core.flow.SimpleJobFlow;
-import com.leonside.dataroad.core.spi.JobEngineCreator;
+import com.leonside.dataroad.core.spi.JobEngineProvider;
 import com.leonside.dataroad.core.spi.JobExecutionDecider;
 
 /**
@@ -18,7 +18,7 @@ import com.leonside.dataroad.core.spi.JobExecutionDecider;
  */
 public class JobFlowBuilder extends BaseJobFlowBuilder<JobFlowBuilder> {
 
-    private JobEngineCreator jobEngineCreator = ExtensionLoader.getExtensionLoader(JobEngineCreator.class).getFirstExtension();
+    private JobEngineProvider jobEngineCreator = ExtensionLoader.getExtensionLoader(JobEngineProvider.class).getFirstExtension();
 
     protected SimpleJobFlow startJobFlow;
 
@@ -74,7 +74,7 @@ public class JobFlowBuilder extends BaseJobFlowBuilder<JobFlowBuilder> {
 
         ExecuteContext executeContext = jobBuilder.getExecuteContext();
 
-        return jobEngineCreator.create(executeContext, startJobFlow);
+        return jobEngineCreator.createJob(executeContext, startJobFlow);
     }
 
 }

@@ -19,4 +19,7 @@ public class LogConfig implements Serializable {
 //    private String path = null;
 //    private String pattern = null;
 
+    public void setIsLogger(boolean logger) {
+        isLogger = logger;
+    }
 }

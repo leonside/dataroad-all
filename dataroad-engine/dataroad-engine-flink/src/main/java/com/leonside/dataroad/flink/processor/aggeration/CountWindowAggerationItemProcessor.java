@@ -23,7 +23,7 @@ public class CountWindowAggerationItemProcessor extends AggerationItemProcessor 
     private Map<String,Object> parameter;
 
     @Override
-    public void initialize(ExecuteContext executeContext,Map<String, Object> parameter) {
+    public void initialize(FlinkExecuteContext executeContext,Map<String, Object> parameter) {
         this.parameter = parameter;
 
         Integer windowSize = MapParameterUtils.getInteger(parameter, JobConfigConstants.CONFIG_AGG_WINDOWSIZE);

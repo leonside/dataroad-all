@@ -18,7 +18,19 @@ public class RestoreConfig implements Serializable {
     private int restoreColumnIndex = -1;
     private long maxRowNumForCheckpoint = 10000;
 
+    private String savepointPath;
+    private String savepointRestorePath;
+    private Integer savepointInterval;
+
     public static RestoreConfig defaultConfig() {
         return new RestoreConfig();
+    }
+
+    public void setIsRestore(boolean restore) {
+        isRestore = restore;
+    }
+
+    public void setIsStream(boolean stream) {
+        isStream = stream;
     }
 }

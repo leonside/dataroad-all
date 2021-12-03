@@ -93,6 +93,9 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
         }
 
         restoreColumn = metaColumns.get(restoreConfig.getRestoreColumnIndex());
+        if(StringUtils.isEmpty(restoreColumn.getType())){
+            restoreColumn.setType(restoreConfig.getRestoreColumnType());
+        }
     }
 
     @Override
@@ -810,7 +813,7 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
         super.getFormatState();
 
         if (formatState != null && lastRow != null) {
-            formatState.setState(lastRow.getField(restoreConfig.getRestoreColumnIndex()));
+            formatState.setState(lastRow.getField(restoreConfig.getRestoreColumnName()));
         }
         return formatState;
     }

@@ -12,22 +12,25 @@
             "table": "student",
             "where": "id<10",
             "column": [
-              "id",
-              "name",
-              "sex",
-              "age",
-              "address",
-              "idcard",
-              "phone",
-              "code",
-              "create_time",
-              "area_code"
+              {"name": "id","type": "int"},
+              {"name": "name","type": "varchar"},
+              {"name": "sex","type": "int"},
+              {"name": "age","type": "int"},
+              {"name": "address","type": "varchar"},
+              {"name": "idcard","type": "varchar"},
+              {"name": "phone","type": "varchar"},
+              {"name": "code","type": "int"},
+              {"name": "create_time","type": "datetime"},
+              {"name": "area_code","type": "varchar"}
             ],
             "customSql": "",
             "splitPk": "id",
             "queryTimeOut": 1000,
             "fetchSize": 1000,
-            "requestAccumulatorInterval": 2
+            "requestAccumulatorInterval": 2,
+            "polling": true,
+            "pollingInterval": 10,
+            "increColumn": "id"
           }
         },
         "myprocessor1": {
@@ -79,7 +82,12 @@
         "record": 1
       },
       "restore": {
-        "isRestore": false
+        "isRestore": true,
+        "restoreColumnName": "id",
+        "restoreColumnType": "int",
+        "savepointPath": "file:///D:\\conf\\checkpoint",
+        "savepointRestorePath": "D:\\conf\\checkpoint\\ce59c362c2b129231726c60cef4c2e50\\chk-19",
+        "savepointInterval": 20000
       },
       "log" : {
         "isLogger": false,
