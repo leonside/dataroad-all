@@ -6,7 +6,7 @@ import com.leonside.dataroad.common.utils.IdGenerator;
 /**
  * @author leon
  */
-public abstract class ComponentNameAutoGenerator extends ComponentNameable {
+public abstract class ComponentNameAutoGenerator extends ComponentNameSupport {
 
     public ComponentNameAutoGenerator(String identityPrefix) {
         this.name = IdGenerator.generate(identityPrefix);

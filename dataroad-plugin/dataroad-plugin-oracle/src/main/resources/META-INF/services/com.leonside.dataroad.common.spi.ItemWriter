@@ -1,0 +1,1 @@
+oracleWriter=com.leonside.dataroad.plugin.oracle.writer.OracleJdbcWriter

@@ -16,6 +16,7 @@
         <module>dataroad-common</module>
         <module>dataroad</module>
         <module>dataroad-plugin</module>
+        <module>dataroad-plugin/dataroad-plugin-kafka</module>
     </modules>
 
     <properties>

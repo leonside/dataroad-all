@@ -1,0 +1,1 @@
+postgresqlWriter=com.leonside.dataroad.plugin.postgresql.writer.PostgresqlJdbcWriter

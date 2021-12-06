@@ -1,24 +1,6 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.leonside.dataroad.plugin.rbd.outputformat;
 
 
-import com.leonside.dataroad.plugin.rbd.GenericRichOutputFormatBuilder;
 import com.leonside.dataroad.plugin.rdb.DatabaseDialect;
 import com.leonside.dataroad.plugin.rdb.type.TypeConverterInterface;
 
@@ -27,10 +9,8 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * @Company: www.dtstack.com
- * @author sishu.yss
  */
-public class GenericJdbcOutputFormatBuilder extends GenericRichOutputFormatBuilder {
+public class GenericJdbcOutputFormatBuilder extends GenericRichOutputFormatBuilder<GenericJdbcOutputFormat, GenericJdbcOutputFormatBuilder> {
 
     private GenericJdbcOutputFormat format;
 
@@ -38,69 +18,85 @@ public class GenericJdbcOutputFormatBuilder extends GenericRichOutputFormatBuild
         super.format = this.format = format;
     }
 
-    public void setUsername(String username) {
+    public GenericJdbcOutputFormatBuilder setUsername(String username) {
         format.username = username;
+        return this;
     }
 
-    public void setPassword(String password) {
+    public GenericJdbcOutputFormatBuilder setPassword(String password) {
         format.password = password;
+        return this;
     }
 
-    public void setDriverName(String driverName) {
+    public GenericJdbcOutputFormatBuilder setDriverName(String driverName) {
         format.driverName = driverName;
+        return this;
     }
 
-    public void setDbUrl(String dbUrl) {
+    public GenericJdbcOutputFormatBuilder setDbUrl(String dbUrl) {
         format.dbUrl = dbUrl;
+        return this;
     }
 
-    public void setPreSql(List<String> preSql) {
+    public GenericJdbcOutputFormatBuilder setPreSql(List<String> preSql) {
         format.preSql = preSql;
+        return this;
     }
 
-    public void setPostSql(List<String> postSql) {
+    public GenericJdbcOutputFormatBuilder setPostSql(List<String> postSql) {
         format.postSql = postSql;
+        return this;
     }
 
-    public void setUpdateKey(Map<String,List<String>> updateKey) {
+    public GenericJdbcOutputFormatBuilder setUpdateKey(Map<String,List<String>> updateKey) {
         format.updateKey = updateKey;
+        return this;
     }
 
-    public void setDatabaseInterface(DatabaseDialect databaseDialect) {
+    public GenericJdbcOutputFormatBuilder setDatabaseInterface(DatabaseDialect databaseDialect) {
         format.databaseDialect = databaseDialect;
+        return this;
     }
 
-    public void setProperties(Properties properties){
-        format.properties = properties;
-    }
+//    public GenericJdbcOutputFormatBuilder setProperties(Properties properties){
+//        format.properties = properties;
+//        return this;
+//    }
 
-    public void setMode(String mode) {
+    public GenericJdbcOutputFormatBuilder setMode(String mode) {
         format.mode = mode;
+        return this;
     }
 
-    public void setTable(String table) {
+    public GenericJdbcOutputFormatBuilder setTable(String table) {
         format.table = table;
+        return this;
     }
 
-    public void setColumn(List<String> column) {
+    public GenericJdbcOutputFormatBuilder setColumn(List<String> column) {
         format.column = column;
+        return this;
     }
 
-    public void setFullColumn(List<String> fullColumn) {
+    public GenericJdbcOutputFormatBuilder setFullColumn(List<String> fullColumn) {
         format.fullColumn = fullColumn;
+        return this;
     }
 
-    public void setTypeConverter(TypeConverterInterface typeConverter ){
+    public GenericJdbcOutputFormatBuilder setTypeConverter(TypeConverterInterface typeConverter ){
         format.typeConverter = typeConverter;
+        return this;
     }
 
-    public void setInsertSqlMode(String insertSqlMode){
+    public GenericJdbcOutputFormatBuilder setInsertSqlMode(String insertSqlMode){
         format.insertSqlMode = insertSqlMode;
+        return this;
     }
 
 
-    public void setSchema(String schema){
+    public GenericJdbcOutputFormatBuilder setSchema(String schema){
         format.setSchema(schema);
+        return this;
     }
 
 

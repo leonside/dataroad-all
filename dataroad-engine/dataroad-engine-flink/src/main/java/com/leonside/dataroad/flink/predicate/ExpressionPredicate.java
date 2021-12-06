@@ -1,12 +1,11 @@
 package com.leonside.dataroad.flink.predicate;
 
-import com.leonside.dataroad.common.context.ExecuteContext;
 import com.leonside.dataroad.common.exception.ScriptExecuteException;
 import com.leonside.dataroad.common.script.ScriptEvaluator;
 import com.leonside.dataroad.common.script.ScriptEvaluatorFactory;
 import com.leonside.dataroad.core.spi.JobPredicate;
 import com.leonside.dataroad.core.component.ComponentInitialization;
-import com.leonside.dataroad.core.component.ComponentNameable;
+import com.leonside.dataroad.core.component.ComponentNameSupport;
 import com.leonside.dataroad.flink.context.FlinkExecuteContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.flink.types.Row;
@@ -16,7 +15,7 @@ import java.util.Map;
 /**
  * @author leon
  */
-public class ExpressionPredicate extends ComponentNameable implements ComponentInitialization<FlinkExecuteContext>, JobPredicate<FlinkExecuteContext, Row> {
+public class ExpressionPredicate extends ComponentNameSupport implements ComponentInitialization<FlinkExecuteContext>, JobPredicate<FlinkExecuteContext, Row> {
 
     public static final String PARAM_EXPRESSION = "expression";
 

@@ -15,6 +15,13 @@
     <modules>
         <module>dataroad-plugin-rdb</module>
         <module>dataroad-plugin-mysql</module>
+        <module>dataroad-plugin-oracle</module>
+        <module>dataroad-plugin-sqlserver</module>
+        <module>dataroad-plugin-postgresql</module>
+        <module>dataroad-plugin-mysqlstream</module>
+        <module>dataroad-plugin-hive</module>
+        <module>dataroad-plugin-redis</module>
+        <module>dataroad-plugin-es</module>
     </modules>
 
     <properties>

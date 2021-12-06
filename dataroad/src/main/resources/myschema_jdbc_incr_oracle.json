@@ -1,0 +1,96 @@
+{
+  "job": {
+    "content": [
+      {
+        "mysqlreader": {
+          "type": "reader",
+          "pluginName": "oracleReader",
+          "parameter": {
+            "username": "duceap_job",
+            "password": "dragon",
+            "jdbcUrl": "jdbc:oracle:thin:@192.168.0.216:1521:orcl",
+            "table": "student",
+            "where": "id<10",
+            "column": [
+              {"name": "ID","type": "int"},
+              {"name": "NAME","type": "varchar"},
+              {"name": "SEX","type": "int"},
+              {"name": "AGE","type": "int"},
+              {"name": "ADDRESS","type": "varchar"},
+              {"name": "IDCARD","type": "varchar"},
+              {"name": "PHONE","type": "varchar"},
+              {"name": "CODE","type": "int"},
+              {"name": "CREATE_TIME","type": "datetime"},
+              {"name": "AREA_CODE","type": "varchar"}
+            ],
+            "customSql": "",
+            "splitPk": "id",
+            "queryTimeOut": 1000,
+            "fetchSize": 1000,
+            "requestAccumulatorInterval": 2,
+            "polling": true,
+            "pollingInterval": 10,
+            "increColumn": "id"
+          }
+        },
+        "myprocessor1": {
+          "type": "processor",
+          "pluginName": "filterProcessor",
+          "dependencies": [
+            "mysqlreader"
+          ],
+          "parameter": {
+            "expression": "row.getField('AGE')>=20"
+          }
+        },
+        "mywriter": {
+          "type": "writer",
+          "pluginName": "oracleWriter",
+          "parameter": {
+              "username": "duceap_job",
+              "password": "dragon",
+              "jdbcUrl": "jdbc:oracle:thin:@192.168.0.216:1521:orcl",
+              "table": "student1",
+              "preSql": [],
+              "postSql": [
+                "update student1 set code = '1000';"
+              ],
+              "writeMode": "insert",
+              "column": [
+                "ID",
+                "NAME",
+                "SEX",
+                "AGE",
+                "ADDRESS",
+                "IDCARD",
+                "PHONE",
+                "CODE",
+                "CREATE_TIME"
+              ],
+              "batchSize": 3
+          }
+        }
+      }
+    ],
+    "setting":{
+      "monitorUrls": "",
+      "speed": {
+        "channel": 1,
+        "bytes": 0
+      },
+      "errorLimit": {
+        "record": 1
+      },
+      "restore": {
+        "isRestore": false
+      },
+      "log" : {
+        "isLogger": false,
+        "level" : "debug",
+        "path" : "",
+        "pattern":""
+      }
+    }
+  }
+}
+

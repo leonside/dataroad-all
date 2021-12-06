@@ -107,7 +107,7 @@ public class MetaColumn implements Serializable {
     public static MetaColumn getMetaColumn(List columns, String name){
         List<MetaColumn> metaColumns = getMetaColumns(columns);
         for (MetaColumn metaColumn : metaColumns) {
-            if(StringUtils.isNotEmpty(metaColumn.getName()) && metaColumn.getName().equals(name)){
+            if(StringUtils.isNotEmpty(metaColumn.getName()) && metaColumn.getName().equalsIgnoreCase(name)){
                 return metaColumn;
             }
         }

@@ -1,20 +1,3 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.leonside.dataroad.plugin.rbd.outputformat;
 
 import com.google.gson.Gson;
@@ -24,7 +7,6 @@ import com.leonside.dataroad.common.exception.WriteRecordException;
 import com.leonside.dataroad.common.utils.ClassUtil;
 import com.leonside.dataroad.common.utils.DateUtil;
 import com.leonside.dataroad.common.utils.ExceptionUtil;
-import com.leonside.dataroad.plugin.rbd.GenericRichOutputFormat;
 import com.leonside.dataroad.flink.restore.FormatState;
 import com.leonside.dataroad.plugin.rdb.DatabaseDialect;
 import com.leonside.dataroad.plugin.rdb.type.TypeConverterInterface;
@@ -42,8 +24,6 @@ import java.util.*;
 /**
  * OutputFormat for writing data to relational database.
  *
- * Company: www.dtstack.com
- * @author huyifan.zju@163.com
  */
 public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
 
@@ -94,7 +74,7 @@ public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
 
     protected long rowsOfCurrentTransaction;
 
-    public Properties properties;
+//    public Properties properties;
 
     /**
      * schema名
@@ -137,7 +117,7 @@ public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
     }
 
     @Override
-    protected void openInternal(int taskNumber, int numTasks){
+    protected void doOpen(int taskNumber, int numTasks){
         try {
             ClassUtil.forName(driverName, getClass().getClassLoader());
             dbConn = DbUtil.getConnection(dbUrl, username, password);
@@ -206,7 +186,7 @@ public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
     }
 
     @Override
-    protected void writeSingleRecordInternal(Row row) throws WriteRecordException {
+    protected void doWriteSingleRecord(Row row) throws WriteRecordException {
         int index = 0;
         try {
             for (; index < row.getArity(); index++) {
@@ -231,9 +211,9 @@ public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
         if(index < row.getArity()) {
             String message = recordConvertDetailErrorMessage(index, row);
             LOG.error(message, e);
-            throw new WriteRecordException(message, e);
+            throw new WriteRecordException(index, message, e);
         }
-        throw new WriteRecordException(e.getMessage(), e);
+        throw new WriteRecordException(index, e.getMessage(), e);
     }
 
     @Override
@@ -242,7 +222,7 @@ public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
     }
 
     @Override
-    protected void writeMultipleRecordsInternal() throws Exception {
+    protected void doWriteMultipleRecords() throws Exception {
         try {
 
             for (Row row : rows) {
@@ -298,7 +278,7 @@ public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
 
                 LOG.info("getFormatState:Start commit connection");
                 if(rows != null && rows.size() > 0){
-                    super.writeRecordInternal();
+                    super.doWriteRecord();
                 }else{
                     preparedStatement.executeBatch();
                 }
@@ -397,7 +377,7 @@ public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
     }
 
     @Override
-    public void closeInternal() {
+    public void doClose() {
         readyCheckpoint = false;
         boolean commit = true;
         try{
@@ -429,7 +409,7 @@ public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
     }
 
     @Override
-    protected boolean needWaitBeforeCloseInternal() {
+    protected boolean doNeedWaitBeforeClose() {
         return  CollectionUtils.isNotEmpty(postSql);
     }
 

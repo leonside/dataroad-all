@@ -33,7 +33,7 @@ public class OutputTagDeciderProcessor extends ComponentNameAutoGenerator implem
     private Map<JobPredicate, JobFlow> jobFlowDeciders;
 
     public OutputTagDeciderProcessor(){
-        super(JobConfigKeyConstants.JOBFLOW_NAME_PREFIX_OUTPUTTAG_DECIDER);
+        super(JobConfigKeyConstants.COMPONENT_PREFIX_OUTPUTTAG_DECIDER);
     }
 
     @Override

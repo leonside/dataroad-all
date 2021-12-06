@@ -21,7 +21,7 @@ public abstract class JobConfigKeyConstants {
 
     public static final String KEY_PREDICATE_OTHERWISE = "otherwise";
 
-    public static final String AGGERATION_KEY_AGGFIELD = "aggField";
+    public static final String AGGERATION_KEY_AGGFIELD = "aggBy";
     public static final String AGGERATION_KEY_BEGINTIME = "beginTime";
     public static final String AGGERATION_KEY_ENDTIME = "endTime";
     public static final String AGGERATION_KEY_DUMPTIME = "dumpTime";

@@ -6,7 +6,7 @@ import com.leonside.dataroad.common.script.ScriptEvaluatorFactory;
 import com.leonside.dataroad.common.spi.ItemProcessor;
 import com.leonside.dataroad.common.utils.Asserts;
 import com.leonside.dataroad.core.component.ComponentInitialization;
-import com.leonside.dataroad.core.component.ComponentNameable;
+import com.leonside.dataroad.core.component.ComponentNameSupport;
 import com.leonside.dataroad.common.constant.JobConfigKeyConstants;
 import com.leonside.dataroad.flink.context.FlinkExecuteContext;
 import org.apache.commons.lang.StringUtils;
@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * @author leon
  */
-public class FilterItemProcessor extends ComponentNameable implements ComponentInitialization<FlinkExecuteContext>, ItemProcessor<FlinkExecuteContext, DataStream<Row>,DataStream<Row>> {
+public class FilterItemProcessor extends ComponentNameSupport implements ComponentInitialization<FlinkExecuteContext>, ItemProcessor<FlinkExecuteContext, DataStream<Row>,DataStream<Row>> {
 
     private Map<String,Object> parameter;
 
@@ -42,8 +42,8 @@ public class FilterItemProcessor extends ComponentNameable implements ComponentI
             @Override
             public boolean filter(Row value) throws Exception {
 
-                Object age = value.getField("age");
-                System.out.println(age);
+                Object age = value.getField("AGE");
+                System.out.println("age: "+ age);
                 try{
                     Object evaluate = scriptEvalutor.evaluate(value, parameter);
 

@@ -1,0 +1,1 @@
+postgresqlReader=com.leonside.dataroad.plugin.postgresql.reader.PostgresqlJdbcReader

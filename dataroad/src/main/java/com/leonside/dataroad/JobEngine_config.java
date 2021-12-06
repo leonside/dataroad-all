@@ -15,7 +15,7 @@ public class JobEngine_config {
     public static void main(String[] args) throws Exception {
 
         JsonJobCreator jsonJobCreator = new JsonJobCreator(new JsonJobSchemaParser());
-        List<Job> jobs = jsonJobCreator.createJobByPath("classpath:/myschema_jdbc_incr.json");
+        List<Job> jobs = jsonJobCreator.createJobByPath("classpath:/myschema_jdbc_incr_oracle.json");
 
         jobs.forEach(job ->{
 

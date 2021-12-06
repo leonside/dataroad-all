@@ -9,8 +9,6 @@ import java.util.Map;
 /**
  * Database prototype specification
  *
- * Company: www.dtstack.com
- * @author huyifan.zju@163.com
  */
 public interface DatabaseDialect {
 
