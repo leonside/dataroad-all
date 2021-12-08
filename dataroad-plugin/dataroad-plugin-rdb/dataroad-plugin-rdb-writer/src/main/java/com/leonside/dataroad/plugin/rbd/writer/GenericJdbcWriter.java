@@ -21,7 +21,8 @@ package com.leonside.dataroad.plugin.rbd.writer;
 import com.leonside.dataroad.common.spi.ItemWriter;
 import com.leonside.dataroad.common.utils.MapParameterUtils;
 import com.leonside.dataroad.flink.context.FlinkExecuteContext;
-import com.leonside.dataroad.plugin.rbd.constant.JdbcKeyConstant;
+import com.leonside.dataroad.flink.writer.BaseItemWriter;
+import com.leonside.dataroad.plugin.rbd.constant.JdbcWriterKey;
 import com.leonside.dataroad.plugin.rbd.outputformat.GenericJdbcOutputFormatBuilder;
 import com.leonside.dataroad.plugin.rdb.DatabaseDialect;
 import com.leonside.dataroad.plugin.rdb.type.TypeConverterInterface;
@@ -30,7 +31,6 @@ import org.apache.flink.types.Row;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 
 /**
@@ -101,37 +101,18 @@ public abstract class GenericJdbcWriter extends BaseItemWriter implements ItemWr
     @Override
     public void initialize(FlinkExecuteContext executeContext, Map<String, Object> parameter) {
         super.initialize(executeContext, parameter);
-//        "writer": {
-//            "name": "mysqlwriter",
-//                    "parameter": {
-//                "username": "username",
-//                        "password": "password",
-//                        "connection": [
-//                {
-//                    "jdbcUrl": "jdbc:mysql://0.0.0.1:3306/database?useSSL=false",
-//                        "table": ["table"]
-//                }
-//            ],
-//                "preSql": ["truncate table table"],
-//                "postSql": ["update table set user_id = 1;"],
-//                "writeMode": "insert",
-//                        "column": ["id","user_id","name"],
-//                "batchSize": 1024
-//            }
-//        }
-        dbUrl = MapParameterUtils.getString(parameter, JdbcKeyConstant.KEY_JDBC_URL);
-        username = MapParameterUtils.getString(parameter, JdbcKeyConstant.KEY_USERNAME);
-        password = MapParameterUtils.getString(parameter, JdbcKeyConstant.KEY_PASSWORD);
-        table = MapParameterUtils.getString(parameter, JdbcKeyConstant.KEY_TABLE);
-        preSql = (List<String>) MapParameterUtils.getArrayListNullable(parameter, JdbcKeyConstant.KEY_PRE_SQL);
-        postSql = (List<String>) MapParameterUtils.getArrayListNullable(parameter, JdbcKeyConstant.KEY_POST_SQL);
-        batchSize = MapParameterUtils.getIntegerNullable(parameter, JdbcKeyConstant.KEY_BATCH_SIZE, DEFAULT_BATCH_SIZE);
-        column = (List<String>) MapParameterUtils.getArrayList(parameter, JdbcKeyConstant.KEY_COLUMN);
-        mode = MapParameterUtils.getStringNullable(parameter, JdbcKeyConstant.KEY_WRITE_MODE);
+        dbUrl = MapParameterUtils.getString(parameter, JdbcWriterKey.KEY_JDBC_URL.getName());
+        username = MapParameterUtils.getString(parameter, JdbcWriterKey.KEY_USERNAME.getName());
+        password = MapParameterUtils.getString(parameter, JdbcWriterKey.KEY_PASSWORD.getName());
+        table = MapParameterUtils.getString(parameter, JdbcWriterKey.KEY_TABLE.getName());
+        preSql = (List<String>) MapParameterUtils.getArrayListNullable(parameter, JdbcWriterKey.KEY_PRE_SQL.getName());
+        postSql = (List<String>) MapParameterUtils.getArrayListNullable(parameter, JdbcWriterKey.KEY_POST_SQL.getName());
+        batchSize = MapParameterUtils.getIntegerNullable(parameter, JdbcWriterKey.KEY_BATCH_SIZE.getName(), DEFAULT_BATCH_SIZE);
+        column = (List<String>) MapParameterUtils.getArrayListNullable(parameter, JdbcWriterKey.KEY_COLUMN.getName());
+        mode = MapParameterUtils.getStringNullable(parameter, JdbcWriterKey.KEY_WRITE_MODE.getName());
 
 //        updateKey = (Map<String, List<String>>) writerConfig.getParameter().getVal(KEY_UPDATE_KEY);
 //        fullColumn = (List<String>) MapParameterUtils.getArrayList(parameter, JdbcConfigKeys.KEY_FULL_COLUMN);
-
 //        insertSqlMode = MapParameterUtils.getString(parameter, JdbcConfigKeys.KEY_INSERT_SQL_MODE);
 //        properties = MapParameterUtils.getString(parameter, JdbcConfigKeys.KEY_PROPERTIES);
 

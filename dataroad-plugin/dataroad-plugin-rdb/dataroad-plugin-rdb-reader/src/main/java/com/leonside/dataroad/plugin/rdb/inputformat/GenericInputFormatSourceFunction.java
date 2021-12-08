@@ -3,6 +3,7 @@ package com.leonside.dataroad.plugin.rdb.inputformat;
 
 import com.leonside.dataroad.common.context.RestoreConfig;
 import com.leonside.dataroad.common.utils.ExceptionUtil;
+import com.leonside.dataroad.flink.inputformat.GenericRichInputFormat;
 import com.leonside.dataroad.flink.restore.FormatState;
 import org.apache.flink.annotation.Internal;
 import org.apache.flink.api.common.io.InputFormat;

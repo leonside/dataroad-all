@@ -2,6 +2,7 @@ package com.leonside.dataroad.plugin.rdb.inputformat;
 
 import com.leonside.dataroad.common.constant.JobCommonConstant;
 import com.leonside.dataroad.common.domain.MetaColumn;
+import com.leonside.dataroad.flink.inputformat.GenericRichInputFormatBuilder;
 import com.leonside.dataroad.plugin.rdb.DatabaseDialect;
 import com.leonside.dataroad.plugin.rdb.type.TypeConverterInterface;
 import org.apache.commons.lang.StringUtils;
@@ -12,7 +13,7 @@ import java.util.Properties;
 /**
  * @author leon
  */
-public class GenericJdbcInputFormatBuilder extends GenericRichInputFormatBuilder<GenericJdbcInputFormat, GenericJdbcInputFormatBuilder>{
+public class GenericJdbcInputFormatBuilder extends GenericRichInputFormatBuilder<GenericJdbcInputFormat, GenericJdbcInputFormatBuilder> {
 
     protected GenericJdbcInputFormat format;
 

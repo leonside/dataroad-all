@@ -11,4 +11,7 @@ public interface ComponentInitialization<T extends ExecuteContext> {
 
     void initialize(T executeContext, Map<String, Object> parameter);
 
+    default boolean validate(){
+        return true;
+    }
 }

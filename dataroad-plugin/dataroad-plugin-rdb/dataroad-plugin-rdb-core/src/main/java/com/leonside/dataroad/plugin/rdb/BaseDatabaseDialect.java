@@ -5,7 +5,9 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
+import java.sql.PreparedStatement;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Abstract base parent class of other database prototype implementations
@@ -184,5 +186,18 @@ public abstract class BaseDatabaseDialect implements DatabaseDialect, Serializab
     @Override
     public int getQueryTimeout(){
         return 1000;
+    }
+
+    @Override
+    public String getDeleteStatementByKey(String primaryKey, String table){
+        return "DELETE from " + quoteTable(table) + " WHERE " + quoteColumn(primaryKey) + "=?";
+    }
+
+    @Override
+    public String getUpdateStatementByKey(List<String> column, String primaryKey, String table){
+        List<String> filterColumn = column.stream().filter(col -> !col.equals(primaryKey)).collect(Collectors.toList());
+        return "UPDATE " + quoteTable(table) + "SET " +
+                filterColumn.stream().map(col -> quoteColumn(col) + "=? ").collect(Collectors.joining(",")) +
+                " WHERE " + quoteColumn(primaryKey) + "=?";
     }
 }

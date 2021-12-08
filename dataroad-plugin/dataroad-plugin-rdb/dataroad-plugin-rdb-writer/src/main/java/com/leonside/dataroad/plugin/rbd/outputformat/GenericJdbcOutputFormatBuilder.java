@@ -1,12 +1,13 @@
 package com.leonside.dataroad.plugin.rbd.outputformat;
 
 
+import com.leonside.dataroad.common.enums.WriteMode;
+import com.leonside.dataroad.flink.outputformat.GenericRichOutputFormatBuilder;
 import com.leonside.dataroad.plugin.rdb.DatabaseDialect;
 import com.leonside.dataroad.plugin.rdb.type.TypeConverterInterface;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  */
@@ -115,9 +116,13 @@ public class GenericJdbcOutputFormatBuilder extends GenericRichOutputFormatBuild
             throw new IllegalArgumentException("No driver supplied");
         }
 
-        if(format.getRestoreConfig().isRestore() && format.getBatchInterval() == 1){
-            throw new IllegalArgumentException("Batch Size must greater than 1 when checkpoint is open");
+        if(format.mode.equalsIgnoreCase(WriteMode.STREAM.name()) && format.getBatchInterval() > 1){
+            throw new IllegalArgumentException("Batch Size must not greater than 1 when useing Stream Mode");
         }
+
+//        if(format.getRestoreConfig().isRestore() && format.getBatchInterval() == 1){
+//            throw new IllegalArgumentException("Batch Size must greater than 1 when checkpoint is open");
+//        }
     }
 
 }

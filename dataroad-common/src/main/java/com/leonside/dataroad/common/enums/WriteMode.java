@@ -21,5 +21,9 @@ public enum WriteMode {
      */
     REPLACE,
 
-    UPSERT
+    UPSERT,
+    /**
+     * insert update delete ,key the row Kind
+     */
+    STREAM
 }

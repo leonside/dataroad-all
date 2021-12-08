@@ -1,4 +1,4 @@
-package com.leonside.dataroad.plugin.rdb.inputformat;
+package com.leonside.dataroad.flink.inputformat;
 
 import com.google.common.base.Preconditions;
 import com.leonside.dataroad.common.context.RestoreConfig;

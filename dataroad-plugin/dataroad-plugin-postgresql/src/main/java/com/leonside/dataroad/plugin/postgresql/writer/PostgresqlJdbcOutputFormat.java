@@ -75,7 +75,7 @@ public class PostgresqlJdbcOutputFormat extends GenericJdbcOutputFormat {
             StringBuilder sb = new StringBuilder();
             int lastIndex = row.getArity() - 1;
             for (; index < row.getArity(); index++) {
-                Object rowData = getField(row, index, this.column.get(index));
+                Object rowData = getField(row, this.column.get(index));
                 if(rowData==null){
                     sb.append(DEFAULT_NULL_DELIM);
                 }else{
@@ -115,7 +115,7 @@ public class PostgresqlJdbcOutputFormat extends GenericJdbcOutputFormat {
             int lastIndex = row.getArity() - 1;
             StringBuilder tempBuilder = new StringBuilder(128);
             for (int index =0; index < row.getArity(); index++) {
-                Object rowData = getField(row, index,this.column.get(index) );
+                Object rowData = getField(row, this.column.get(index) );
                 if(rowData==null){
                     tempBuilder.append(DEFAULT_NULL_DELIM);
                 }else{
@@ -150,9 +150,9 @@ public class PostgresqlJdbcOutputFormat extends GenericJdbcOutputFormat {
     }
 
     @Override
-    protected Object getField(Row row, int index, String name) {
-        Object field = super.getField(row, index, name);
-        String type = columnType.get(index);
+    protected Object getField(Row row, String name) {
+        Object field = super.getField(row, name);
+        String type = fullColumnMapping.get(name);
         field = typeConverter.convert(field,type);
 
         return field;

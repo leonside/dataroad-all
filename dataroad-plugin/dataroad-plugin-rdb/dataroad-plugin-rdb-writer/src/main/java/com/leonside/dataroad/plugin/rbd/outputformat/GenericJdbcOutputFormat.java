@@ -7,6 +7,7 @@ import com.leonside.dataroad.common.exception.WriteRecordException;
 import com.leonside.dataroad.common.utils.ClassUtil;
 import com.leonside.dataroad.common.utils.DateUtil;
 import com.leonside.dataroad.common.utils.ExceptionUtil;
+import com.leonside.dataroad.flink.outputformat.GenericRichOutputFormat;
 import com.leonside.dataroad.flink.restore.FormatState;
 import com.leonside.dataroad.plugin.rdb.DatabaseDialect;
 import com.leonside.dataroad.plugin.rdb.type.TypeConverterInterface;
@@ -60,6 +61,8 @@ public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
 
     protected Map<String,List<String>> updateKey;
 
+    protected Map<String, String> fullColumnMapping = new HashMap<>();
+
     protected List<String> fullColumn;
 
     protected List<String> fullColumnType;
@@ -73,6 +76,8 @@ public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
     protected boolean readyCheckpoint;
 
     protected long rowsOfCurrentTransaction;
+
+    protected String primaryKey;
 
 //    public Properties properties;
 
@@ -101,7 +106,7 @@ public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
         }
 
         String singleSql;
-        if (WriteMode.INSERT.name().equalsIgnoreCase(mode)) {
+        if (WriteMode.INSERT.name().equalsIgnoreCase(mode) || WriteMode.STREAM.name().equalsIgnoreCase(mode)) {
             singleSql = databaseDialect.getInsertStatement(column, table);
         } else if (WriteMode.REPLACE.name().equalsIgnoreCase(mode)) {
             singleSql = databaseDialect.getReplaceStatement(column, fullColumn, table, updateKey);
@@ -137,10 +142,12 @@ public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
 
             if(fullColumnType == null) {
                 fullColumnType = analyzeTable();
+                analyzePrimaryKeys();
             }
 
             for(String col : column) {
                 for (int i = 0; i < fullColumn.size(); i++) {
+                    fullColumnMapping.put(fullColumn.get(i), fullColumnType.get(i));
                     if (col.equalsIgnoreCase(fullColumn.get(i))){
                         columnType.add(fullColumnType.get(i));
                         break;
@@ -151,12 +158,16 @@ public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
             preparedStatement = prepareTemplates();
             readyCheckpoint = false;
 
+
             LOG.info("subTask[{}}] wait finished", taskNumber);
         } catch (SQLException sqe) {
             throw new IllegalArgumentException("open() failed.", sqe);
         }finally {
             DbUtil.commit(dbConn);
         }
+    }
+
+    protected void analyzePrimaryKeys() throws SQLException {
     }
 
     protected List<String> analyzeTable() {
@@ -167,6 +178,7 @@ public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
             stmt = dbConn.createStatement();
             rs = stmt.executeQuery(databaseDialect.getSqlQueryFields(databaseDialect.quoteTable(table)));
             ResultSetMetaData rd = rs.getMetaData();
+
             for(int i = 0; i < rd.getColumnCount(); ++i) {
                 ret.add(rd.getColumnTypeName(i+1));
             }
@@ -176,6 +188,11 @@ public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
                     fullColumn.add(rd.getColumnName(i+1));
                 }
             }
+            if(CollectionUtils.isEmpty(column)){
+                column = fullColumn;
+            }
+
+            analyzePrimaryKeys();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
@@ -190,7 +207,7 @@ public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
         int index = 0;
         try {
             for (; index < row.getArity(); index++) {
-                preparedStatement.setObject(index+1, getField(row, index,this.column.get(index)));
+                preparedStatement.setObject(index+1, getField(row, this.column.get(index)));
             }
 
             preparedStatement.execute();
@@ -227,7 +244,7 @@ public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
 
             for (Row row : rows) {
                 for (int index = 0; index < this.column.size(); index++) {
-                    preparedStatement.setObject(index+1, getField(row, index, this.column.get(index)));
+                    preparedStatement.setObject(index+1, getField(row, this.column.get(index)));
                 }
                 preparedStatement.addBatch();
 
@@ -319,12 +336,11 @@ public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
     /**
      * 获取转换后的字段value
      * @param row
-     * @param index
      * @return
      */
-    protected Object getField(Row row, int index, String name) {
+    protected Object getField(Row row, String name) {
         Object field = row.getField(name);
-        String type = columnType.get(index);
+        String type = fullColumnMapping.get(name);
 
         //field为空字符串，且写入目标类型不为字符串类型的字段，则将object设置为null
         if(field instanceof String

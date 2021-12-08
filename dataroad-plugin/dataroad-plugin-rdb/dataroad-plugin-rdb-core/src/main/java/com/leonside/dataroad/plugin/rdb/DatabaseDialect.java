@@ -3,6 +3,7 @@ package com.leonside.dataroad.plugin.rdb;
 
 import com.leonside.dataroad.common.enums.DatabaseType;
 
+import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Map;
 
@@ -167,4 +168,8 @@ public interface DatabaseDialect {
      * @return 超时时间
      */
     int getQueryTimeout();
+
+    String getDeleteStatementByKey(String primaryKey, String table);
+
+    String getUpdateStatementByKey(List<String> column, String primaryKey, String table);
 }

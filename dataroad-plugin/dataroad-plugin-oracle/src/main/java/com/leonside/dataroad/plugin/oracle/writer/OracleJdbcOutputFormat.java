@@ -19,9 +19,9 @@ import java.util.Map;
 public class OracleJdbcOutputFormat extends GenericJdbcOutputFormat {
 
     @Override
-    protected Object getField(Row row, int index, String name) {
-        Object field = super.getField(row, index,name);
-        String type = columnType.get(index);
+    protected Object getField(Row row,  String name) {
+        Object field = super.getField(row, name);
+        String type = fullColumnMapping.get(name);
 
         //oracle timestamp to oracle varchar or varchar2 or long field format
         if (!(field instanceof Timestamp)){

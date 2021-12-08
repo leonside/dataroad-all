@@ -16,22 +16,18 @@
  * limitations under the License.
  */
 
-package com.leonside.dataroad.plugin.rbd.writer;
+package com.leonside.dataroad.flink.writer;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.leonside.dataroad.common.context.RestoreConfig;
 import com.leonside.dataroad.core.component.ComponentInitialization;
 import com.leonside.dataroad.core.component.ComponentNameSupport;
 import com.leonside.dataroad.flink.context.FlinkExecuteContext;
-import com.leonside.dataroad.plugin.rbd.outputformat.GenericOutputFormatSinkFunction;
+import com.leonside.dataroad.flink.outputformat.GenericOutputFormatSinkFunction;
 import org.apache.flink.api.common.io.OutputFormat;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSink;
 import org.apache.flink.util.Preconditions;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**

@@ -1,5 +1,5 @@
 
-package com.leonside.dataroad.plugin.rbd.outputformat;
+package com.leonside.dataroad.flink.outputformat;
 
 import com.leonside.dataroad.flink.restore.FormatState;
 import org.apache.flink.annotation.PublicEvolving;

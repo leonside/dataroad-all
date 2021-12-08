@@ -6,8 +6,9 @@ import com.leonside.dataroad.common.spi.ItemReader;
 import com.leonside.dataroad.common.utils.JsonUtil;
 import com.leonside.dataroad.common.utils.MapParameterUtils;
 import com.leonside.dataroad.flink.context.FlinkExecuteContext;
+import com.leonside.dataroad.flink.reader.BaseItemReader;
 import com.leonside.dataroad.plugin.rdb.DatabaseDialect;
-import com.leonside.dataroad.plugin.rdb.constant.JdbcKeyConstant;
+import com.leonside.dataroad.plugin.rdb.constant.JdbcReaderKey;
 import com.leonside.dataroad.plugin.rdb.inputformat.GenericInputFormatSourceFunction;
 import com.leonside.dataroad.plugin.rdb.inputformat.GenericJdbcInputFormat;
 import com.leonside.dataroad.plugin.rdb.inputformat.GenericJdbcInputFormatBuilder;
@@ -25,7 +26,6 @@ import org.apache.flink.util.Preconditions;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * @author leon
@@ -107,17 +107,17 @@ public abstract class GenericJdbcReader extends BaseItemReader implements  ItemR
         super.initialize(executeContext,parameter);
         this.jobSetting = executeContext.getJobSetting();
         this.restoreConfig = jobSetting.getRestore();
-        dbUrl =MapParameterUtils.getString(parameter, JdbcKeyConstant.KEY_JDBC_URL);
-        username = MapParameterUtils.getString(parameter, JdbcKeyConstant.KEY_USER_NAME);
-        password = MapParameterUtils.getString(parameter, JdbcKeyConstant.KEY_PASSWORD);
-        table = MapParameterUtils.getStringNullable(parameter, JdbcKeyConstant.KEY_TABLE);
-        where = MapParameterUtils.getStringNullable(parameter, JdbcKeyConstant.KEY_WHERE);
-        metaColumns = MetaColumn.getMetaColumns(MapParameterUtils.getArrayListNullable(parameter, JdbcKeyConstant.KEY_COLUMN));
-        fetchSize = MapParameterUtils.getIntegerNullable(parameter, JdbcKeyConstant.KEY_FETCH_SIZE,0);
-        queryTimeOut = MapParameterUtils.getIntegerNullable(parameter, JdbcKeyConstant.KEY_QUERY_TIME_OUT,0);
-        splitKey = MapParameterUtils.getStringNullable(parameter, JdbcKeyConstant.KEY_SPLIK_KEY);
-        customSql = MapParameterUtils.getStringNullable(parameter, JdbcKeyConstant.KEY_CUSTOM_SQL);
-        orderByColumn = MapParameterUtils.getStringNullable(parameter, JdbcKeyConstant.KEY_ORDER_BY_COLUMN);
+        dbUrl =MapParameterUtils.getString(parameter, JdbcReaderKey.KEY_JDBC_URL.getName());
+        username = MapParameterUtils.getString(parameter, JdbcReaderKey.KEY_USER_NAME.getName());
+        password = MapParameterUtils.getString(parameter, JdbcReaderKey.KEY_PASSWORD.getName());
+        table = MapParameterUtils.getStringNullable(parameter, JdbcReaderKey.KEY_TABLE.getName());
+        where = MapParameterUtils.getStringNullable(parameter, JdbcReaderKey.KEY_WHERE.getName());
+        metaColumns = MetaColumn.getMetaColumns(MapParameterUtils.getArrayListNullable(parameter, JdbcReaderKey.KEY_COLUMN.getName()));
+        fetchSize = MapParameterUtils.getIntegerNullable(parameter, JdbcReaderKey.KEY_FETCH_SIZE.getName(),0);
+        queryTimeOut = MapParameterUtils.getIntegerNullable(parameter, JdbcReaderKey.KEY_QUERY_TIME_OUT.getName(),0);
+        splitKey = MapParameterUtils.getStringNullable(parameter, JdbcReaderKey.KEY_SPLIK_KEY.getName());
+        customSql = MapParameterUtils.getStringNullable(parameter, JdbcReaderKey.KEY_CUSTOM_SQL.getName());
+        orderByColumn = MapParameterUtils.getStringNullable(parameter, JdbcReaderKey.KEY_ORDER_BY_COLUMN.getName());
 
         buildIncrementConfig(parameter);
 
@@ -127,12 +127,12 @@ public abstract class GenericJdbcReader extends BaseItemReader implements  ItemR
     protected abstract DatabaseDialect obtainDatabaseDialect();
 
     private void buildIncrementConfig(Map<String,Object> parameter){
-        boolean polling = MapParameterUtils.getBooleanNullable(parameter, JdbcKeyConstant.KEY_POLLING, false);
-        String increColumn = MapParameterUtils.getStringNullable(parameter, JdbcKeyConstant.KEY_INCRE_COLUMN);
-        String startLocation = MapParameterUtils.getStringNullable(parameter, JdbcKeyConstant.KEY_START_LOCATION);
-        boolean useMaxFunc = MapParameterUtils.getBooleanNullable(parameter, JdbcKeyConstant.KEY_USE_MAX_FUNC, false);
-        int requestAccumulatorInterval = MapParameterUtils.getIntegerNullable(parameter, JdbcKeyConstant.KEY_REQUEST_ACCUMULATOR_INTERVAL, 2);
-        long pollingInterval = MapParameterUtils.getIntegerNullable(parameter, JdbcKeyConstant.KEY_POLLING_INTERVAL, 5000);
+        boolean polling = MapParameterUtils.getBooleanNullable(parameter, JdbcReaderKey.KEY_POLLING.getName(), false);
+        String increColumn = MapParameterUtils.getStringNullable(parameter, JdbcReaderKey.KEY_INCRE_COLUMN.getName());
+        String startLocation = MapParameterUtils.getStringNullable(parameter, JdbcReaderKey.KEY_START_LOCATION.getName());
+        boolean useMaxFunc = MapParameterUtils.getBooleanNullable(parameter, JdbcReaderKey.KEY_USE_MAX_FUNC.getName(), false);
+        int requestAccumulatorInterval = MapParameterUtils.getIntegerNullable(parameter, JdbcReaderKey.KEY_REQUEST_ACCUMULATOR_INTERVAL.getName(), 2);
+        long pollingInterval = MapParameterUtils.getIntegerNullable(parameter, JdbcReaderKey.KEY_POLLING_INTERVAL.getName(), 5000);
 
         incrementConfig = new IncrementConfig();
         //增量字段不为空，表示任务为增量或间隔轮询任务

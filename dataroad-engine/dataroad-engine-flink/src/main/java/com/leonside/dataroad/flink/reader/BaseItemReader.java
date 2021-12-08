@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.leonside.dataroad.plugin.rdb.reader;
+package com.leonside.dataroad.flink.reader;
 
 import com.leonside.dataroad.common.context.RestoreConfig;
 import com.leonside.dataroad.common.domain.MetaColumn;

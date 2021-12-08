@@ -61,6 +61,13 @@ public class MapParameterUtils {
         return getString(params, key);
     }
 
+    public static String getStringNullable(Map<String,Object> params, String key, String defaultValue){
+        if(MapUtils.isEmpty(params) || params.get(key) == null){
+            return defaultValue;
+        }
+        return getString(params, key);
+    }
+
     public static List<?> getArrayListNullable(Map<String, Object> parameter, String key) {
         if(MapUtils.isEmpty(parameter) || parameter.get(key) == null){
             return null;

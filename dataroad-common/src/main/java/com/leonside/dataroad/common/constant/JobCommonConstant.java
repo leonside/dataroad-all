@@ -28,4 +28,8 @@ public class JobCommonConstant {
 
     public static final String JOBSCHEMA_PATH_PREFIX_CLASSPATH = "classpath:";
     public static final String JOBSCHEMA_PATH_PREFIX_FILESYSTEM = "filesystem:";
+    /**
+     * Jdbc获取主键列名
+     */
+    public static final String PRIMARYKEY_COLUMN_NAME = "COLUMN_NAME";
 }

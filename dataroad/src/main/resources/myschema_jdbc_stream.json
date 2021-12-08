@@ -1,0 +1,58 @@
+{
+  "job": {
+    "content": [
+      {
+        "mysqlreader": {
+          "type": "reader",
+          "pluginName": "mysqlStreamReader",
+          "parameter": {
+            "username": "root",
+            "password": "dragon@1qaz!QAZ",
+            "hostname": "10.254.10.31",
+            "port": 3306,
+            "table": "student",
+            "schema": "duceap_job_demo"
+          }
+        },
+        "mywriter": {
+          "type": "writer",
+          "pluginName": "mysqlStreamWriter",
+          "parameter": {
+            "username": "duceap",
+            "password": "123",
+            "jdbcUrl": "jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai",
+            "table": "student1",
+            "preSql": [],
+            "postSql": [
+              "update student1 set code = '1000';"
+            ],
+            "batchSize": 1
+          }
+        }
+      }
+    ],
+    "setting":{
+      "monitorUrls": "",
+      "speed": {
+        "channel": 1,
+        "bytes": 0
+      },
+      "errorLimit": {
+        "record": 1
+      },
+      "restore": {
+        "isRestore": true,
+        "savepointPath": "file:///D:\\conf\\checkpoint",
+        "savepointRestorePath": "D:\\conf\\checkpoint\\b75a0f3ef253b34d2f2e63c8ad3f7c04\\chk-13",
+        "savepointInterval": 10000
+      },
+      "log" : {
+        "isLogger": false,
+        "level" : "debug",
+        "path" : "",
+        "pattern":""
+      }
+    }
+  }
+}
+
