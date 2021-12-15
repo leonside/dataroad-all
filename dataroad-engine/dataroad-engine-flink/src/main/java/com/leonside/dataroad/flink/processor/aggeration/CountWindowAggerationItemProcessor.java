@@ -1,7 +1,7 @@
 package com.leonside.dataroad.flink.processor.aggeration;
 
 import com.leonside.dataroad.common.utils.Asserts;
-import com.leonside.dataroad.common.utils.MapParameterUtils;
+import com.leonside.dataroad.common.utils.ParameterUtils;
 import com.leonside.dataroad.core.aggregations.AggerationEnum;
 import com.leonside.dataroad.core.builder.AggerationBuilder;
 import com.leonside.dataroad.core.component.ComponentInitialization;
@@ -25,9 +25,9 @@ public class CountWindowAggerationItemProcessor extends AggerationItemProcessor 
     public void initialize(FlinkExecuteContext executeContext,Map<String, Object> parameter) {
         this.parameter = parameter;
 
-        Integer windowSize = MapParameterUtils.getInteger(parameter, JobConfigKeyConstants.KEY_AGG_WINDOWSIZE);
-        List<?> keyBys = MapParameterUtils.getArrayListNullable(parameter, JobConfigKeyConstants.KEY_AGG_KEYBY);
-        List<?> fieldAggs = MapParameterUtils.getArrayList(parameter, JobConfigKeyConstants.KEY_AGG_FIELDAGG);
+        Integer windowSize = ParameterUtils.getInteger(parameter, JobConfigKeyConstants.KEY_AGG_WINDOWSIZE);
+        List<?> keyBys = ParameterUtils.getArrayListNullable(parameter, JobConfigKeyConstants.KEY_AGG_KEYBY);
+        List<?> fieldAggs = ParameterUtils.getArrayList(parameter, JobConfigKeyConstants.KEY_AGG_FIELDAGG);
 
         AggerationBuilder.CountWindow countWindow = CollectionUtils.isNotEmpty(keyBys) ?
                 new AggerationBuilder.CountWindow(windowSize,keyBys.toArray(new String[]{})) : new AggerationBuilder.CountWindow(windowSize);

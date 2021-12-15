@@ -20,10 +20,7 @@ import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Utilities for ElasticSearch
@@ -84,7 +81,7 @@ public class EsUtil {
     }
 
     public static Map<String, Object> rowToJsonMap(Row row, List<String> fields, List<String> types) throws WriteRecordException {
-        Preconditions.checkArgument(row.getArity() == fields.size());
+//        Preconditions.checkArgument(row.getArity() == fields.size());
         Map<String,Object> jsonMap = new HashMap<>((fields.size()<<2)/3);
         int i = 0;
         try {
@@ -102,13 +99,13 @@ public class EsUtil {
                 String key = parts[parts.length - 1];
                 Object col = row.getField(fields.get(i));
                 if(col != null) {
-                    col = StringUtil.string2col(String.valueOf(col), types.get(i), null);
+                    col = StringUtil.object2col(col, types.get(i), null);
                 }
 
                 currMap.put(key, col);
             }
         } catch(Exception ex) {
-            String msg = "EsUtil.rowToJsonMap Writing record error: when converting field[" + i + "] in Row(" + row + ")";
+            String msg = "EsUtil.rowToJsonMap Writing record error: when converting field[" + i + "] in Row(" + row + ")：" + ex.getMessage();
             throw new WriteRecordException( i,msg, ex);
         }
 
@@ -154,6 +151,10 @@ public class EsUtil {
             case "DATE":
                 column = DateUtil.stringToDate(constantValue,null);
                 break;
+            case "TIMESTAMP":
+                column = DateUtil.timestampToString(new Date(constantValue));
+                break;
+
             default:
                 throw new IllegalArgumentException("Unsupported column type: " + columnType);
         }

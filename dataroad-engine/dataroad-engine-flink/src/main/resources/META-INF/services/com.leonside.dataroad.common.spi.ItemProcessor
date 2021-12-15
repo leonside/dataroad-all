@@ -1,1 +1,2 @@
 filterProcessor=com.leonside.dataroad.flink.processor.FilterItemProcessor
+directLookup=com.leonside.dataroad.flink.lookup.DirectAllLookupProcessor

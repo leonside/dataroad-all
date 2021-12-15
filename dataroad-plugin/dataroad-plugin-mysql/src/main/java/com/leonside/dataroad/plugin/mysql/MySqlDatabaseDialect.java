@@ -2,7 +2,8 @@
 package com.leonside.dataroad.plugin.mysql;
 
 import com.leonside.dataroad.common.enums.DatabaseType;
-import com.leonside.dataroad.plugin.rdb.BaseDatabaseDialect;
+import com.leonside.dataroad.plugin.jdbc.BaseDatabaseDialect;
+import com.leonside.dataroad.flink.utils.RawTypeConverter;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
@@ -15,6 +16,11 @@ import java.util.Map;
 
  */
 public class MySqlDatabaseDialect extends BaseDatabaseDialect {
+
+    @Override
+    public RawTypeConverter getRawTypeConverter() {
+        return MysqlRawTypeConverter::apply;
+    }
 
     @Override
     public DatabaseType getDatabaseType() {

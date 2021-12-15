@@ -6,6 +6,9 @@ import org.apache.commons.lang.StringUtils;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -108,6 +111,12 @@ public class DateUtil {
         } else if(column instanceof Date) {
             Date d = (Date)column;
             return new java.sql.Date(d.getTime());
+        } else if(column instanceof LocalDateTime) {
+            Date d = Date.from(((LocalDateTime) column).atZone(ZoneId.systemDefault()).toInstant());
+            return new java.sql.Date(d.getTime());
+        } else if(column instanceof LocalDate) {
+            Date d = Date.from(((LocalDate) column).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+            return new java.sql.Date(d.getTime());
         }
 
         throw new IllegalArgumentException("Can't convert " + column.getClass().getName() + " to Date");
@@ -138,6 +147,12 @@ public class DateUtil {
             return (Timestamp) column;
         } else if(column instanceof Date) {
             Date d = (Date)column;
+            return new java.sql.Timestamp(d.getTime());
+        } else if(column instanceof LocalDateTime) {
+            Date d = Date.from(((LocalDateTime) column).atZone(ZoneId.systemDefault()).toInstant());
+            return new java.sql.Timestamp(d.getTime());
+        } else if(column instanceof LocalDate) {
+            Date d = Date.from(((LocalDate) column).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
             return new java.sql.Timestamp(d.getTime());
         }
 

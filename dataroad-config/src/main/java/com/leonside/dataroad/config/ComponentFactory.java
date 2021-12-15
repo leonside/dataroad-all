@@ -18,26 +18,6 @@ import com.leonside.dataroad.core.spi.JobPredicate;
  */
 public class ComponentFactory {
 
-//    public static ItemReader getItemReader( GenericComponentConfig componentConfig){
-//        return JobExtensionLoader.getSingleComponent(ComponentType.reader);
-//    }
-//    public static ItemWriter getItemWriter( GenericComponentConfig componentConfig){
-//        ItemWriter component = JobExtensionLoader.getComponent(ComponentType.writer, componentConfig.getPluginName());
-//        initComponent(component, componentConfig);
-//        return component;
-//    }
-//    public static ItemProcessor getItemProcessor( GenericComponentConfig componentConfig){
-//        ItemProcessor component = JobExtensionLoader.getComponent(ComponentType.processor, componentConfig.getPluginName());
-//        initComponent(component, componentConfig);
-//        component.setName(componentConfig.getName());
-//        return component;
-//    }
-//    private static Component getItemAggProcessor(GenericComponentConfig componentConfig) {
-//        ItemProcessor component = JobExtensionLoader.getComponent(ComponentType.agg, componentConfig.getPluginName());
-//        initComponent(component, componentConfig);
-//        component.setName(componentConfig.getName());
-//        return component;
-//    }
 
     public static <T extends Component>  T getComponent(ExecuteContext executeContext, GenericComponentConfig componentConfig){
 
@@ -89,6 +69,7 @@ public class ComponentFactory {
     private static <T extends ExecuteContext> void initComponent(Object component, T executeContext,GenericComponentConfig componentConfig) {
         if(component instanceof ComponentInitialization){
             ((ComponentInitialization<ExecuteContext>) component).initialize(executeContext,componentConfig.getParameter());
+            ((ComponentInitialization<ExecuteContext>) component).validate();
         }
     }
 }

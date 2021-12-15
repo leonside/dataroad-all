@@ -17,9 +17,9 @@
  */
 package com.leonside.dataroad.plugin.postgresql.reader;
 
-import com.leonside.dataroad.plugin.rdb.reader.GenericJdbcReader;
-import com.leonside.dataroad.plugin.rdb.support.QuerySqlBuilder;
-import com.leonside.dataroad.plugin.rdb.utils.DbUtil;
+import com.leonside.dataroad.plugin.jdbc.reader.GenericJdbcReader;
+import com.leonside.dataroad.plugin.jdbc.reader.support.QuerySqlBuilder;
+import com.leonside.dataroad.plugin.jdbc.utils.DbUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;

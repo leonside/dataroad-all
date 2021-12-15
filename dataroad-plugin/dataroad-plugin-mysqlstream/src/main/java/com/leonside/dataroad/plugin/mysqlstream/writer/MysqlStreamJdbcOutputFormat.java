@@ -1,6 +1,7 @@
 package com.leonside.dataroad.plugin.mysqlstream.writer;
 
-import com.leonside.dataroad.plugin.rbd.outputformat.GenericStreamJdbcOutputFormat;
+
+import com.leonside.dataroad.plugin.jdbc.writer.outputformat.GenericStreamJdbcOutputFormat;
 
 /**
  * @author leon

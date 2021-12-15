@@ -25,7 +25,7 @@ public class MetaColumn implements Serializable {
 //    private Boolean isPart; //?
 
     public Object convertToColumn(String value){
-        return StringUtil.string2col(value, getType(), getTimeFormat());
+        return StringUtil.object2col(value, getType(), getTimeFormat());
     }
 
     public static List<MetaColumn> getMetaColumns(List columns, boolean generateIndex){

@@ -13,7 +13,7 @@
     <artifactId>dataroad-plugin</artifactId>
 
     <modules>
-        <module>dataroad-plugin-rdb</module>
+        <module>dataroad-plugin-jdbc</module>
         <module>dataroad-plugin-mysql</module>
         <module>dataroad-plugin-oracle</module>
         <module>dataroad-plugin-sqlserver</module>

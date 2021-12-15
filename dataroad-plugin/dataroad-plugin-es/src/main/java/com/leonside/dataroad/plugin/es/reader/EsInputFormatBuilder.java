@@ -82,7 +82,7 @@ public class EsInputFormatBuilder extends GenericRichInputFormatBuilder {
     }
 
     @Override
-    protected void checkFormat() {
+    public boolean validate() {
         if (format.getRestoreConfig() != null && format.getRestoreConfig().isRestore()){
             throw new UnsupportedOperationException("This plugin not support restore from failed state");
         }
@@ -90,5 +90,7 @@ public class EsInputFormatBuilder extends GenericRichInputFormatBuilder {
         if (format.batchSize > JobCommonConstant.MAX_BATCH_SIZE) {
             throw new IllegalArgumentException("批量读取数量不能大于[200000]条");
         }
+
+        return true;
     }
 }

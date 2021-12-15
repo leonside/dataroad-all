@@ -1,10 +1,8 @@
 package com.leonside.dataroad.plugin.oracle.reader;
 
 import com.leonside.dataroad.common.domain.ColumnType;
-import com.leonside.dataroad.common.utils.DateUtil;
-import com.leonside.dataroad.plugin.rdb.inputformat.GenericJdbcInputFormat;
-import com.leonside.dataroad.plugin.rdb.utils.DbUtil;
-import org.apache.commons.collections.CollectionUtils;
+import com.leonside.dataroad.plugin.jdbc.reader.inputformat.GenericJdbcInputFormat;
+import com.leonside.dataroad.plugin.jdbc.utils.DbUtil;
 import org.apache.flink.types.Row;
 
 import java.io.IOException;

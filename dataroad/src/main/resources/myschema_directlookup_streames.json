@@ -1,0 +1,87 @@
+{
+  "job": {
+    "content": [
+      {
+        "mysqlreader": {
+          "type": "reader",
+          "pluginName": "mysqlStreamReader",
+          "parameter": {
+            "username": "root",
+            "password": "dragon@1qaz!QAZ",
+            "hostname": "10.254.10.31",
+            "port": 3306,
+            "table": "student",
+            "schema": "duceap_job_demo"
+          }
+        },
+        "directLookup": {
+          "type": "processor",
+          "pluginName": "directLookup",
+          "parameter": {
+            "directData": [
+              {"sex_code":"0", "sex_value": "男"},
+              {"sex_code":"1", "sex_value": "女"}
+            ],
+            "joinColumns": {"sex": "sex_code"},
+            "columns": ["sex_code","sex_value"]
+          }
+        },
+        "mywriter": {
+          "type": "writer",
+          "pluginName": "esWriter",
+          "parameter": {
+            "address": "bigdata33:9200",
+            "index": "student1",
+            "username": "",
+            "password": "",
+            "type": "_doc",
+            "bulkAction": 2,
+            "timeout": 1000,
+            "idColumn": [
+              {
+                "name": "id",
+                "type": "integer"
+              }
+            ],
+            "column": [
+              {"name": "id","type": "int"},
+              {"name": "name","type": "string"},
+              {"name": "sex","type": "int"},
+              {"name": "sex_value","type": "string"},
+              {"name": "age","type": "int"},
+              {"name": "address","type": "string"},
+              {"name": "idcard","type": "string"},
+              {"name": "phone","type": "string"},
+              {"name": "code","type": "int"},
+              {"name": "create_time","type": "timestamp"},
+              {"name": "area_code","type": "string"}
+            ]
+          }
+        }
+      }
+    ],
+    "setting":{
+      "monitorUrls": "",
+      "speed": {
+        "channel": 1,
+        "bytes": 0
+      },
+      "errorLimit": {
+        "record": 1
+      },
+      "restore": {
+        "isRestore": true,
+        "savepointPath": "file:///D:\\conf\\checkpoint",
+        "savepointRestorePath": "D:\\conf\\checkpoint\\b75a0f3ef253b34d2f2e63c8ad3f7c04\\chk-13",
+        "savepointInterval": 10000
+      },
+      "log" : {
+        "isLogger": false,
+        "level" : "debug",
+        "path" : "",
+        "pattern":""
+      }
+    }
+  }
+}
+

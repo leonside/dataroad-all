@@ -1,6 +1,6 @@
 package com.leonside.dataroad.plugin.postgresql;
 
-import com.leonside.dataroad.plugin.rdb.type.TypeConverterInterface;
+import com.leonside.dataroad.plugin.jdbc.type.TypeConverterInterface;
 import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;

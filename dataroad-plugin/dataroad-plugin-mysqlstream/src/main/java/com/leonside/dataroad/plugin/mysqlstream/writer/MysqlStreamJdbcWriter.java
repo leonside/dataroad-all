@@ -3,10 +3,10 @@ package com.leonside.dataroad.plugin.mysqlstream.writer;
 import com.leonside.dataroad.common.enums.WriteMode;
 import com.leonside.dataroad.common.exception.JobConfigException;
 import com.leonside.dataroad.flink.context.FlinkExecuteContext;
+import com.leonside.dataroad.plugin.jdbc.DatabaseDialect;
+import com.leonside.dataroad.plugin.jdbc.writer.GenericJdbcWriter;
+import com.leonside.dataroad.plugin.jdbc.writer.outputformat.GenericJdbcOutputFormatBuilder;
 import com.leonside.dataroad.plugin.mysql.MySqlDatabaseDialect;
-import com.leonside.dataroad.plugin.rbd.outputformat.GenericJdbcOutputFormatBuilder;
-import com.leonside.dataroad.plugin.rbd.writer.GenericJdbcWriter;
-import com.leonside.dataroad.plugin.rdb.DatabaseDialect;
 
 import java.util.Map;
 

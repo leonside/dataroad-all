@@ -1,8 +1,8 @@
 package com.leonside.dataroad.plugin.mysql.reader;
 
 import com.leonside.dataroad.common.utils.DateUtil;
-import com.leonside.dataroad.plugin.rdb.inputformat.GenericJdbcInputFormat;
-import com.leonside.dataroad.plugin.rdb.utils.DbUtil;
+import com.leonside.dataroad.plugin.jdbc.reader.inputformat.GenericJdbcInputFormat;
+import com.leonside.dataroad.plugin.jdbc.utils.DbUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.core.io.InputSplit;

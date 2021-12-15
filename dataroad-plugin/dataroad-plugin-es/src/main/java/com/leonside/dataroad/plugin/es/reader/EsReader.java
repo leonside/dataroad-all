@@ -1,121 +1,106 @@
-///*
-// * Licensed to the Apache Software Foundation (ASF) under one
-// * or more contributor license agreements.  See the NOTICE file
-// * distributed with this work for additional information
-// * regarding copyright ownership.  The ASF licenses this file
-// * to you under the Apache License, Version 2.0 (the
-// * "License"); you may not use this file except in compliance
-// * with the License.  You may obtain a copy of the License at
-// *
-// *     http://www.apache.org/licenses/LICENSE-2.0
-// *
-// * Unless required by applicable law or agreed to in writing, software
-// * distributed under the License is distributed on an "AS IS" BASIS,
-// * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// * See the License for the specific language governing permissions and
-// * limitations under the License.
-// */
-//
-//package com.leonside.dataroad.plugin.es.reader;
-//
-//import com.google.gson.Gson;
-//import com.leonside.dataroad.flink.reader.BaseItemReader;
-//import org.apache.flink.streaming.api.datastream.DataStream;
-//import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-//import org.apache.flink.types.Row;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//
-//import java.util.ArrayList;
-//import java.util.HashMap;
-//import java.util.List;
-//import java.util.Map;
-//
-///**
-// * The Reader plugin of ElasticSearch
-// *
-// * Company: www.dtstack.com
-// * @author huyifan.zju@163.com
-// */
-//public class EsReader extends BaseItemReader {
-//
-//    private static Logger LOG = LoggerFactory.getLogger(EsReader.class);
-//
-//    private String address;
-//    private String username;
-//    private String password;
-//    private String query;
-//
-//    private String[] index;
-//    private String[] type;
-//    private Integer batchSize;
-//    private Map<String,Object> clientConfig;
-//
-//    protected List<String> columnType;
-//    protected List<String> columnValue;
-//    protected List<String> columnName;
-//
-//    public EsReader(DataTransferConfig config, StreamExecutionEnvironment env) {
-//        super(config, env);
-//        ReaderConfig readerConfig = config.getJob().getContent().get(0).getReader();
-//        address = readerConfig.getParameter().getStringVal(EsConfigKeys.KEY_ADDRESS);
-//        username = readerConfig.getParameter().getStringVal(EsConfigKeys.KEY_USERNAME);
-//        password = readerConfig.getParameter().getStringVal(EsConfigKeys.KEY_PASSWORD);
-//        index = EsUtil.getStringArray(readerConfig.getParameter().getVal(EsConfigKeys.KEY_INDEX));
-//        type = EsUtil.getStringArray(readerConfig.getParameter().getVal(EsConfigKeys.KEY_TYPE));
-//        batchSize = readerConfig.getParameter().getIntVal(EsConfigKeys.KEY_BATCH_SIZE, 10);
-//
-//        clientConfig = new HashMap<>();
-//        clientConfig.put(EsConfigKeys.KEY_TIMEOUT, readerConfig.getParameter().getVal(EsConfigKeys.KEY_TIMEOUT));
-//        clientConfig.put(EsConfigKeys.KEY_PATH_PREFIX, readerConfig.getParameter().getVal(EsConfigKeys.KEY_PATH_PREFIX));
-//
-//        Object queryMap = readerConfig.getParameter().getVal(EsConfigKeys.KEY_QUERY);
-//        if(queryMap != null) {
-//            query = new Gson().toJson(queryMap);
-//        }
-//
-//        List columns = readerConfig.getParameter().getColumn();
-//        if(columns != null && columns.size() > 0) {
-//            if(columns.get(0) instanceof Map) {
-//                columnType = new ArrayList<>();
-//                columnValue = new ArrayList<>();
-//                columnName = new ArrayList<>();
-//                for(int i = 0; i < columns.size(); ++i) {
-//                    Map sm = (Map) columns.get(i);
-//                    columnType.add((String) sm.get("type"));
-//                    columnValue.add((String) sm.get("value"));
-//                    columnName.add((String) sm.get("name"));
-//                }
-//
-//                LOG.info("init column finished");
-//            } else if (!ConstantValue.STAR_SYMBOL.equals(columns.get(0)) || columns.size() != 1) {
-//                throw new IllegalArgumentException("column argument error");
-//            }
-//        } else{
-//            throw new IllegalArgumentException("column argument error");
-//        }
-//    }
-//
-//    @Override
-//    public DataStream<Row> readData() {
-//        EsInputFormatBuilder builder = new EsInputFormatBuilder();
-//        builder.setColumnNames(columnName);
-//        builder.setColumnTypes(columnType);
-//        builder.setColumnValues(columnValue);
-//        builder.setAddress(address);
-//        builder.setUsername(username);
-//        builder.setPassword(password);
-//        builder.setIndex(index);
-//        builder.setType(type);
-//        builder.setBatchSize(batchSize);
-//        builder.setClientConfig(clientConfig);
-//        builder.setQuery(query);
-//        builder.setBytes(bytes);
-//        builder.setMonitorUrls(monitorUrls);
-////        builder.setTestConfig(testConfig);
-////        builder.setLogConfig(logConfig);
-//
-//        return createInput(builder.finish());
-//    }
-//
-//}
+
+package com.leonside.dataroad.plugin.es.reader;
+
+import com.google.gson.Gson;
+import com.leonside.dataroad.common.constant.JobCommonConstant;
+import com.leonside.dataroad.common.spi.ItemReader;
+import com.leonside.dataroad.common.utils.ParameterUtils;
+import com.leonside.dataroad.flink.context.FlinkExecuteContext;
+import com.leonside.dataroad.flink.reader.BaseItemReader;
+import com.leonside.dataroad.plugin.es.EsReaderKey;
+import com.leonside.dataroad.plugin.es.EsWriterKey;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.types.Row;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * The Reader plugin of ElasticSearch
+ *
+ */
+@SuppressWarnings("uncheck")
+public class EsReader extends BaseItemReader implements ItemReader<FlinkExecuteContext, DataStream<Row>> {
+
+    private static Logger LOG = LoggerFactory.getLogger(EsReader.class);
+
+    private String address;
+    private String username;
+    private String password;
+    private String query;
+
+    private String[] index;
+    private String[] type;
+    private Integer batchSize;
+    private Map<String,Object> clientConfig;
+
+    protected List<String> columnType;
+    protected List<String> columnValue;
+    protected List<String> columnName;
+
+    @Override
+    public DataStream<Row> read(FlinkExecuteContext executeContext) throws Exception {
+        EsInputFormatBuilder builder = new EsInputFormatBuilder();
+        builder.setColumnNames(columnName)
+                .setColumnTypes(columnType)
+                .setColumnValues(columnValue)
+                .setAddress(address)
+                .setUsername(username)
+                .setPassword(password)
+                .setIndex(index)
+                .setType(type)
+                .setBatchSize(batchSize)
+                .setClientConfig(clientConfig)
+                .setQuery(query)
+                .setBytes(bytes)
+                .setMonitorUrls(monitorUrls);
+//        builder.setTestConfig(testConfig);
+//        builder.setLogConfig(logConfig);
+
+        return createInput(executeContext, builder.finish());
+    }
+
+    @Override
+    public void initialize(FlinkExecuteContext executeContext, Map<String, Object> parameter) {
+        super.initialize(executeContext, parameter);
+        address = ParameterUtils.getString(parameter,EsReaderKey.KEY_ADDRESS);
+        username = ParameterUtils.getString(parameter,EsReaderKey.KEY_USERNAME);
+        password = ParameterUtils.getString(parameter,EsReaderKey.KEY_PASSWORD);
+        index = ParameterUtils.getArrayList(parameter,EsReaderKey.KEY_INDEX).toArray(new String[]{});
+        type = ParameterUtils.getArrayList(parameter,EsReaderKey.KEY_TYPE).toArray(new String[]{});
+        batchSize = ParameterUtils.getInteger(parameter,EsReaderKey.KEY_BATCH_SIZE);
+
+        clientConfig = new HashMap<>();
+        clientConfig.put(EsReaderKey.KEY_TIMEOUT.getName(), ParameterUtils.getInteger(parameter,EsReaderKey.KEY_TIMEOUT));
+        clientConfig.put(EsReaderKey.KEY_PATH_PREFIX.getName(), ParameterUtils.getString(parameter,EsReaderKey.KEY_PATH_PREFIX));
+
+        Object queryMap = parameter.get(EsReaderKey.KEY_QUERY.getName());
+        if(queryMap != null) {
+            query = new Gson().toJson(queryMap);
+        }
+        List columns = ParameterUtils.getArrayList(parameter, EsWriterKey.KEY_COLUMN);
+        if(columns != null && columns.size() > 0) {
+            if(columns.get(0) instanceof Map) {
+                columnType = new ArrayList<>();
+                columnValue = new ArrayList<>();
+                columnName = new ArrayList<>();
+                for(int i = 0; i < columns.size(); ++i) {
+                    Map sm = (Map) columns.get(i);
+                    columnType.add((String) sm.get("type"));
+                    columnValue.add((String) sm.get("value"));
+                    columnName.add((String) sm.get("name"));
+                }
+
+                LOG.info("init column finished");
+            } else if (!JobCommonConstant.STAR_SYMBOL.equals(columns.get(0)) || columns.size() != 1) {
+                throw new IllegalArgumentException("column argument error");
+            }
+        } else{
+            throw new IllegalArgumentException("column argument error");
+        }
+    }
+}

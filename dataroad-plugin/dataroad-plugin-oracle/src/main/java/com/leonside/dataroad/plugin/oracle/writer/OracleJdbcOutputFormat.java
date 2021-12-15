@@ -3,7 +3,7 @@ package com.leonside.dataroad.plugin.oracle.writer;
 import com.leonside.dataroad.common.domain.ColumnType;
 import com.leonside.dataroad.common.utils.DateUtil;
 import com.leonside.dataroad.plugin.oracle.OracleDatabaseDialect;
-import com.leonside.dataroad.plugin.rbd.outputformat.GenericJdbcOutputFormat;
+import com.leonside.dataroad.plugin.jdbc.writer.outputformat.GenericJdbcOutputFormat;
 import org.apache.flink.types.Row;
 
 import java.sql.*;

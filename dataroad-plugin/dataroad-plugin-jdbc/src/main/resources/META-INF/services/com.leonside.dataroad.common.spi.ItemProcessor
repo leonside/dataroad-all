@@ -1,0 +1,1 @@
+sqlTransformer=com.leonside.dataroad.plugin.jdbc.sql.SqlTransformerProcessor

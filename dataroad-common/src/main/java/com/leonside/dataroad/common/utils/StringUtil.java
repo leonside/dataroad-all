@@ -20,6 +20,7 @@ package com.leonside.dataroad.common.utils;
 
 import com.leonside.dataroad.common.constant.JobCommonConstant;
 import com.leonside.dataroad.common.domain.ColumnType;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 
@@ -75,13 +76,15 @@ public class StringUtil {
         return str;
     }
 
-    public static Object string2col(String str, String type, SimpleDateFormat customTimeFormat) {
-        if(str == null || str.length() == 0 || type == null){
-            return str;
+    public static Object object2col(Object obj, String type, SimpleDateFormat customTimeFormat) {
+
+        if(obj == null || type == null){
+            return obj;
         }
 
         ColumnType columnType = ColumnType.getType(type.toUpperCase());
         Object ret;
+        String str = obj.toString();
         switch(columnType) {
             case TINYINT:
                 ret = Byte.valueOf(str.trim());
@@ -116,11 +119,11 @@ public class StringUtil {
                 ret = Boolean.valueOf(str.trim().toLowerCase());
                 break;
             case DATE:
-                ret = DateUtil.columnToDate(str,customTimeFormat);
+                ret = DateUtil.columnToDate(obj,customTimeFormat);
                 break;
             case TIMESTAMP:
             case DATETIME:
-                ret = DateUtil.columnToTimestamp(str,customTimeFormat);
+                ret = DateUtil.columnToTimestamp(obj,customTimeFormat);
                 break;
             default:
                 ret = str;
@@ -128,6 +131,60 @@ public class StringUtil {
 
         return ret;
     }
+
+//    public static Object string2col(String str, String type, SimpleDateFormat customTimeFormat) {
+//        if(str == null || str.length() == 0 || type == null){
+//            return str;
+//        }
+//
+//        ColumnType columnType = ColumnType.getType(type.toUpperCase());
+//        Object ret;
+//        switch(columnType) {
+//            case TINYINT:
+//                ret = Byte.valueOf(str.trim());
+//                break;
+//            case SMALLINT:
+//                ret = Short.valueOf(str.trim());
+//                break;
+//            case INT:
+//                ret = Integer.valueOf(str.trim());
+//                break;
+//            case MEDIUMINT:
+//            case BIGINT:
+//                ret = Long.valueOf(str.trim());
+//                break;
+//            case FLOAT:
+//                ret = Float.valueOf(str.trim());
+//                break;
+//            case DOUBLE:
+//                ret = Double.valueOf(str.trim());
+//                break;
+//            case STRING:
+//            case VARCHAR:
+//            case CHAR:
+//                if(customTimeFormat != null){
+//                    ret = DateUtil.columnToDate(str,customTimeFormat);
+//                    ret = DateUtil.timestampToString((Date)ret);
+//                } else {
+//                    ret = str;
+//                }
+//                break;
+//            case BOOLEAN:
+//                ret = Boolean.valueOf(str.trim().toLowerCase());
+//                break;
+//            case DATE:
+//                ret = DateUtil.columnToDate(str,customTimeFormat);
+//                break;
+//            case TIMESTAMP:
+//            case DATETIME:
+//                ret = DateUtil.columnToTimestamp(str,customTimeFormat);
+//                break;
+//            default:
+//                ret = str;
+//        }
+//
+//        return ret;
+//    }
 
     public static String col2string(Object column, String type) {
         if(column == null){

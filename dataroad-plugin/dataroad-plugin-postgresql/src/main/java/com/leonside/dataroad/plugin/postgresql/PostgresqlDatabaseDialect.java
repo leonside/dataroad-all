@@ -1,7 +1,8 @@
 package com.leonside.dataroad.plugin.postgresql;
 
 import com.leonside.dataroad.common.enums.DatabaseType;
-import com.leonside.dataroad.plugin.rdb.BaseDatabaseDialect;
+import com.leonside.dataroad.plugin.jdbc.BaseDatabaseDialect;
+import com.leonside.dataroad.flink.utils.RawTypeConverter;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
@@ -30,6 +31,11 @@ public class PostgresqlDatabaseDialect extends BaseDatabaseDialect {
     @Override
     public String quoteValue(String value, String column) {
         return String.format("'%s' as %s",value,column);
+    }
+
+    @Override
+    public RawTypeConverter getRawTypeConverter() {
+        return PostgresqlRawTypeConverter::apply;
     }
 
     @Override

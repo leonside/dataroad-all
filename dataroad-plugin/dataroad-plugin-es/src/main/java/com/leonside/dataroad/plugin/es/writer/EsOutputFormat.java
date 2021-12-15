@@ -92,15 +92,8 @@ public class EsOutputFormat extends GenericRichOutputFormat {
 
     private void processFailResponse(BulkResponse response){
         BulkItemResponse[] itemResponses = response.getItems();
-        WriteRecordException exception;
         for (int i = 0; i < itemResponses.length; i++) {
             if(itemResponses[i].isFailed()){
-//                if (dirtyDataManager != null){
-//                    exception = new WriteRecordException(itemResponses[i].getFailureMessage()
-//                            ,itemResponses[i].getFailure().getCause());
-//                    dirtyDataManager.writeData(rows.get(i), exception);
-//                }
-
                 if (errCounter != null) {
                     errCounter.add(1);
                 }
@@ -124,9 +117,9 @@ public class EsOutputFormat extends GenericRichOutputFormat {
         int i = 0;
         try {
             for(; i < idColumnNames.size(); ++i) {
-                String Name = idColumnNames.get(i);
+                String name = idColumnNames.get(i);
                 String type =  idColumnTypes.get(i);
-                sb.append(StringUtil.col2string(record.getField(Name), type));
+                sb.append(StringUtil.col2string(record.getField(name), type));
             }
         } catch(Exception ex) {
             ex.printStackTrace();

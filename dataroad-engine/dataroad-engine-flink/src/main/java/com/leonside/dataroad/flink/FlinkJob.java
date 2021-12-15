@@ -8,7 +8,6 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 /**
  * @author leon
  */
-//todo  SPI扩展实现
 public class FlinkJob implements Job {
 
     private SimpleJobFlow simpleJobFlow;
@@ -21,6 +20,7 @@ public class FlinkJob implements Job {
         this.simpleJobFlow = startJobFlow;
         this.flinkExecuteContext = context;
         this.environment = context.getEnvironment();
+        flinkExecuteContext.setStartJobFlow(startJobFlow);
     }
 
     @Override

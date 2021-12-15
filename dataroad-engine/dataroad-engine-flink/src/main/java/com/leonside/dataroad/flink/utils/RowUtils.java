@@ -1,10 +1,17 @@
 package com.leonside.dataroad.flink.utils;
 
+import com.leonside.dataroad.common.domain.MetaColumn;
 import com.leonside.dataroad.common.exception.JobConfigException;
 import com.leonside.dataroad.common.utils.Asserts;
 import com.leonside.dataroad.common.utils.StringUtil;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.flink.api.common.io.InputFormat;
+import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.types.Row;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +19,26 @@ import java.util.Map;
  * @author leon
  */
 public class RowUtils {
+
+
+
+    public static String getStringField(Row row, String key){
+        Object field = row.getField(key);
+        return field == null ? "" : field.toString();
+    }
+
+    public static Row combineRowWithNames(Row row,  Row mergeRow, String... ignoreColumns){
+        if(mergeRow == null){
+            return row;
+        }
+
+        mergeRow.getFieldNames(false).stream().forEach(fieldName->{
+            if(ignoreColumns == null || !ArrayUtils.contains(ignoreColumns, fieldName)){
+                row.setField(fieldName, mergeRow.getField(fieldName));
+            }
+        });
+        return row;
+    }
 
     public static Row toRowWithNames(Map<String,Object> maps){
         Asserts.notEmpty(maps, "Map can not be null.");
@@ -49,4 +76,5 @@ public class RowUtils {
 
         return sb.toString();
     }
+
 }

@@ -2,13 +2,14 @@ package com.leonside.dataroad.flink.inputformat;
 
 import com.google.common.base.Preconditions;
 import com.leonside.dataroad.common.context.RestoreConfig;
+import com.leonside.dataroad.core.component.Validation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * @author leon
  */
-public abstract class GenericRichInputFormatBuilder<T extends GenericRichInputFormat, R extends GenericRichInputFormatBuilder> {
+public abstract class GenericRichInputFormatBuilder<T extends GenericRichInputFormat, R extends GenericRichInputFormatBuilder> implements Validation {
 
     protected final Logger LOG = LoggerFactory.getLogger(getClass());
 
@@ -29,15 +30,11 @@ public abstract class GenericRichInputFormatBuilder<T extends GenericRichInputFo
         return (R) this;
     }
 
-    /**
-     * Check the value of parameters
-     */
-    protected abstract void checkFormat();
 
     public T finish() {
         Preconditions.checkNotNull(format);
 
-        checkFormat();
+        validate();
 
         return format;
     }

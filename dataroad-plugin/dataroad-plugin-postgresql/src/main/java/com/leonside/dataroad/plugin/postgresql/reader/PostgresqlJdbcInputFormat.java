@@ -1,7 +1,7 @@
 package com.leonside.dataroad.plugin.postgresql.reader;
 
-import com.leonside.dataroad.plugin.rdb.inputformat.GenericJdbcInputFormat;
-import com.leonside.dataroad.plugin.rdb.utils.DbUtil;
+import com.leonside.dataroad.plugin.jdbc.reader.inputformat.GenericJdbcInputFormat;
+import com.leonside.dataroad.plugin.jdbc.utils.DbUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.flink.types.Row;
 

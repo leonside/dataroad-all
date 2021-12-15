@@ -40,7 +40,7 @@
               {"name": "idcard","type": "string"},
               {"name": "phone","type": "string"},
               {"name": "code","type": "int"},
-              {"name": "create_time","type": "date"},
+              {"name": "create_time","type": "timestamp"},
               {"name": "area_code","type": "string"}
             ]
           }

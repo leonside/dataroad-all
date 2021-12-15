@@ -23,8 +23,17 @@ import com.leonside.dataroad.common.domain.MetaColumn;
 import com.leonside.dataroad.core.component.ComponentInitialization;
 import com.leonside.dataroad.core.component.ComponentNameSupport;
 import com.leonside.dataroad.flink.context.FlinkExecuteContext;
+import com.leonside.dataroad.flink.inputformat.GenericInputFormatSourceFunction;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.flink.api.common.io.InputFormat;
+import org.apache.flink.api.common.typeinfo.TypeInfo;
+import org.apache.flink.api.common.typeinfo.TypeInformation;
+import org.apache.flink.api.java.typeutils.TypeExtractor;
+import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.types.Row;
+import org.apache.flink.util.Preconditions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,6 +101,25 @@ public abstract class BaseItemReader extends ComponentNameSupport implements Com
             }
         }
     }
+
+    protected DataStream<Row> createInput(FlinkExecuteContext executeContext, InputFormat inputFormat) {
+        return createInput(executeContext,inputFormat,null, this.getClass().getSimpleName().toLowerCase());
+    }
+
+    protected DataStream<Row> createInput(FlinkExecuteContext executeContext, InputFormat inputFormat, TypeInformation typeInfo) {
+        return createInput(executeContext,inputFormat,typeInfo,this.getClass().getSimpleName().toLowerCase());
+    }
+
+
+    private DataStream<Row> createInput(FlinkExecuteContext executeContext,InputFormat inputFormat,TypeInformation typeInformation, String sourceName) {
+        Preconditions.checkNotNull(sourceName);
+        Preconditions.checkNotNull(inputFormat);
+
+        TypeInformation typeInfo = typeInformation != null ? typeInformation : TypeExtractor.getInputFormatTypes(inputFormat);
+        GenericInputFormatSourceFunction function = new GenericInputFormatSourceFunction(inputFormat, typeInfo);
+        return env.addSource(function, sourceName, typeInfo);
+    }
+
 
 
 }

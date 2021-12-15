@@ -7,11 +7,8 @@ import java.util.Map;
 /**
  * @author leon
  */
-public interface ComponentInitialization<T extends ExecuteContext> {
+public interface ComponentInitialization<T extends ExecuteContext> extends Validation {
 
     void initialize(T executeContext, Map<String, Object> parameter);
 
-    default boolean validate(){
-        return true;
-    }
 }

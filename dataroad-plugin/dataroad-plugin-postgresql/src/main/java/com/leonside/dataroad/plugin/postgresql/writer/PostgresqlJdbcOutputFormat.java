@@ -1,11 +1,8 @@
 package com.leonside.dataroad.plugin.postgresql.writer;
 
-import com.leonside.dataroad.common.domain.ColumnType;
 import com.leonside.dataroad.common.enums.WriteMode;
 import com.leonside.dataroad.common.exception.WriteRecordException;
-import com.leonside.dataroad.common.utils.DateUtil;
-import com.leonside.dataroad.plugin.postgresql.PostgresqlDatabaseDialect;
-import com.leonside.dataroad.plugin.rbd.outputformat.GenericJdbcOutputFormat;
+import com.leonside.dataroad.plugin.jdbc.writer.outputformat.GenericJdbcOutputFormat;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.types.Row;
 import org.postgresql.copy.CopyManager;
@@ -14,11 +11,6 @@ import org.postgresql.core.BaseConnection;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author leon

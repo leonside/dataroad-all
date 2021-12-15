@@ -5,14 +5,18 @@ import com.alibaba.ververica.cdc.debezium.DebeziumDeserializationSchema;
 import com.alibaba.ververica.cdc.debezium.DebeziumSourceFunction;
 import com.leonside.dataroad.common.context.JobSetting;
 import com.leonside.dataroad.common.spi.ItemReader;
-import com.leonside.dataroad.common.utils.MapParameterUtils;
+import com.leonside.dataroad.common.utils.ParameterUtils;
 import com.leonside.dataroad.core.component.ComponentInitialization;
 import com.leonside.dataroad.core.component.ComponentNameSupport;
 import com.leonside.dataroad.flink.context.FlinkExecuteContext;
 import io.debezium.data.Envelope;
+import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
+import org.apache.flink.api.common.typeinfo.Types;
+import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
+import org.apache.flink.streaming.api.operators.StreamFlatMap;
 import org.apache.flink.types.Row;
 import org.apache.flink.types.RowKind;
 import org.apache.flink.util.Collector;
@@ -58,12 +62,12 @@ public class MysqlStreamJdbcReader extends ComponentNameSupport implements Compo
     @Override
     public void initialize(FlinkExecuteContext executeContext, Map<String, Object> parameter) {
         this.jobSetting = executeContext.getJobSetting();
-        hostname = MapParameterUtils.getString(parameter, MysqlStreamReaderKey.hostname.name());
-        port = MapParameterUtils.getInteger(parameter, MysqlStreamReaderKey.port.name());
-        schema = MapParameterUtils.getString(parameter, MysqlStreamReaderKey.schema.name());
-        username = MapParameterUtils.getString(parameter, MysqlStreamReaderKey.username.name());
-        password = MapParameterUtils.getString(parameter, MysqlStreamReaderKey.password.name());
-        table = MapParameterUtils.getString(parameter, MysqlStreamReaderKey.table.name());
+        hostname = ParameterUtils.getString(parameter, MysqlStreamReaderKey.hostname);
+        port = ParameterUtils.getInteger(parameter, MysqlStreamReaderKey.port);
+        schema = ParameterUtils.getString(parameter, MysqlStreamReaderKey.schema);
+        username = ParameterUtils.getString(parameter, MysqlStreamReaderKey.username);
+        password = ParameterUtils.getString(parameter, MysqlStreamReaderKey.password);
+        table = ParameterUtils.getString(parameter, MysqlStreamReaderKey.table);
     }
 
     public static class JsonDebeziumDeserializationSchema implements DebeziumDeserializationSchema<Row> {

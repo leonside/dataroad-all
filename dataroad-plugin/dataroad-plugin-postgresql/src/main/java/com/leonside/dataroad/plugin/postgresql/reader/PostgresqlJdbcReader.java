@@ -1,14 +1,12 @@
 package com.leonside.dataroad.plugin.postgresql.reader;
 
 import com.leonside.dataroad.flink.context.FlinkExecuteContext;
+import com.leonside.dataroad.plugin.jdbc.DatabaseDialect;
+import com.leonside.dataroad.plugin.jdbc.reader.GenericJdbcReader;
 import com.leonside.dataroad.plugin.postgresql.PostgresqlDatabaseDialect;
 import com.leonside.dataroad.plugin.postgresql.PostgresqlTypeConverter;
-import com.leonside.dataroad.plugin.rdb.DatabaseDialect;
-import com.leonside.dataroad.plugin.rdb.inputformat.GenericJdbcInputFormat;
-import com.leonside.dataroad.plugin.rdb.inputformat.GenericJdbcInputFormatBuilder;
-import com.leonside.dataroad.plugin.rdb.reader.GenericJdbcReader;
-import com.leonside.dataroad.plugin.rdb.support.QuerySqlBuilder;
-import org.apache.flink.api.common.io.InputFormat;
+import com.leonside.dataroad.plugin.jdbc.reader.inputformat.GenericJdbcInputFormat;
+import com.leonside.dataroad.plugin.jdbc.reader.inputformat.GenericJdbcInputFormatBuilder;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.types.Row;
 

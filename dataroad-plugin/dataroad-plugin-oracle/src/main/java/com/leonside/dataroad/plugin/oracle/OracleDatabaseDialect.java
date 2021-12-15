@@ -1,7 +1,9 @@
 package com.leonside.dataroad.plugin.oracle;
 
 import com.leonside.dataroad.common.enums.DatabaseType;
-import com.leonside.dataroad.plugin.rdb.BaseDatabaseDialect;
+import com.leonside.dataroad.plugin.jdbc.BaseDatabaseDialect;
+import com.leonside.dataroad.flink.utils.RawTypeConverter;
+import com.leonside.dataroad.plugin.oracle.converter.OracleRawTypeConverter;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
@@ -28,6 +30,11 @@ public class OracleDatabaseDialect extends BaseDatabaseDialect {
         return column;
     }
 
+
+    @Override
+    public RawTypeConverter getRawTypeConverter() {
+        return OracleRawTypeConverter::apply;
+    }
 
     @Override
     public DatabaseType getDatabaseType() {

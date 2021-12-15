@@ -216,7 +216,7 @@ public abstract class GenericRichInputFormat extends RichInputFormat<Row, InputS
         }
         Row internalRow = doNextRecord(row);
         if(internalRow != null){
-            internalRow = setChannelInformation(internalRow);
+//            internalRow = setChannelInformation(internalRow);
 
             updateDuration();
             if(numReadCounter !=null ){
@@ -230,14 +230,14 @@ public abstract class GenericRichInputFormat extends RichInputFormat<Row, InputS
         return internalRow;
     }
 
-    private Row setChannelInformation(Row internalRow){
-        Row rowWithChannel = Row.withNames(internalRow.getKind());//new Row(internalRow.getArity() + 1);
-        internalRow.getFieldNames(true).forEach(it->{
-            rowWithChannel.setField(it, internalRow.getField(it));
-        });
-        rowWithChannel.setField("indexOfSubTask", indexOfSubTask);
-        return rowWithChannel;
-    }
+//    private Row setChannelInformation(Row internalRow){
+//        Row rowWithChannel = Row.withNames(internalRow.getKind());//new Row(internalRow.getArity() + 1);
+//        internalRow.getFieldNames(true).forEach(it->{
+//            rowWithChannel.setField(it, internalRow.getField(it));
+//        });
+//        rowWithChannel.setField("indexOfSubTask", indexOfSubTask);
+//        return rowWithChannel;
+//    }
 
     private void updateDuration(){
         if(durationCounter !=null ){
