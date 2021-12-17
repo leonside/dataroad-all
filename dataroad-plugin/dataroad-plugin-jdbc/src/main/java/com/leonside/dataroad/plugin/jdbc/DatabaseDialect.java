@@ -179,17 +179,20 @@ public interface DatabaseDialect {
 
     String getUpdateStatementByKey(List<String> column, String primaryKey, String table);
 
-    /** Get select fields statement by condition fields. Default use SELECT. */
     default String getSelectFromStatement(
-            String schema, String tableName, String[] selectFields, String[] conditionFields) {
+            String schema, String tableName, String[] selectFields, String whereClause, String[] conditionFields) {
         String selectExpressions =
                 Arrays.stream(selectFields)
                         .map(this::quoteIdentifier)
                         .collect(Collectors.joining(", "));
-        String fieldExpressions =
-                Arrays.stream(conditionFields)
-                        .map(f -> format("%s = ?", quoteIdentifier(f)))
-                        .collect(Collectors.joining(" AND "));
+
+        List<String> fieldExpressionCollector = Arrays.stream(conditionFields)
+                .map(f -> format("%s = ?", quoteIdentifier(f)))
+                .collect(Collectors.toList());
+        if(StringUtils.isNotEmpty(whereClause)){
+            fieldExpressionCollector.add(whereClause);
+        }
+        String fieldExpressions = StringUtils.join(fieldExpressionCollector, " AND ");
         return "SELECT "
                 + selectExpressions
                 + " FROM "
@@ -197,8 +200,15 @@ public interface DatabaseDialect {
                 + (conditionFields.length > 0 ? " WHERE " + fieldExpressions : "");
     }
 
+    /** Get select fields statement by condition fields. Default use SELECT. */
+    default String getSelectFromStatement(
+            String schema, String tableName, String[] selectFields, String[] conditionFields) {
+       return getSelectFromStatement(schema, tableName, selectFields, null, conditionFields);
+    }
+
     default String quoteIdentifier(String identifier) {
-        return "\"" + identifier + "\"";
+//        return "\"" + identifier + "\"";
+        return identifier;
     }
     /** build table-info with schema-info and table-name, like 'schema-info.table-name' */
     default String buildTableInfoWithSchema(String schema, String tableName) {

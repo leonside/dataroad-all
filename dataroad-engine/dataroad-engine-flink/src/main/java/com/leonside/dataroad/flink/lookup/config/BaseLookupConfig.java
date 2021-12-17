@@ -13,23 +13,27 @@ import java.util.Map;
 @Data
 public class BaseLookupConfig implements Validation , Serializable {
 
-    private List<Map<String,Object>> directData;
+    public List<Map<String,Object>> directData;
 
-    private Map<String,String> joinColumns;
+    public Map<String,String> joinColumns;
 
-    private String[] columns;
+    public String[] columns;
 
-    private int cacheMaxrows = -1;
-    private int cacheTtl = -1;
+    public int cacheMaxrows;
+    public int cacheTtl;
     /**
      * 包含 all、lru
      */
-    private String cacheType;
+    public String cacheType;
 //    private int cachePeriod ;
 
 
     @Override
     public boolean validate() {
         return Validation.super.validate();
+    }
+
+    public enum CacheType{
+        lru, all,none
     }
 }

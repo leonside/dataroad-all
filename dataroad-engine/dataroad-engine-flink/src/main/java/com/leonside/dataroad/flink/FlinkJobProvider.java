@@ -75,7 +75,7 @@ public class FlinkJobProvider implements JobEngineProvider<FlinkExecuteContext> 
 
         //设置检查点
         if(flinkExecuteContext.getEnvironment() instanceof LocalStreamEnvironment) {
-            if(StringUtils.isNotEmpty(executeContext.getJobSetting().getRestore().getSavepointRestorePath())){
+            if(executeContext.getJobSetting().getRestore().isRestore() && StringUtils.isNotEmpty(executeContext.getJobSetting().getRestore().getSavepointRestorePath())){
                 ((LocalStreamEnvironment) flinkExecuteContext.getEnvironment()).setSettings(SavepointRestoreSettings.forPath(executeContext.getJobSetting().getRestore().getSavepointRestorePath()));
             }
         }

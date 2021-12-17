@@ -36,7 +36,8 @@ public class SqlTransformerProcessor extends ComponentNameSupport implements Com
 
     @Override
     public DataStream<Row> process(FlinkExecuteContext executeContext, DataStream<Row> dataStream) {
-        StreamTableEnvironment streamTableEnvironment = StreamTableEnvironment.create(executeContext.getEnvironment());
+
+        StreamTableEnvironment streamTableEnvironment = executeContext.getOrCreateStreamTableEnvironment();
 
         TypeInformation rowTypeInfo = createRowTypeInfo(executeContext);
 

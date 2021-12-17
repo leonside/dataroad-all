@@ -4,6 +4,7 @@ import com.leonside.dataroad.common.context.ExecuteContext;
 import com.leonside.dataroad.common.domain.MetaColumn;
 import com.leonside.dataroad.core.flow.JobFlow;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
 import java.util.List;
 
@@ -13,6 +14,8 @@ import java.util.List;
 public class FlinkExecuteContext extends ExecuteContext {
 
     private transient StreamExecutionEnvironment environment;
+
+    private transient StreamTableEnvironment streamTableEnvironment;
 
     private JobFlow startJobFlow;
 
@@ -40,5 +43,12 @@ public class FlinkExecuteContext extends ExecuteContext {
 
     public void setEnvironment(StreamExecutionEnvironment environment) {
         this.environment = environment;
+    }
+
+    public StreamTableEnvironment getOrCreateStreamTableEnvironment() {
+        if(streamTableEnvironment == null){
+            streamTableEnvironment = StreamTableEnvironment.create(getEnvironment());
+        }
+        return streamTableEnvironment;
     }
 }
