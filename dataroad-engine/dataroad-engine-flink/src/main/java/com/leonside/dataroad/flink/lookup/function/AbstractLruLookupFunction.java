@@ -89,9 +89,8 @@ public abstract class AbstractLruLookupFunction extends RichAsyncFunction<Row, R
 
         String keyValues = buildCacheKey(row,keyColumns);
         Row fetchRow = cache.getIfPresent(keyValues);
-        System.out.println("+++++++++++cacheKey:"+ keyValues + ",cacheSize:" +cache.size());
         if(fetchRow != null){
-            System.out.println("+++++++++++cacheKey match:");
+            logger.debug("cache match, cache key[{}]", keyValues);
             resultFuture.complete(Lists.newArrayList(RowUtils.combineRowWithNames(row, fetchRow, valueColumns)));
         }else{
             doAsyncInvoke(row, resultFuture);

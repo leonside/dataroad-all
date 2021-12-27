@@ -29,31 +29,28 @@
             "requestAccumulatorInterval": 2
           }
         },
-        "jdbcLookup": {
-          "type": "processor",
-          "pluginName": "mysqlLookup",
+        "mywindow": {
+          "type": "agg",
+          "pluginName": "countWindowAgg",
           "parameter": {
-            "cacheType": "lru",
-            "username": "duceap",
-            "password": "123",
-            "jdbcUrl": "jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai",
-            "table": "dm_sys_code",
-            "where": "code_id='dm_isenabled'",
-            "joinColumns": {"sex": "code"},
-            "columns": ["code","value"]
+            "windowSize": 5,
+            "keyby": ["idcard"],
+            "agg": [{
+              "age": ["stats"],
+              "sex": ["max"]
+            }]
           }
         },
-
         "mywriter": {
           "type": "writer",
           "pluginName": "esWriter",
           "parameter": {
             "address": "bigdata33:9200",
-            "index": "student1",
+            "index": "student1_agg",
             "username": "",
             "password": "",
             "type": "_doc",
-            "bulkAction": 2,
+            "bulkAction": 1,
             "timeout": 1000,
             "idColumn": [
               {
@@ -62,43 +59,23 @@
               }
             ],
             "column": [
-              {"name": "id","type": "int"},
-              {"name": "name","type": "string"},
-              {"name": "sex","type": "int"},
-              {"name": "value","type": "string"},
-              {"name": "age","type": "int"},
-              {"name": "address","type": "string"},
               {"name": "idcard","type": "string"},
-              {"name": "phone","type": "string"},
-              {"name": "code","type": "int"},
-              {"name": "create_time","type": "timestamp"},
-              {"name": "area_code","type": "string"}
+              {"name": "aggBy","type": "string"},
+              {"name": "max","type": "int"},
+              {"name": "min","type": "int"},
+              {"name": "avg","type": "double"},
+              {"name": "count","type": "int"},
+              {"name": "sum","type": "int"},
+              {"name": "dumpTime","type": "timestamp"},
+              {"name": "beginTime","type": "timestamp"},
+              {"name": "endTime","type": "timestamp"}
             ]
           }
         }
       }
     ],
     "setting":{
-      "monitorUrls": "",
-      "speed": {
-        "channel": 1,
-        "bytes": 0
-      },
-      "errorLimit": {
-        "record": 1
-      },
-      "restore": {
-        "isRestore": false,
-        "savepointPath": "file:///D:\\conf\\checkpoint",
-        "savepointRestorePath": "D:\\conf\\checkpoint\\b75a0f3ef253b34d2f2e63c8ad3f7c04\\chk-13",
-        "savepointInterval": 10000
-      },
-      "log" : {
-        "isLogger": false,
-        "level" : "debug",
-        "path" : "",
-        "pattern":""
-      }
+      "name": "myJob"
     }
   }
 }

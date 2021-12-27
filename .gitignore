@@ -1,0 +1,11 @@
+# Project exclude paths
+/dataroad/target/
+/dataroad-common/target/
+/dataroad-config/target/
+/dataroad-core/target/
+/dataroad-engine/dataroad-engine-flink/target/
+/dataroad-plugin/dataroad-plugin-mysql/dataroad-plugin-mysql-reader/target/
+/dataroad-plugin/dataroad-plugin-mysql/dataroad-plugin-mysql-writer/target/
+/dataroad-plugin/dataroad-plugin-rdb/dataroad-plugin-rdb-core/target/
+/dataroad-plugin/dataroad-plugin-rdb/dataroad-plugin-rdb-reader/target/
+/dataroad-plugin/dataroad-plugin-rdb/dataroad-plugin-rdb-writer/target/

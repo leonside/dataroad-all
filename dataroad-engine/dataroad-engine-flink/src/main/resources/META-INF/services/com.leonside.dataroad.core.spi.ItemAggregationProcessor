@@ -1,4 +1,4 @@
 aggerationItemProcessor=com.leonside.dataroad.flink.processor.aggeration.AggerationItemProcessor
 countWindowAgg=com.leonside.dataroad.flink.processor.aggeration.CountWindowAggerationItemProcessor
 sldingWindowAgg=com.leonside.dataroad.flink.processor.aggeration.SlidingWindowAggerationItemProcessor
-tumblingWindowAgg=com.leonside.dataroad.flink.processor.aggeration.TumblinggWindowAggerationItemProcessor
+tumblingWindowAgg=com.leonside.dataroad.flink.processor.aggeration.TumblingWindowAggerationItemProcessor

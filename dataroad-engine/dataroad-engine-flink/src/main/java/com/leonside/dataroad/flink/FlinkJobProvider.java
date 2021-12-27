@@ -42,10 +42,13 @@ public class FlinkJobProvider implements JobEngineProvider<FlinkExecuteContext> 
 
         StreamExecutionEnvironment environment = buildStreamExecutionEnvironment(executeContext);
 
+
         if(jobSetting.getRestore().isRestore()){
             //// TODO: 2021/12/3
             if(jobSetting.getRestore().getSavepointInterval() != null){
                 environment.enableCheckpointing(jobSetting.getRestore().getSavepointInterval());
+            }else {
+                environment.enableCheckpointing();
             }
             environment.getCheckpointConfig().enableExternalizedCheckpoints(CheckpointConfig.ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION);
             environment.setStateBackend(new FsStateBackend(jobSetting.getRestore().getSavepointPath()));

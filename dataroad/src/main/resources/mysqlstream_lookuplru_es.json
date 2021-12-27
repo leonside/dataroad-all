@@ -4,29 +4,14 @@
       {
         "mysqlreader": {
           "type": "reader",
-          "pluginName": "mysqlReader",
+          "pluginName": "mysqlStreamReader",
           "parameter": {
-            "username": "duceap",
-            "password": "123",
-            "jdbcUrl": "jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai",
+            "username": "root",
+            "password": "dragon@1qaz!QAZ",
+            "hostname": "10.254.10.31",
+            "port": 3306,
             "table": "student",
-            "column": [
-              {"name": "id","type": "int"},
-              {"name": "name","type": "varchar"},
-              {"name": "sex","type": "int"},
-              {"name": "age","type": "int"},
-              {"name": "address","type": "varchar"},
-              {"name": "idcard","type": "varchar"},
-              {"name": "phone","type": "varchar"},
-              {"name": "code","type": "int"},
-              {"name": "create_time","type": "datetime"},
-              {"name": "area_code","type": "varchar"}
-            ],
-            "customSql": "",
-            "splitPk": "id",
-            "queryTimeOut": 1000,
-            "fetchSize": 1,
-            "requestAccumulatorInterval": 2
+            "schema": "duceap_job_demo"
           }
         },
         "jdbcLookup": {
@@ -38,12 +23,11 @@
             "password": "123",
             "jdbcUrl": "jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai",
             "table": "dm_sys_code",
-            "where": "code_id='dm_isenabled'",
+            "where": "code_id='dm_sex'",
             "joinColumns": {"sex": "code"},
             "columns": ["code","value"]
           }
         },
-
         "mywriter": {
           "type": "writer",
           "pluginName": "esWriter",
@@ -65,7 +49,7 @@
               {"name": "id","type": "int"},
               {"name": "name","type": "string"},
               {"name": "sex","type": "int"},
-              {"name": "value","type": "string"},
+              {"name": "sex_value","type": "string"},
               {"name": "age","type": "int"},
               {"name": "address","type": "string"},
               {"name": "idcard","type": "string"},

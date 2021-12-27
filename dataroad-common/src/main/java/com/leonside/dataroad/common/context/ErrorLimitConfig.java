@@ -3,9 +3,6 @@ package com.leonside.dataroad.common.context;
 
 public class ErrorLimitConfig  {
 
-//    public static final String KEY_ERROR_RECORD_LIMIT = "record";
-//    public static final String KEY_ERROR_PERCENTAGE_LIMIT = "percentage";
-
     public static final int DEFAULT_ERROR_RECORD_LIMIT = 0;
     public static final double DEFAULT_ERROR_PERCENTAGE_LIMIT = 0.0;
 

@@ -49,9 +49,13 @@ public abstract class Aggeration<IN,OUT,T extends Aggeration> implements Seriali
     protected Map<String,Object> getBasicRow() {
         Map<String,Object> basicMap = new LinkedHashMap<>();
         basicMap.put(JobConfigKeyConstants.AGGERATION_KEY_AGGFIELD, getAggField());
-        basicMap.put(JobConfigKeyConstants.AGGERATION_KEY_BEGINTIME, getBeginTime());
-        basicMap.put(JobConfigKeyConstants.AGGERATION_KEY_ENDTIME, getEndTime());
         basicMap.put(JobConfigKeyConstants.AGGERATION_KEY_DUMPTIME, getDumpTime());
+        if(getBeginTime() != null){
+            basicMap.put(JobConfigKeyConstants.AGGERATION_KEY_BEGINTIME, getBeginTime());
+        }
+        if(getEndTime() != null){
+            basicMap.put(JobConfigKeyConstants.AGGERATION_KEY_ENDTIME, getEndTime());
+        }
         return basicMap;
     }
 

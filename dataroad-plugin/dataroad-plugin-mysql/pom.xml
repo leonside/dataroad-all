@@ -40,10 +40,11 @@
         </dependency>
 
 
+        <!-- 字段在数据库中为timestemp类型,当使用的数据库驱动包版本较新时(这里使用的是8.0.23)返回的类型为LocalDateTime- -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.23</version>
+            <version>8.0.19</version>
         </dependency>
 
     </dependencies>
