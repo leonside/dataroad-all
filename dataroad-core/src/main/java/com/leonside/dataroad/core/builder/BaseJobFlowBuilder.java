@@ -4,6 +4,9 @@ package com.leonside.dataroad.core.builder;
 import com.leonside.dataroad.common.spi.ItemProcessor;
 import com.leonside.dataroad.common.spi.ItemWriter;
 import com.leonside.dataroad.common.utils.Asserts;
+import com.leonside.dataroad.core.aggregations.config.CountWindowConfig;
+import com.leonside.dataroad.core.aggregations.config.SlidingWindowConfig;
+import com.leonside.dataroad.core.aggregations.config.TumblingWindowConfig;
 import com.leonside.dataroad.core.flow.JobFlow;
 import com.leonside.dataroad.core.flow.SimpleJobFlow;
 
@@ -24,27 +27,39 @@ public abstract class BaseJobFlowBuilder<T extends BaseJobFlowBuilder> {
     }
 
     public AggerationBuilder<T> countWindowByKey(String[] keys, int size){
-        return (AggerationBuilder<T>) AggerationBuilder.newInstance((JobFlowBuilder)this,new AggerationBuilder.CountWindow(size, keys));
+        CountWindowConfig countWindowConfig = new CountWindowConfig();
+        countWindowConfig.setKeyBy(keys);
+        countWindowConfig.setWindowSize(size);
+        return (AggerationBuilder<T>) AggerationBuilder.newInstance((JobFlowBuilder)this, countWindowConfig);
     }
     //滚动窗口
     public AggerationBuilder<T> tumblingWindowByKey(String[] keys, Time size){
-        return AggerationBuilder.newInstance((T)this,new AggerationBuilder.TumblingWindow(size, keys));
+        TumblingWindowConfig tumblingWindowConfig = new TumblingWindowConfig();
+        tumblingWindowConfig.setKeyBy(keys);
+        tumblingWindowConfig.setTimeUnit(size.getUnit());
+        tumblingWindowConfig.setTimeSize(size.getSize());
+        return AggerationBuilder.newInstance((T)this,tumblingWindowConfig);
     }
     //滑动窗口
     public AggerationBuilder<T> slidingWindowByKey(String[] keys, Time size, Time slide){
-        return AggerationBuilder.newInstance((T)this,new AggerationBuilder.SlidingWindow(size,slide, keys));
+        SlidingWindowConfig slidingWindowConfig = new SlidingWindowConfig();
+        slidingWindowConfig.setKeyBy(keys);
+        slidingWindowConfig.setTimeSize(size.getSize());
+        slidingWindowConfig.setTimeUnit(size.getUnit());
+        slidingWindowConfig.setSlideSize(slide.getSize());
+        return AggerationBuilder.newInstance((T)this,slidingWindowConfig);
     }
 
     public AggerationBuilder<T> countWindow(int size){
-        return (AggerationBuilder<T>) AggerationBuilder.newInstance((JobFlowBuilder)this,new AggerationBuilder.CountWindow(size));
+        return (AggerationBuilder<T>) countWindowByKey(null, size);
     }
     //滚动窗口
     public AggerationBuilder<T> tumblingWindow(Time size){
-        return AggerationBuilder.newInstance((T)this,new AggerationBuilder.TumblingWindow(size));
+        return tumblingWindowByKey(null, size);
     }
     //滑动窗口
     public AggerationBuilder<T> slidingWindow(Time size, Time slide){
-        return AggerationBuilder.newInstance((T)this,new AggerationBuilder.SlidingWindow(size, slide));
+        return slidingWindowByKey(null, size, slide);
     }
 
     public T processor(ItemProcessor processor){

@@ -32,12 +32,17 @@ public class RowUtils {
             return row;
         }
 
-        mergeRow.getFieldNames(false).stream().forEach(fieldName->{
+        Row newRow = Row.withNames(row.getKind());
+        row.getFieldNames(true).stream().forEach(fieldName->{
+            newRow.setField(fieldName, row.getField(fieldName));
+        });
+
+        mergeRow.getFieldNames(true).stream().forEach(fieldName->{
             if(ignoreColumns == null || !ArrayUtils.contains(ignoreColumns, fieldName)){
-                row.setField(fieldName, mergeRow.getField(fieldName));
+                newRow.setField(fieldName, mergeRow.getField(fieldName));
             }
         });
-        return row;
+        return newRow;
     }
 
     public static Row toRowWithNames(Map<String,Object> maps){

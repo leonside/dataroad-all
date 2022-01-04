@@ -2,6 +2,7 @@ package com.leonside.dataroad.core.builder;
 
 import com.google.common.collect.Lists;
 import com.leonside.dataroad.core.aggregations.AggerationEnum;
+import com.leonside.dataroad.core.aggregations.config.BaseWindowConfig;
 import com.leonside.dataroad.core.component.JobExtensionLoader;
 import com.leonside.dataroad.core.component.ComponentType;
 import com.leonside.dataroad.core.spi.ItemAggregationProcessor;
@@ -17,7 +18,7 @@ import java.util.Map;
  */
 public class AggerationBuilder<T extends BaseJobFlowBuilder> {
 
-    private Window window;
+//    private Window window;
 
     private T jobFlowBuilder;
 
@@ -25,13 +26,22 @@ public class AggerationBuilder<T extends BaseJobFlowBuilder> {
 
     private ItemAggregationProcessor aggerationItemProcessor;
 
+    private BaseWindowConfig baseWindowConfig;
+
     public AggerationBuilder(T jobFlowBuilder,Window window) {
-        this.window = window;
+//        this.window = window;
         this.jobFlowBuilder = jobFlowBuilder;
     }
 
-    public static <T extends BaseJobFlowBuilder> AggerationBuilder<T> newInstance(T jobFlowBuilder, Window window){
-        return new AggerationBuilder<T>(jobFlowBuilder, window);
+    public AggerationBuilder(T jobFlowBuilder, BaseWindowConfig baseWindowConfig) {
+//        this.window = window;
+        this.jobFlowBuilder = jobFlowBuilder;
+        this.baseWindowConfig = baseWindowConfig;
+        this.baseWindowConfig.setAggerations(aggerations);
+    }
+
+    public static <T extends BaseJobFlowBuilder> AggerationBuilder<T> newInstance(T jobFlowBuilder, BaseWindowConfig baseWindowConfig){
+        return new AggerationBuilder<T>(jobFlowBuilder, baseWindowConfig);
     }
 
     public AggerationBuilder<T> stats(String field){
@@ -76,8 +86,8 @@ public class AggerationBuilder<T extends BaseJobFlowBuilder> {
 
     public T aggeration() {
 
-        aggerationItemProcessor = JobExtensionLoader.getSingleComponent(ComponentType.agg);
-        aggerationItemProcessor.initialize(window, aggerations);
+        aggerationItemProcessor = JobExtensionLoader.getComponent(ComponentType.agg, baseWindowConfig.windowComponentName());
+        aggerationItemProcessor.initialize(baseWindowConfig);
         jobFlowBuilder.processor(aggerationItemProcessor);
         return this.jobFlowBuilder;
     }
@@ -101,6 +111,7 @@ public class AggerationBuilder<T extends BaseJobFlowBuilder> {
     @Data
     public static class TumblingWindow extends Window{
         private Time size;
+//        private TimeUnit unit = TimeUnit.SECONDS;
         public TumblingWindow(Time size) {
             this.size = size;
         }
@@ -113,6 +124,7 @@ public class AggerationBuilder<T extends BaseJobFlowBuilder> {
     public static class SlidingWindow extends Window{
         private Time size;
         private Time slide;
+//        private TimeUnit unit = TimeUnit.SECONDS;
         public SlidingWindow(Time size, Time slide) {
             this.size = size;
             this.slide = slide;

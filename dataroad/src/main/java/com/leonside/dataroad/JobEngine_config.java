@@ -18,7 +18,8 @@ public class JobEngine_config {
 
         JsonJobCreator jsonJobCreator = new JsonJobCreator(new JsonJobSchemaParser());
 //        List<Job> jobs = jsonJobCreator.createJobByPath("classpath:/mysql_splitpk_lookuplru_es.json");
-        List<Job> jobs = jsonJobCreator.createJobByPath("classpath:/mysql_agg_es.json");
+        List<Job> jobs = jsonJobCreator.createJobByPath("classpath:/mysql_aggtumbling_es.json");
+//        List<Job> jobs = jsonJobCreator.createJobByPath("classpath:/mysql_sqltrans_lookup_es.json");
 
 
         jobs.forEach(job ->{

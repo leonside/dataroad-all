@@ -1,5 +1,6 @@
 package com.leonside.dataroad.flink.utils;
 
+import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.table.types.DataType;
 
 /**
@@ -14,5 +15,5 @@ public interface RawTypeConverter {
      * @param type raw type string. e.g.: "SHORT", "INT", "TIMESTAMP"
      * @return e.g.: DataTypes.INT(), DataTypes.TIMESTAMP().
      */
-    DataType apply(String type);
+    TypeInformation apply(String type);
 }

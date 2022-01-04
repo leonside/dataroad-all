@@ -7,6 +7,7 @@ import com.leonside.dataroad.common.utils.JsonUtil;
 import com.leonside.dataroad.common.utils.ParameterUtils;
 import com.leonside.dataroad.flink.context.FlinkExecuteContext;
 import com.leonside.dataroad.flink.reader.BaseItemReader;
+import com.leonside.dataroad.flink.utils.RawTypeUtils;
 import com.leonside.dataroad.plugin.jdbc.DatabaseDialect;
 import com.leonside.dataroad.plugin.jdbc.reader.inputformat.GenericJdbcInputFormat;
 import com.leonside.dataroad.plugin.jdbc.reader.inputformat.GenericJdbcInputFormatBuilder;
@@ -14,7 +15,9 @@ import com.leonside.dataroad.plugin.jdbc.reader.inputformat.IncrementConfig;
 import com.leonside.dataroad.plugin.jdbc.reader.support.QuerySqlBuilder;
 import com.leonside.dataroad.plugin.jdbc.type.TypeConverterInterface;
 import lombok.Data;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.types.Row;
 
@@ -81,9 +84,18 @@ public abstract class GenericJdbcReader extends BaseItemReader implements  ItemR
 
         executeContext.setStartMetaColumn(metaColumns);
 
-        return createInput(executeContext, format);
+        TypeInformation rowTypeInfo = createRowTypeInfo();
+
+        return createInput(executeContext, format, rowTypeInfo);
     }
 
+    private TypeInformation createRowTypeInfo() {
+        TypeInformation rowTypeInfo = null;
+        if(CollectionUtils.isNotEmpty(metaColumns) && StringUtils.isNotEmpty(metaColumns.get(0).getType())){
+            rowTypeInfo = RawTypeUtils.createRowTypeInfo(getDatabaseDialect().getRawTypeConverter(), metaColumns);
+        }
+        return rowTypeInfo;
+    }
 
 
     protected abstract GenericJdbcInputFormatBuilder getGenericJdbcInputFormatBuilder() ;

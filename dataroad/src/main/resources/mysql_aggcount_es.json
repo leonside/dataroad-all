@@ -35,10 +35,10 @@
           "parameter": {
             "windowSize": 5,
             "keyby": ["idcard"],
-            "agg": [{
+            "agg": {
               "age": ["stats"],
               "sex": ["max"]
-            }]
+            }
           }
         },
         "mywriter": {

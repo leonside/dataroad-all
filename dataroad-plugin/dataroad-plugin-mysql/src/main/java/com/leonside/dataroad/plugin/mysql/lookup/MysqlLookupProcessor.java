@@ -11,11 +11,23 @@ import com.leonside.dataroad.plugin.jdbc.lookup.config.JdbcLookupKey;
 import com.leonside.dataroad.plugin.jdbc.lookup.function.JdbcAllLookupFunction;
 import com.leonside.dataroad.plugin.jdbc.lookup.function.JdbcLruLookupFunction;
 import com.leonside.dataroad.plugin.mysql.MySqlDatabaseDialect;
+import org.apache.commons.collections.set.TypedSet;
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.flink.api.common.functions.FlatMapFunction;
+import org.apache.flink.api.common.typeinfo.TypeInformation;
+import org.apache.flink.api.common.typeinfo.Types;
+import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.streaming.api.datastream.AsyncDataStream;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
+import org.apache.flink.streaming.api.operators.OneInputStreamOperator;
+import org.apache.flink.streaming.api.operators.StreamFlatMap;
+import org.apache.flink.table.runtime.typeutils.ExternalTypeInfo;
+import org.apache.flink.table.types.utils.TypeConversions;
 import org.apache.flink.types.Row;
+import org.apache.flink.util.Collector;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -29,7 +41,29 @@ public class MysqlLookupProcessor extends ComponentNameSupport implements Compon
     @Override
     public DataStream<Row> process(FlinkExecuteContext executeContext, DataStream<Row> dataStream) {
 
-        if(lookupConfig.getCacheType().equals(BaseLookupConfig.CacheType.all)){
+        /*TypeInformation<Row> type = dataStream.getType();
+
+        RowTypeInfo rowTypeInfo = null;
+        if(type instanceof ExternalTypeInfo){
+            TypeInformation<?> typeInformation = TypeConversions.fromDataTypeToLegacyInfo(((ExternalTypeInfo) type).getDataType());
+            TypeInformation[] typeInformations = (TypeInformation[]) ArrayUtils.add(((RowTypeInfo) typeInformation).getFieldTypes(), Types.STRING);
+            String[] names = (String[]) ArrayUtils.add(((RowTypeInfo)typeInformation).getFieldNames(), "value");
+            rowTypeInfo = new RowTypeInfo(typeInformations, names);
+        }else if(type instanceof RowTypeInfo){
+            TypeInformation[] typeInformations = (TypeInformation[]) ArrayUtils.add(((RowTypeInfo) type).getFieldTypes(), Types.STRING);
+            String[] names = (String[]) ArrayUtils.add(((RowTypeInfo)type).getFieldNames(), "value");
+            rowTypeInfo = new RowTypeInfo(typeInformations, names);
+        }else{
+
+        }*/
+
+//        SingleOutputStreamOperator<Row> typeInfoTranslateStream = dataStream.transform("typeInfoTranslate", rowTypeInfo, new StreamFlatMap<Row, Row>(new FlatMapFunction<Row, Row>() {
+//            @Override
+//            public void flatMap(Row row, Collector<Row> collector) throws Exception {
+//                collector.collect(row);
+//            }
+//        }));
+        if(lookupConfig.getCacheType().equalsIgnoreCase(BaseLookupConfig.CacheType.all.name())){
             JdbcAllLookupFunction jdbcAllLookupFunction = new JdbcAllLookupFunction.JdbcAllLookupFunctionBuilder()
                     .jdbcLookupConfig(lookupConfig)
                     .databaseDialect(new MySqlDatabaseDialect())

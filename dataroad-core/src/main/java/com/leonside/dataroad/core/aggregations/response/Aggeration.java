@@ -16,11 +16,15 @@ import java.util.Map;
 @Data
 public abstract class Aggeration<IN,OUT,T extends Aggeration> implements Serializable {
 
+    public static final String AGGERATION_KEY_AGGFIELD = "aggBy";
+    public static final String AGGERATION_KEY_BEGINTIME = "beginTime";
+    public static final String AGGERATION_KEY_ENDTIME = "endTime";
+    public static final String AGGERATION_KEY_DUMPTIME = "dumpTime";
+
     private String aggField;
 
-    private Date beginTime;
-
-    private Date endTime;
+//    private Date beginTime;
+//    private Date endTime;
 
     private long dumpTime = System.currentTimeMillis();
 
@@ -48,14 +52,8 @@ public abstract class Aggeration<IN,OUT,T extends Aggeration> implements Seriali
 
     protected Map<String,Object> getBasicRow() {
         Map<String,Object> basicMap = new LinkedHashMap<>();
-        basicMap.put(JobConfigKeyConstants.AGGERATION_KEY_AGGFIELD, getAggField());
-        basicMap.put(JobConfigKeyConstants.AGGERATION_KEY_DUMPTIME, getDumpTime());
-        if(getBeginTime() != null){
-            basicMap.put(JobConfigKeyConstants.AGGERATION_KEY_BEGINTIME, getBeginTime());
-        }
-        if(getEndTime() != null){
-            basicMap.put(JobConfigKeyConstants.AGGERATION_KEY_ENDTIME, getEndTime());
-        }
+        basicMap.put(AGGERATION_KEY_AGGFIELD, getAggField());
+        basicMap.put(AGGERATION_KEY_DUMPTIME, getDumpTime());
         return basicMap;
     }
 

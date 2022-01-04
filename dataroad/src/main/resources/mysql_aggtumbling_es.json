@@ -1,0 +1,86 @@
+{
+  "job": {
+    "content": [
+      {
+        "mysqlreader": {
+          "type": "reader",
+          "pluginName": "mysqlReader",
+          "parameter": {
+            "username": "duceap",
+            "password": "123",
+            "jdbcUrl": "jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai",
+            "table": "student",
+            "column": [
+              {"name": "id","type": "int"},
+              {"name": "name","type": "varchar"},
+              {"name": "sex","type": "int"},
+              {"name": "age","type": "int"},
+              {"name": "address","type": "varchar"},
+              {"name": "idcard","type": "varchar"},
+              {"name": "phone","type": "varchar"},
+              {"name": "code","type": "int"},
+              {"name": "create_time","type": "datetime"},
+              {"name": "area_code","type": "varchar"}
+            ],
+            "customSql": "",
+            "splitPk": "id",
+            "queryTimeOut": 1000,
+            "fetchSize": 1,
+            "requestAccumulatorInterval": 2
+          }
+        },
+        "mywindow": {
+          "type": "agg",
+          "pluginName": "tumblingWindowAgg",
+          "parameter": {
+            "timeSize":5,
+            "timeUnit": "SECONDS",
+            "timeType": "event",
+            "eventTimeColumn": "create_time",
+            "outOfOrderness": 5,
+            "keyBy": ["idcard"],
+            "agg": {
+              "age": ["stats"],
+              "sex": ["max"]
+            }
+          }
+        },
+        "mywriter": {
+          "type": "writer",
+          "pluginName": "esWriter",
+          "parameter": {
+            "address": "bigdata33:9200",
+            "index": "student1_agg",
+            "username": "",
+            "password": "",
+            "type": "_doc",
+            "bulkAction": 1,
+            "timeout": 1000,
+            "idColumn": [
+              {
+                "name": "id",
+                "type": "integer"
+              }
+            ],
+            "column": [
+              {"name": "idcard","type": "string"},
+              {"name": "aggBy","type": "string"},
+              {"name": "max","type": "int"},
+              {"name": "min","type": "int"},
+              {"name": "avg","type": "double"},
+              {"name": "count","type": "int"},
+              {"name": "sum","type": "int"},
+              {"name": "dumpTime","type": "timestamp"},
+              {"name": "beginTime","type": "timestamp"},
+              {"name": "endTime","type": "timestamp"}
+            ]
+          }
+        }
+      }
+    ],
+    "setting":{
+      "name": "myJob"
+    }
+  }
+}
+

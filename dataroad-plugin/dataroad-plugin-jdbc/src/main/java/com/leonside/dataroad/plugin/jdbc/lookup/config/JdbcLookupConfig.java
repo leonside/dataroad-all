@@ -19,8 +19,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @Data
 public class JdbcLookupConfig extends BaseLookupConfig implements Validation , Serializable {
 
-
-
     public int parallelism = 1;
     public String username;
     public String password;

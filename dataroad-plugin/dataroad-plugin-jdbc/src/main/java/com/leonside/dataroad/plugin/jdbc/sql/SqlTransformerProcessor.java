@@ -32,50 +32,46 @@ public class SqlTransformerProcessor extends ComponentNameSupport implements Com
 
     private String sql;
     private String tableName;
-    private List<MetaColumn> metaColumns;
+//    private List<MetaColumn> metaColumns;
 
     @Override
     public DataStream<Row> process(FlinkExecuteContext executeContext, DataStream<Row> dataStream) {
 
         StreamTableEnvironment streamTableEnvironment = executeContext.getOrCreateStreamTableEnvironment();
-
-        TypeInformation rowTypeInfo = createRowTypeInfo(executeContext);
-
-        if(rowTypeInfo != null){
-            SingleOutputStreamOperator transformStream = dataStream.transform("RowType TransformStream", rowTypeInfo, new StreamFlatMap<Row,Row>(new FlatMapFunction<Row,Row>() {
-                @Override
-                public void flatMap(Row row, Collector<Row> collector) throws Exception {
-                    collector.collect(row);
-                }
-            }));
-            streamTableEnvironment.createTemporaryView(tableName, transformStream);
-        }else{
+//todo
+//        TypeInformation rowTypeInfo = createRowTypeInfo(executeContext);
+//
+//        if(rowTypeInfo != null){
+//            SingleOutputStreamOperator transformStream = dataStream.transform("RowType TransformStream", rowTypeInfo, new StreamFlatMap<Row,Row>(new FlatMapFunction<Row,Row>() {
+//                @Override
+//                public void flatMap(Row row, Collector<Row> collector) throws Exception {
+//                    collector.collect(row);
+//                }
+//            }));
+//            streamTableEnvironment.createTemporaryView(tableName, transformStream);
+//        }else{
             streamTableEnvironment.createTemporaryView(tableName, dataStream);
-        }
-
-//        new RowTypeInfo(Types.STRING, Types.STRING, ...)
-//        Schema schema = Schema.newBuilder().fromFields(new String[]{"f0"}, new DataType[]{DataTypes.ROW()}).build();
-//        TypeInformation<Row> type = dataStream.getType();
+//        }
 
         Table table = streamTableEnvironment.sqlQuery(sql);
         return streamTableEnvironment.toDataStream(table);
     }
 
-    private TypeInformation createRowTypeInfo(FlinkExecuteContext executeContext) {
-        TypeInformation rowTypeInfo = null;
-        ItemReader  reader = (ItemReader) executeContext.getStartJobFlow().getTask().getComponent();
-        if(reader instanceof GenericJdbcReader){
-            if(CollectionUtils.isNotEmpty(metaColumns) && StringUtils.isNotEmpty(metaColumns.get(0).getType())){
-                rowTypeInfo = RawTypeUtils.createRowTypeInfo(((GenericJdbcReader) reader).getDatabaseDialect().getRawTypeConverter(), metaColumns);
-            }
-        }
-        return rowTypeInfo;
-    }
+//    private TypeInformation createRowTypeInfo(FlinkExecuteContext executeContext) {
+//        TypeInformation rowTypeInfo = null;
+//        ItemReader  reader = (ItemReader) executeContext.getStartJobFlow().getTask().getComponent();
+//        if(reader instanceof GenericJdbcReader){
+//            if(CollectionUtils.isNotEmpty(metaColumns) && StringUtils.isNotEmpty(metaColumns.get(0).getType())){
+//                rowTypeInfo = RawTypeUtils.createRowTypeInfo(((GenericJdbcReader) reader).getDatabaseDialect().getRawTypeConverter(), metaColumns);
+//            }
+//        }
+//        return rowTypeInfo;
+//    }
 
     @Override
     public void initialize(FlinkExecuteContext executeContext, Map<String, Object> parameter) {
         sql = ParameterUtils.getString(parameter, "sql");
         tableName = ParameterUtils.getString(parameter, "tableName");
-        metaColumns = MetaColumn.getMetaColumns(ParameterUtils.getArrayList(parameter, JdbcReaderKey.KEY_COLUMN));
+//        metaColumns = MetaColumn.getMetaColumns(ParameterUtils.getArrayList(parameter, JdbcReaderKey.KEY_COLUMN));
     }
 }

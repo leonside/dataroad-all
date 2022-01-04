@@ -3,6 +3,7 @@ package com.leonside.dataroad.common.utils;
 import com.leonside.dataroad.common.constant.ConfigKey;
 import com.leonside.dataroad.common.exception.JobConfigException;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.enums.EnumUtils;
 import org.apache.commons.lang.reflect.FieldUtils;
 import org.slf4j.Logger;
@@ -51,14 +52,18 @@ public class ConfigBeanUtils {
     private static Object getParameterValue(Map<String, Object> parameter, ConfigKey configKey, Class<?> type) {
         if(type == int.class || type == Integer.class){
             return ParameterUtils.getInteger(parameter, configKey);
+        }if(type == long.class || type == Long.class){
+            return ParameterUtils.getLong(parameter, configKey);
         }else if(type == boolean.class || type == Boolean.class){
             return ParameterUtils.getBoolean(parameter, configKey);
         }else if(type == String.class ){
             return ParameterUtils.getString(parameter, configKey);
         }else if(List.class.isAssignableFrom(type) ){
             return ParameterUtils.getArrayList(parameter, configKey);
+        }else if(type.isEnum() ){
+            return ParameterUtils.getEnum(parameter, configKey, type);
         }else if(type == String[].class ){
-            return ParameterUtils.getArrayList(parameter, configKey).toArray(new String[]{});
+            return ParameterUtils.getStringArray(parameter, configKey);
         }else if(Map.class.isAssignableFrom(type) ){
             Object value = parameter.get(configKey.getName());
             if(value == null && configKey.isRequired()) {
