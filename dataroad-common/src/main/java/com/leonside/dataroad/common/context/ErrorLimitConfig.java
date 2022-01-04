@@ -1,7 +1,9 @@
 
 package com.leonside.dataroad.common.context;
 
-public class ErrorLimitConfig  {
+import java.io.Serializable;
+
+public class ErrorLimitConfig implements Serializable {
 
     public static final int DEFAULT_ERROR_RECORD_LIMIT = 0;
     public static final double DEFAULT_ERROR_PERCENTAGE_LIMIT = 0.0;

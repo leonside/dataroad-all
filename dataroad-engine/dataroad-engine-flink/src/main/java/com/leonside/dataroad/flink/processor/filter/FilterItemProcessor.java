@@ -1,14 +1,17 @@
-package com.leonside.dataroad.flink.processor;
+package com.leonside.dataroad.flink.processor.filter;
 
 import com.leonside.dataroad.common.exception.ScriptExecuteException;
 import com.leonside.dataroad.common.script.ScriptEvaluator;
 import com.leonside.dataroad.common.script.ScriptEvaluatorFactory;
 import com.leonside.dataroad.common.spi.ItemProcessor;
 import com.leonside.dataroad.common.utils.Asserts;
+import com.leonside.dataroad.common.utils.ConfigBeanUtils;
 import com.leonside.dataroad.core.component.ComponentInitialization;
 import com.leonside.dataroad.core.component.ComponentNameSupport;
 import com.leonside.dataroad.common.constant.JobConfigKeyConstants;
+import com.leonside.dataroad.flink.config.ScriptExpressionConfigKey;
 import com.leonside.dataroad.flink.context.FlinkExecuteContext;
+import com.leonside.dataroad.flink.config.ScriptExpressionConfig;
 import org.apache.commons.lang.StringUtils;
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -21,18 +24,18 @@ import java.util.Map;
  */
 public class FilterItemProcessor extends ComponentNameSupport implements ComponentInitialization<FlinkExecuteContext>, ItemProcessor<FlinkExecuteContext, DataStream<Row>,DataStream<Row>> {
 
+    private ScriptExpressionConfig scriptExpressionConfig;
+
     private Map<String,Object> parameter;
 
     private ScriptEvaluator scriptEvalutor;
 
     @Override
     public void initialize(FlinkExecuteContext executeContext, Map<String, Object> parameter) {
-        Asserts.notEmpty(parameter, "filterItemProcessor parameter can not be null");
         this.parameter = parameter;
-        String language = (String)parameter.get(JobConfigKeyConstants.KEY_SCRIPT_LANGUAGE);
-        ScriptEvaluatorFactory.ScriptEngine scriptEngine = StringUtils.isEmpty(language) ?
-                ScriptEvaluatorFactory.ScriptEngine.aviator : ScriptEvaluatorFactory.ScriptEngine.valueOf(language);
-        scriptEvalutor = ScriptEvaluatorFactory.createScriptEvalutor(scriptEngine, (String) parameter.get(JobConfigKeyConstants.KEY_SCRIPT_EXPRESSION));
+        scriptExpressionConfig = new ScriptExpressionConfig();
+        ConfigBeanUtils.copyConfig(scriptExpressionConfig, parameter, ScriptExpressionConfigKey.class);
+        scriptEvalutor = ScriptEvaluatorFactory.createScriptEvalutor(scriptExpressionConfig.getLanguage(), scriptExpressionConfig.getExpression());
     }
 
     @Override
@@ -48,11 +51,11 @@ public class FilterItemProcessor extends ComponentNameSupport implements Compone
                     Object evaluate = scriptEvalutor.evaluate(value, parameter);
 
                     if(evaluate == null || ! (evaluate instanceof Boolean)){
-                        throw new ScriptExecuteException("Boolean must be returned， check the expression is valid. [" + parameter.get(JobConfigKeyConstants.KEY_SCRIPT_EXPRESSION) + "]");
+                        throw new ScriptExecuteException("Boolean must be returned， check the expression is valid. [" + scriptExpressionConfig.getExpression() + "]");
                     }
                     return (Boolean)evaluate;
                 }catch (Exception exception){
-                    throw new ScriptExecuteException("Script execution error [" + parameter.get(JobConfigKeyConstants.KEY_SCRIPT_EXPRESSION) + "]",exception);
+                    throw new ScriptExecuteException("Script execution error [" + scriptExpressionConfig.getExpression() + "]",exception);
                 }
             }
         });

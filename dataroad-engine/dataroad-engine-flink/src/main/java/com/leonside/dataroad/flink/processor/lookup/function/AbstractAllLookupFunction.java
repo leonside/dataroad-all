@@ -1,6 +1,6 @@
-package com.leonside.dataroad.flink.lookup.function;
+package com.leonside.dataroad.flink.processor.lookup.function;
 
-import com.leonside.dataroad.flink.lookup.config.BaseLookupConfig;
+import com.leonside.dataroad.flink.processor.lookup.config.BaseLookupConfig;
 import com.leonside.dataroad.flink.utils.RowUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.flink.api.common.functions.RichMapFunction;

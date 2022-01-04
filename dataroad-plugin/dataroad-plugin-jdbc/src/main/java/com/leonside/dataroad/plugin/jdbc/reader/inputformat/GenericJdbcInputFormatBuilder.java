@@ -2,7 +2,7 @@ package com.leonside.dataroad.plugin.jdbc.reader.inputformat;
 
 import com.leonside.dataroad.common.constant.JobCommonConstant;
 import com.leonside.dataroad.common.domain.MetaColumn;
-import com.leonside.dataroad.flink.inputformat.GenericRichInputFormatBuilder;
+import com.leonside.dataroad.flink.reader.inputformat.GenericRichInputFormatBuilder;
 import com.leonside.dataroad.plugin.jdbc.DatabaseDialect;
 import com.leonside.dataroad.plugin.jdbc.type.TypeConverterInterface;
 import org.apache.commons.lang.StringUtils;

@@ -17,7 +17,7 @@ public class FlinkExecuteContext extends ExecuteContext {
 
     private transient StreamTableEnvironment streamTableEnvironment;
 
-    private JobFlow startJobFlow;
+    private transient JobFlow startJobFlow;
 
     private List<MetaColumn> startMetaColumn;
 

@@ -2,7 +2,6 @@ package com.leonside.dataroad.flink.processor.aggeration.function;
 
 import com.leonside.dataroad.core.aggregations.AggerationEnum;
 import com.leonside.dataroad.core.aggregations.response.Aggeration;
-import com.leonside.dataroad.flink.aggregation.GenericAggregateFunction;
 import com.leonside.dataroad.core.aggregations.config.BaseWindowConfig;
 import com.leonside.dataroad.core.aggregations.config.CountWindowConfig;
 import com.leonside.dataroad.flink.utils.RowUtils;

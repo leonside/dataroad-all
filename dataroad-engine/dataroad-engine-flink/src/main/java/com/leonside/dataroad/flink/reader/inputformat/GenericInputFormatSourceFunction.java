@@ -1,5 +1,5 @@
 
-package com.leonside.dataroad.flink.inputformat;
+package com.leonside.dataroad.flink.reader.inputformat;
 
 import com.leonside.dataroad.common.context.RestoreConfig;
 import com.leonside.dataroad.common.utils.ExceptionUtil;
@@ -39,7 +39,7 @@ import java.util.NoSuchElementException;
 public class GenericInputFormatSourceFunction<OUT> extends InputFormatSourceFunction<OUT> implements CheckpointedFunction {
 	private static final long serialVersionUID = 1L;
 
-    private static final Logger LOG = LoggerFactory.getLogger(GenericInputFormatSourceFunction.class);
+	private static final Logger LOG = LoggerFactory.getLogger(GenericInputFormatSourceFunction.class);
 
 	private TypeInformation<OUT> typeInfo;
 	private transient TypeSerializer<OUT> serializer;

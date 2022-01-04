@@ -2,7 +2,7 @@
 package com.leonside.dataroad.plugin.es.reader;
 
 import com.leonside.dataroad.common.constant.JobCommonConstant;
-import com.leonside.dataroad.flink.inputformat.GenericRichInputFormatBuilder;
+import com.leonside.dataroad.flink.reader.inputformat.GenericRichInputFormatBuilder;
 
 import java.util.List;
 import java.util.Map;

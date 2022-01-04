@@ -1,13 +1,10 @@
 package com.leonside.dataroad.flink.processor.aggeration.function;
 
-import com.leonside.dataroad.common.utils.StringUtil;
 import com.leonside.dataroad.core.aggregations.AggerationEnum;
 import com.leonside.dataroad.core.aggregations.response.Aggeration;
-import com.leonside.dataroad.flink.aggregation.GenericAggregateFunction;
 import com.leonside.dataroad.core.aggregations.config.BaseWindowConfig;
 import com.leonside.dataroad.core.aggregations.config.TumblingWindowConfig;
 import com.leonside.dataroad.flink.utils.RowUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.api.common.ExecutionConfig;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
@@ -24,7 +21,6 @@ import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.types.Row;
 import org.apache.flink.util.Collector;
 
-import java.io.Serializable;
 import java.time.Duration;
 import java.util.Date;
 import java.util.List;

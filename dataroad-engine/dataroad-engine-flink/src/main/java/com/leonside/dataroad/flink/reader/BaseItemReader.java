@@ -23,11 +23,9 @@ import com.leonside.dataroad.common.domain.MetaColumn;
 import com.leonside.dataroad.core.component.ComponentInitialization;
 import com.leonside.dataroad.core.component.ComponentNameSupport;
 import com.leonside.dataroad.flink.context.FlinkExecuteContext;
-import com.leonside.dataroad.flink.inputformat.GenericInputFormatSourceFunction;
-import org.apache.commons.collections.CollectionUtils;
+import com.leonside.dataroad.flink.reader.inputformat.GenericInputFormatSourceFunction;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.api.common.io.InputFormat;
-import org.apache.flink.api.common.typeinfo.TypeInfo;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.typeutils.TypeExtractor;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -90,7 +88,7 @@ public abstract class BaseItemReader extends ComponentNameSupport implements Com
         }
 
         if(restoreConfig.isRestore()){
-            List columns = (List) parameter.get("column");//todo config.getJob().getContent().get(0).getReader().getParameter().getColumn();
+            List columns = (List) parameter.get("column");
             MetaColumn metaColumn = MetaColumn.getMetaColumn(columns, restoreConfig.getRestoreColumnName());
             if(metaColumn == null){
                 throw new RuntimeException("Can not find restore column from json with column name:" + restoreConfig.getRestoreColumnName());

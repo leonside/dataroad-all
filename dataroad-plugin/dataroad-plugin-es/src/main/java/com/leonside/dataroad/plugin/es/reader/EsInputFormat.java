@@ -2,7 +2,7 @@
 package com.leonside.dataroad.plugin.es.reader;
 
 import com.google.common.collect.Lists;
-import com.leonside.dataroad.flink.inputformat.GenericRichInputFormat;
+import com.leonside.dataroad.flink.reader.inputformat.GenericRichInputFormat;
 import com.leonside.dataroad.plugin.es.EsUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.flink.core.io.GenericInputSplit;

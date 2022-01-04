@@ -1,6 +1,6 @@
 package com.leonside.dataroad.plugin.jdbc.lookup.function;
 
-import com.leonside.dataroad.flink.lookup.function.AbstractAllLookupFunction;
+import com.leonside.dataroad.flink.processor.lookup.function.AbstractAllLookupFunction;
 import com.leonside.dataroad.plugin.jdbc.DatabaseDialect;
 import com.leonside.dataroad.plugin.jdbc.lookup.config.JdbcLookupConfig;
 import com.leonside.dataroad.plugin.jdbc.utils.DbUtil;

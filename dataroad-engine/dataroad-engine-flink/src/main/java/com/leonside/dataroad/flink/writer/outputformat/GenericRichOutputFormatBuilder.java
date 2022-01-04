@@ -1,5 +1,5 @@
 
-package com.leonside.dataroad.flink.outputformat;
+package com.leonside.dataroad.flink.writer.outputformat;
 
 import com.leonside.dataroad.common.constant.JobCommonConstant;
 import com.leonside.dataroad.common.context.RestoreConfig;

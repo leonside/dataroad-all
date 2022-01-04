@@ -2,12 +2,11 @@ package com.leonside.dataroad.plugin.jdbc.lookup.function;
 
 import com.google.common.collect.Lists;
 import com.leonside.dataroad.common.exception.JobException;
-import com.leonside.dataroad.flink.lookup.function.AbstractLruLookupFunction;
+import com.leonside.dataroad.flink.processor.lookup.function.AbstractLruLookupFunction;
 import com.leonside.dataroad.flink.utils.RowUtils;
 import com.leonside.dataroad.plugin.jdbc.DatabaseDialect;
 import com.leonside.dataroad.plugin.jdbc.lookup.config.JdbcLookupConfig;
 import com.leonside.dataroad.plugin.jdbc.lookup.datasource.DruidDataSourceProvider;
-import com.leonside.dataroad.plugin.jdbc.lookup.function.JdbcAllLookupFunction;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.json.JsonArray;

@@ -2,7 +2,7 @@
 package com.leonside.dataroad.plugin.es.writer;
 
 
-import com.leonside.dataroad.flink.outputformat.GenericRichOutputFormatBuilder;
+import com.leonside.dataroad.flink.writer.outputformat.GenericRichOutputFormatBuilder;
 
 import java.util.List;
 import java.util.Map;

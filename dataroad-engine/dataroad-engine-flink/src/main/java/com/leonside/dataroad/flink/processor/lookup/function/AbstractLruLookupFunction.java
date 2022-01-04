@@ -1,11 +1,9 @@
-package com.leonside.dataroad.flink.lookup.function;
+package com.leonside.dataroad.flink.processor.lookup.function;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Lists;
-import com.leonside.dataroad.core.component.ComponentInitialization;
-import com.leonside.dataroad.flink.context.FlinkExecuteContext;
-import com.leonside.dataroad.flink.lookup.config.BaseLookupConfig;
+import com.leonside.dataroad.flink.processor.lookup.config.BaseLookupConfig;
 import com.leonside.dataroad.flink.utils.RowUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.flink.configuration.Configuration;
@@ -17,10 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 

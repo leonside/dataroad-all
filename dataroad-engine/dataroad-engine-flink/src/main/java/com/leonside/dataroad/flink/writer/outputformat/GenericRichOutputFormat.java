@@ -1,5 +1,5 @@
 
-package com.leonside.dataroad.flink.outputformat;
+package com.leonside.dataroad.flink.writer.outputformat;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

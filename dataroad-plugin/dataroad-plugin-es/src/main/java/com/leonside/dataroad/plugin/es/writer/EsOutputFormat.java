@@ -3,7 +3,7 @@ package com.leonside.dataroad.plugin.es.writer;
 
 import com.leonside.dataroad.common.exception.WriteRecordException;
 import com.leonside.dataroad.common.utils.StringUtil;
-import com.leonside.dataroad.flink.outputformat.GenericRichOutputFormat;
+import com.leonside.dataroad.flink.writer.outputformat.GenericRichOutputFormat;
 import com.leonside.dataroad.plugin.es.EsUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.flink.configuration.Configuration;

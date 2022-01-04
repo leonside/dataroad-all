@@ -1,4 +1,4 @@
-package com.leonside.dataroad.flink.inputformat;
+package com.leonside.dataroad.flink.reader.inputformat;
 
 import com.google.common.base.Preconditions;
 import com.leonside.dataroad.common.context.RestoreConfig;

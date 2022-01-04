@@ -1,4 +1,4 @@
-package com.leonside.dataroad.flink.lookup.config;
+package com.leonside.dataroad.flink.processor.lookup.config;
 
 import com.leonside.dataroad.core.component.Validation;
 import lombok.Data;

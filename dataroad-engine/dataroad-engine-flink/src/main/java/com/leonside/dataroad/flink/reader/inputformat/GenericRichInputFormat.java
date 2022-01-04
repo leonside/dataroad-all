@@ -1,8 +1,7 @@
-package com.leonside.dataroad.flink.inputformat;
+package com.leonside.dataroad.flink.reader.inputformat;
 
 import com.leonside.dataroad.common.context.RestoreConfig;
 import com.leonside.dataroad.common.utils.ExceptionUtil;
-import com.leonside.dataroad.flink.inputformat.ErrorInputSplit;
 import com.leonside.dataroad.flink.metric.AccumulatorCollector;
 import com.leonside.dataroad.flink.metric.BaseMetric;
 import com.leonside.dataroad.flink.metric.Metrics;

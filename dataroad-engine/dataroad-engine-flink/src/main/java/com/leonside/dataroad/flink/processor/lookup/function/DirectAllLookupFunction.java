@@ -1,7 +1,7 @@
-package com.leonside.dataroad.flink.lookup.function;
+package com.leonside.dataroad.flink.processor.lookup.function;
 
 import com.leonside.dataroad.common.exception.JobConfigException;
-import com.leonside.dataroad.flink.lookup.config.BaseLookupConfig;
+import com.leonside.dataroad.flink.processor.lookup.config.BaseLookupConfig;
 import com.leonside.dataroad.flink.utils.RowUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.flink.configuration.Configuration;

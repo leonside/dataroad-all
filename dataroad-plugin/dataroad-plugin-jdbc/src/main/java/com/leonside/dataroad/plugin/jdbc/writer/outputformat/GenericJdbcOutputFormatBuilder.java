@@ -2,7 +2,7 @@ package com.leonside.dataroad.plugin.jdbc.writer.outputformat;
 
 
 import com.leonside.dataroad.common.enums.WriteMode;
-import com.leonside.dataroad.flink.outputformat.GenericRichOutputFormatBuilder;
+import com.leonside.dataroad.flink.writer.outputformat.GenericRichOutputFormatBuilder;
 import com.leonside.dataroad.plugin.jdbc.DatabaseDialect;
 import com.leonside.dataroad.plugin.jdbc.type.TypeConverterInterface;
 

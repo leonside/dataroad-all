@@ -4,7 +4,7 @@ import com.leonside.dataroad.common.constant.JobCommonConstant;
 import com.leonside.dataroad.common.domain.ColumnType;
 import com.leonside.dataroad.common.domain.MetaColumn;
 import com.leonside.dataroad.common.utils.*;
-import com.leonside.dataroad.flink.inputformat.GenericRichInputFormat;
+import com.leonside.dataroad.flink.reader.inputformat.GenericRichInputFormat;
 import com.leonside.dataroad.flink.metric.Metrics;
 import com.leonside.dataroad.flink.restore.FormatState;
 import com.leonside.dataroad.flink.utils.UrlUtil;

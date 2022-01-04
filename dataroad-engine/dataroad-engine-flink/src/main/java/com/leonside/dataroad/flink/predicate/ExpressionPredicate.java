@@ -3,11 +3,13 @@ package com.leonside.dataroad.flink.predicate;
 import com.leonside.dataroad.common.exception.ScriptExecuteException;
 import com.leonside.dataroad.common.script.ScriptEvaluator;
 import com.leonside.dataroad.common.script.ScriptEvaluatorFactory;
+import com.leonside.dataroad.common.utils.ConfigBeanUtils;
 import com.leonside.dataroad.core.spi.JobPredicate;
 import com.leonside.dataroad.core.component.ComponentInitialization;
 import com.leonside.dataroad.core.component.ComponentNameSupport;
 import com.leonside.dataroad.flink.context.FlinkExecuteContext;
-import org.apache.commons.lang.StringUtils;
+import com.leonside.dataroad.flink.config.ScriptExpressionConfig;
+import com.leonside.dataroad.flink.config.ScriptExpressionConfigKey;
 import org.apache.flink.types.Row;
 
 import java.util.Map;
@@ -17,9 +19,7 @@ import java.util.Map;
  */
 public class ExpressionPredicate extends ComponentNameSupport implements ComponentInitialization<FlinkExecuteContext>, JobPredicate<FlinkExecuteContext, Row> {
 
-    public static final String PARAM_EXPRESSION = "expression";
-
-    public static final String PARAM_LANGUAGE = "language";
+    private ScriptExpressionConfig scriptExpressionConfig;
 
     private ScriptEvaluator scriptEvalutor;
 
@@ -32,20 +32,19 @@ public class ExpressionPredicate extends ComponentNameSupport implements Compone
             Object evaluate = scriptEvalutor.evaluate(row, parameter);
 
             if(evaluate == null || ! (evaluate instanceof Boolean)){
-                throw new ScriptExecuteException("Boolean must be returned， check the expression is valid. [" + parameter.get(PARAM_EXPRESSION) + "]");
+                throw new ScriptExecuteException("Boolean must be returned， check the expression is valid. [" + scriptExpressionConfig.getExpression() + "]");
             }
             return (Boolean)evaluate;
         }catch (Exception exception){
-            throw new ScriptExecuteException("Script execution error [" + parameter.get(PARAM_EXPRESSION) + "]",exception);
+            throw new ScriptExecuteException("Script execution error [" + scriptExpressionConfig.getExpression() + "]",exception);
         }
     }
 
     @Override
     public void initialize(FlinkExecuteContext executeContext, Map<String, Object> parameter) {
         this.parameter = parameter;
-        String language = (String)parameter.get(PARAM_LANGUAGE);
-        ScriptEvaluatorFactory.ScriptEngine scriptEngine = StringUtils.isEmpty(language) ?
-                ScriptEvaluatorFactory.ScriptEngine.aviator : ScriptEvaluatorFactory.ScriptEngine.valueOf(language);
-        scriptEvalutor = ScriptEvaluatorFactory.createScriptEvalutor(scriptEngine, (String) parameter.get(PARAM_EXPRESSION));
+        this.scriptExpressionConfig = new ScriptExpressionConfig() ;
+        ConfigBeanUtils.copyConfig(scriptExpressionConfig, parameter, ScriptExpressionConfigKey.class);
+        scriptEvalutor = ScriptEvaluatorFactory.createScriptEvalutor(scriptExpressionConfig.getLanguage(), scriptExpressionConfig.getExpression());
     }
 }

@@ -4,14 +4,12 @@
       {
         "mysqlreader": {
           "type": "reader",
-          "pluginName": "jdbcreader",
+          "pluginName": "mysqlReader",
           "parameter": {
             "username": "duceap",
             "password": "123",
-            "connection": [{
-              "jdbcUrl": ["jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai"],
-              "table": ["job_execution_log"]
-            }],
+            "jdbcUrl": "jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai",
+            "table": "job_execution_log",
             "column": ["id","job_name","ip"],
             "customSql": "",
             "splitPk": "",
@@ -48,17 +46,13 @@
         },
         "mywriter": {
           "type": "writer",
-          "pluginName": "demoWriter",
+          "pluginName": "mysqlWriter",
           "dependencies": ["deciderOn2"],
           "parameter": {
             "username": "duceap",
             "password": "123",
-            "connection": [
-              {
-                "jdbcUrl": "jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai",
-                "table": ["job_execution_log2"]
-              }
-            ],
+            "jdbcUrl": "jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai",
+            "table": "job_execution_log2",
             "writeMode": "insert",
             "column": ["id","job_name","ip"],
             "batchSize": 1024

@@ -1,4 +1,4 @@
-package com.leonside.dataroad.flink.aggregation;
+package com.leonside.dataroad.flink.processor.aggeration.function;
 
 
 import com.leonside.dataroad.core.aggregations.AggerationEnum;

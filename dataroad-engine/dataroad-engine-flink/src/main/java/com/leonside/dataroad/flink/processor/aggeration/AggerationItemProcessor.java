@@ -9,7 +9,7 @@
 //import com.leonside.dataroad.core.builder.Time;
 //import com.leonside.dataroad.core.spi.ItemAggregationProcessor;
 //import com.leonside.dataroad.core.component.ComponentNameAutoGenerator;
-//import com.leonside.dataroad.flink.aggregation.GenericAggregateFunction;
+//import com.leonside.dataroad.flink.processor.aggeration.function.GenericAggregateFunction;
 //import com.leonside.dataroad.flink.context.FlinkExecuteContext;
 //import com.leonside.dataroad.core.aggregations.config.BaseWindowConfig;
 //import com.leonside.dataroad.flink.utils.RowUtils;

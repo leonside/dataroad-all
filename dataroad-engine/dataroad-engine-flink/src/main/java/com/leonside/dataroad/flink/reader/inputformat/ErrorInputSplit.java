@@ -17,7 +17,7 @@
  */
 
 
-package com.leonside.dataroad.flink.inputformat;
+package com.leonside.dataroad.flink.reader.inputformat;
 
 import org.apache.flink.core.io.InputSplit;
 

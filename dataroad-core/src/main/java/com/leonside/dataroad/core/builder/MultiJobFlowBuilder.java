@@ -47,7 +47,6 @@ public class MultiJobFlowBuilder extends BaseJobFlowBuilder<MultiJobFlowBuilder>
     public MultiJobFlowBuilder( JobFlowBuilder jobFlowBuilder) {
         this.jobFlowBuilder = jobFlowBuilder;
         this.jobFlowDeciders = new LinkedHashMap<>();
-        //todo  SPI
         this.itemDeciderProcessor = JobExtensionLoader.getSingleComponent(ComponentType.decider);
         //initialize ItemDeciderProcessor
         itemDeciderProcessor.initialize(jobFlowDeciders);

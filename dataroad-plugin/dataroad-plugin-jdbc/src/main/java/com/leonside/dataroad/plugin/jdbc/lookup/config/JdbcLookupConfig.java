@@ -1,11 +1,8 @@
 package com.leonside.dataroad.plugin.jdbc.lookup.config;
 
 import com.leonside.dataroad.common.exception.JobConfigException;
-import com.leonside.dataroad.common.utils.StringUtil;
 import com.leonside.dataroad.core.component.Validation;
-import com.leonside.dataroad.flink.lookup.config.BaseLookupConfig;
-import com.leonside.dataroad.plugin.jdbc.lookup.datasource.DruidDataSourceProvider;
-import io.vertx.core.json.JsonObject;
+import com.leonside.dataroad.flink.processor.lookup.config.BaseLookupConfig;
 import lombok.Data;
 import org.apache.commons.lang.StringUtils;
 

@@ -7,7 +7,7 @@ import com.leonside.dataroad.common.exception.WriteRecordException;
 import com.leonside.dataroad.common.utils.ClassUtil;
 import com.leonside.dataroad.common.utils.DateUtil;
 import com.leonside.dataroad.common.utils.ExceptionUtil;
-import com.leonside.dataroad.flink.outputformat.GenericRichOutputFormat;
+import com.leonside.dataroad.flink.writer.outputformat.GenericRichOutputFormat;
 import com.leonside.dataroad.flink.restore.FormatState;
 import com.leonside.dataroad.plugin.jdbc.DatabaseDialect;
 import com.leonside.dataroad.plugin.jdbc.type.TypeConverterInterface;
