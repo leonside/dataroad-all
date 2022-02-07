@@ -52,24 +52,11 @@ public class JobFlowBuilder extends BaseJobFlowBuilder<JobFlowBuilder> {
         return multiJobFlowBuilder;
     }
 
-    public JobFlowBuilder union(int... flowindexs){
-        ItemUnionProcessor itemUnionProcessor = JobExtensionLoader.getSingleComponent(ComponentType.union);
-        itemUnionProcessor.initializeUnionFlowIndex(flowindexs);
-        SimpleJobFlow jobFlow = SimpleJobFlow.of(itemUnionProcessor);
-        addNextJobFlow(jobFlow);
-        return this;
-    }
 
-    public JobFlowBuilder union(){
-        //todo
-        SimpleJobFlow jobFlow = SimpleJobFlow.of(JobExtensionLoader.getSingleComponent(ComponentType.union));
-        addNextJobFlow(jobFlow);
-        return this;
-    }
 
     public Job build(){
 
-        System.out.printf(startJobFlow.toString());
+        System.out.println(startJobFlow.toString());
         //todo SPI  构建flink的job、全局配置的传递？
 
         ExecuteContext executeContext = jobBuilder.getExecuteContext();

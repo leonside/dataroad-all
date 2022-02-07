@@ -25,7 +25,7 @@
               "area_code"
             ],
             "customSql": "",
-            "splitPk": "",
+            "splitKey": "",
             "queryTimeOut": 1000,
             "requestAccumulatorInterval": 2
           }

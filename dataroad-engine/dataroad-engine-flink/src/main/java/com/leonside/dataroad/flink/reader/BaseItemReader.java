@@ -18,6 +18,7 @@
 
 package com.leonside.dataroad.flink.reader;
 
+import com.leonside.dataroad.common.config.BaseConfig;
 import com.leonside.dataroad.common.context.RestoreConfig;
 import com.leonside.dataroad.common.domain.MetaColumn;
 import com.leonside.dataroad.core.component.ComponentInitialization;
@@ -35,13 +36,12 @@ import org.apache.flink.util.Preconditions;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Abstract specification of Reader Plugin
  *
  */
-public abstract class BaseItemReader extends ComponentNameSupport implements ComponentInitialization<FlinkExecuteContext> {
+public abstract class BaseItemReader extends ComponentNameSupport {
 
     protected StreamExecutionEnvironment env;
 
@@ -73,14 +73,13 @@ public abstract class BaseItemReader extends ComponentNameSupport implements Com
         this.srcCols = srcCols;
     }
 
-    @Override
-    public void initialize(FlinkExecuteContext executeContext, Map<String, Object> parameter) {
-
+//    @Override
+    public void doInitialize(FlinkExecuteContext executeContext, BaseConfig baseConfig) {
         this.env = executeContext.getEnvironment();
         this.numPartitions = Math.max(executeContext.getJobSetting().getSpeed().getChannel(),
                 executeContext.getJobSetting().getSpeed().getReaderChannel());
         this.bytes = executeContext.getJobSetting().getSpeed().getBytes();
-        this.monitorUrls = executeContext.getJobSetting().getMonitorUrls();
+//        this.monitorUrls = executeContext.getJobSetting().getMonitorUrls();
         this.restoreConfig = executeContext.getJobSetting().getRestore();
 
         if (restoreConfig.isStream()){
@@ -88,7 +87,7 @@ public abstract class BaseItemReader extends ComponentNameSupport implements Com
         }
 
         if(restoreConfig.isRestore()){
-            List columns = (List) parameter.get("column");
+            List columns = (List) baseConfig.getParameter().get("column");
             MetaColumn metaColumn = MetaColumn.getMetaColumn(columns, restoreConfig.getRestoreColumnName());
             if(metaColumn == null){
                 throw new RuntimeException("Can not find restore column from json with column name:" + restoreConfig.getRestoreColumnName());

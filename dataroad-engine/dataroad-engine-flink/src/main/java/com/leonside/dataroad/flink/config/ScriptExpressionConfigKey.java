@@ -1,23 +1,25 @@
 package com.leonside.dataroad.flink.config;
 
-import com.leonside.dataroad.common.constant.ConfigKey;
+import com.leonside.dataroad.common.config.ConfigKey;
 
 /**
  * @author leon
  */
 public enum ScriptExpressionConfigKey implements ConfigKey {
 
-    KEY_EXPRESSION("expression",true,"", "表达式"),
-    KEY_LANGUAGE("language",false,"", "脚本语言实现，默认aviator"),
+    KEY_LANGUAGE("language","脚本语言",false,"", "脚本语言实现，支持bsh、groovy、javascript、aviator，默认aviator"),
+    KEY_EXPRESSION("expression","表达式",false,"", "根据选择的脚本语言，填写对应的表达式"),
     ;
 
     private String name;
+    private String cnName;
     private String desc;
     private boolean required;
     private String defaultValue;
 
-    ScriptExpressionConfigKey(String name, boolean required, String defaultValue, String desc) {
+    ScriptExpressionConfigKey(String name, String cnName, boolean required, String defaultValue, String desc) {
         this.name = name;
+        this.cnName = cnName;
         this.desc = desc;
         this.required = required;
         this.defaultValue = defaultValue;
@@ -33,6 +35,11 @@ public enum ScriptExpressionConfigKey implements ConfigKey {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String getCnName() {
+        return cnName;
     }
 
     public void setName(String name) {

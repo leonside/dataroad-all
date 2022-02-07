@@ -17,6 +17,7 @@
         <module>dataroad</module>
         <module>dataroad-plugin</module>
         <module>dataroad-plugin/dataroad-plugin-kafka</module>
+        <module>dataroad-dashboard</module>
     </modules>
 
     <properties>
@@ -71,7 +72,7 @@
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>1.18.4</version>
+                <version>1.18.10</version>
                 <optional>true</optional>
             </dependency>
 

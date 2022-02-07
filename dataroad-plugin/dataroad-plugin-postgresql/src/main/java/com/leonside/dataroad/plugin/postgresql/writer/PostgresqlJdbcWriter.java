@@ -1,5 +1,6 @@
 package com.leonside.dataroad.plugin.postgresql.writer;
 
+import com.leonside.dataroad.common.config.BaseConfig;
 import com.leonside.dataroad.plugin.jdbc.DatabaseDialect;
 import com.leonside.dataroad.plugin.jdbc.writer.GenericJdbcWriter;
 import com.leonside.dataroad.plugin.jdbc.writer.outputformat.GenericJdbcOutputFormatBuilder;
@@ -18,4 +19,5 @@ public class PostgresqlJdbcWriter extends GenericJdbcWriter {
     protected DatabaseDialect obtainDatabaseDialect() {
         return new PostgresqlDatabaseDialect();
     }
+
 }

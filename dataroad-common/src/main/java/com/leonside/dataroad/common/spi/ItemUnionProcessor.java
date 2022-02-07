@@ -9,5 +9,5 @@ import com.leonside.dataroad.common.extension.SPI;
 @SPI
 public interface ItemUnionProcessor <T extends ExecuteContext,IN,OUT> extends ItemProcessor<T,IN,OUT> {
 
-     void initializeUnionFlowIndex(int[] indexs);
+     void initializeUnionFlowIndex(Integer[] indexs);
 }

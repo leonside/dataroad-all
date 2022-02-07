@@ -24,7 +24,7 @@
               {"name": "AREA_CODE","type": "varchar"}
             ],
             "customSql": "",
-            "splitPk": "id",
+            "splitKey": "id",
             "queryTimeOut": 1000,
             "fetchSize": 1000,
             "requestAccumulatorInterval": 2

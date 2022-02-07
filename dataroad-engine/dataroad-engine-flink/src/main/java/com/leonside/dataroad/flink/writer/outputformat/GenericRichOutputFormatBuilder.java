@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
  *
  */
 public abstract class GenericRichOutputFormatBuilder<T extends GenericRichOutputFormat, R extends GenericRichOutputFormatBuilder> {
-
     protected final Logger LOG = LoggerFactory.getLogger(getClass());
+
     protected T format;
 
 //    public R setDirtyPath(String dirtyPath) {

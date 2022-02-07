@@ -5,6 +5,7 @@ import com.leonside.dataroad.common.exception.WriteRecordException;
 import com.leonside.dataroad.common.utils.DateUtil;
 import com.leonside.dataroad.common.utils.StringUtil;
 import com.leonside.dataroad.common.utils.TelnetUtil;
+import com.leonside.dataroad.plugin.es.config.EsConstants;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -39,12 +40,12 @@ public class EsUtil {
 
         RestClientBuilder builder = RestClient.builder(httpHostList.toArray(new HttpHost[0]));
 
-        Integer timeout = MapUtils.getInteger(config, EsConfigKeys.KEY_TIMEOUT);
+        Integer timeout = MapUtils.getInteger(config, EsConstants.KEY_TIMEOUT);
         if (timeout != null){
             builder.setMaxRetryTimeoutMillis(timeout * 1000);
         }
 
-        String pathPrefix = MapUtils.getString(config, EsConfigKeys.KEY_PATH_PREFIX);
+        String pathPrefix = MapUtils.getString(config, EsConstants.KEY_PATH_PREFIX);
         if (StringUtils.isNotEmpty(pathPrefix)){
             builder.setPathPrefix(pathPrefix);
         }
@@ -62,17 +63,17 @@ public class EsUtil {
 
     public static Row jsonMapToRow(Map<String,Object> map, List<String> fields, List<String> types, List<String> values) {
         Preconditions.checkArgument(types.size() == fields.size());
-        Row row = new Row(fields.size());
+        Row row = Row.withNames();//new Row(fields.size());
 
         for (int i = 0; i < fields.size(); ++i) {
             String field = fields.get(i);
             if(StringUtils.isNotBlank(field)) {
                 String[] parts = field.split("\\.");
                 Object value = readMapValue(map, parts);
-                row.setField(i, value);
+                row.setField(fields.get(i), value);
             } else {
                 Object value = convertValueToAssignType(types.get(i), values.get(i));
-                row.setField(i, value);
+                row.setField(fields.get(i), value);
             }
 
         }

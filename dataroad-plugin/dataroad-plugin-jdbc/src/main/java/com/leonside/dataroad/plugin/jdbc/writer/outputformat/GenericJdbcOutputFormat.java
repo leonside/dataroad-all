@@ -12,6 +12,7 @@ import com.leonside.dataroad.flink.restore.FormatState;
 import com.leonside.dataroad.plugin.jdbc.DatabaseDialect;
 import com.leonside.dataroad.plugin.jdbc.type.TypeConverterInterface;
 import com.leonside.dataroad.plugin.jdbc.utils.DbUtil;
+import com.leonside.dataroad.plugin.jdbc.writer.config.JdbcWriterConfig;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
@@ -32,38 +33,32 @@ public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
 
     protected static final long serialVersionUID = 1L;
 
-    protected String username;
+    public JdbcWriterConfig jdbcWriterConfig;
 
-    protected String password;
+//    protected String username;
+//    protected String password;
+//    protected String dbUrl;
+//    protected List<String> preSql;
+//    protected List<String> postSql;
+//    protected List<String> fullColumn;
+//    protected String table;
+//    protected List<String> column;
+//    protected Map<String,List<String>> updateKey;
 
     protected String driverName;
-
-    protected String dbUrl;
 
     protected Connection dbConn;
 
     protected PreparedStatement preparedStatement;
 
-    protected List<String> preSql;
-
-    protected List<String> postSql;
-
     protected DatabaseDialect databaseDialect;
 
-    protected String mode = WriteMode.INSERT.name();
+    protected String mode ;
 
     /**just for postgresql,use copy replace insert*/
     protected String insertSqlMode;
 
-    protected String table;
-
-    protected List<String> column;
-
-    protected Map<String,List<String>> updateKey;
-
     protected Map<String, String> fullColumnMapping = new HashMap<>();
-
-    protected List<String> fullColumn;
 
     protected List<String> fullColumnType;
 
@@ -101,17 +96,17 @@ public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
     protected static List<String> STRING_TYPES = Arrays.asList("CHAR", "VARCHAR", "VARCHAR2", "NVARCHAR2", "NVARCHAR", "TINYBLOB","TINYTEXT","BLOB","TEXT", "MEDIUMBLOB", "MEDIUMTEXT", "LONGBLOB", "LONGTEXT");
 
     protected PreparedStatement prepareTemplates() throws SQLException {
-        if(CollectionUtils.isEmpty(fullColumn)) {
-            fullColumn = column;
+        if(CollectionUtils.isEmpty(jdbcWriterConfig.getFullColumn())) {
+            jdbcWriterConfig.setFullColumn(jdbcWriterConfig.getColumn());
         }
 
         String singleSql;
         if (WriteMode.INSERT.name().equalsIgnoreCase(mode) || WriteMode.STREAM.name().equalsIgnoreCase(mode)) {
-            singleSql = databaseDialect.getInsertStatement(column, table);
+            singleSql = databaseDialect.getInsertStatement(jdbcWriterConfig.getColumn(), jdbcWriterConfig.getTable());
         } else if (WriteMode.REPLACE.name().equalsIgnoreCase(mode)) {
-            singleSql = databaseDialect.getReplaceStatement(column, fullColumn, table, updateKey);
+            singleSql = databaseDialect.getReplaceStatement(jdbcWriterConfig.getColumn(), jdbcWriterConfig.getFullColumn(), jdbcWriterConfig.getTable(), jdbcWriterConfig.getUpdateKey());
         } else if (WriteMode.UPDATE.name().equalsIgnoreCase(mode)) {
-            singleSql = databaseDialect.getUpsertStatement(column, table, updateKey);
+            singleSql = databaseDialect.getUpsertStatement(jdbcWriterConfig.getColumn(), jdbcWriterConfig.getTable(), jdbcWriterConfig.getUpdateKey());
         } else {
             throw new IllegalArgumentException("Unknown write mode:" + mode);
         }
@@ -125,18 +120,18 @@ public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
     protected void doOpen(int taskNumber, int numTasks){
         try {
             ClassUtil.forName(driverName, getClass().getClassLoader());
-            dbConn = DbUtil.getConnection(dbUrl, username, password);
+            dbConn = DbUtil.getConnection(jdbcWriterConfig.getJdbcUrl(), jdbcWriterConfig.getUsername(), jdbcWriterConfig.getPassword());
 
             //默认关闭事务自动提交，手动控制事务
             dbConn.setAutoCommit(false);
 
-            if(CollectionUtils.isEmpty(fullColumn)) {
-                fullColumn = probeFullColumns(getTable(), dbConn);
+            if(CollectionUtils.isEmpty(jdbcWriterConfig.getFullColumn())) {
+                jdbcWriterConfig.setFullColumn(probeFullColumns(getTable(), dbConn));
             }
 
             if (!WriteMode.INSERT.name().equalsIgnoreCase(mode)){
-                if(updateKey == null || updateKey.size() == 0) {
-                    updateKey = probePrimaryKeys(getTable(), dbConn);
+                if(jdbcWriterConfig.getUpdateKey() == null || jdbcWriterConfig.getUpdateKey().size() == 0) {
+                    jdbcWriterConfig.setUpdateKey(probePrimaryKeys(getTable(), dbConn));
                 }
             }
 
@@ -145,10 +140,10 @@ public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
                 analyzePrimaryKeys();
             }
 
-            for(String col : column) {
-                for (int i = 0; i < fullColumn.size(); i++) {
-                    fullColumnMapping.put(fullColumn.get(i), fullColumnType.get(i));
-                    if (col.equalsIgnoreCase(fullColumn.get(i))){
+            for(String col : jdbcWriterConfig.getColumn()) {
+                for (int i = 0; i < jdbcWriterConfig.getFullColumn().size(); i++) {
+                    fullColumnMapping.put(jdbcWriterConfig.getFullColumn().get(i), fullColumnType.get(i));
+                    if (col.equalsIgnoreCase(jdbcWriterConfig.getFullColumn().get(i))){
                         columnType.add(fullColumnType.get(i));
                         break;
                     }
@@ -176,20 +171,20 @@ public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
         ResultSet rs = null;
         try {
             stmt = dbConn.createStatement();
-            rs = stmt.executeQuery(databaseDialect.getSqlQueryFields(databaseDialect.quoteTable(table)));
+            rs = stmt.executeQuery(databaseDialect.getSqlQueryFields(databaseDialect.quoteTable(jdbcWriterConfig.getTable())));
             ResultSetMetaData rd = rs.getMetaData();
 
             for(int i = 0; i < rd.getColumnCount(); ++i) {
                 ret.add(rd.getColumnTypeName(i+1));
             }
 
-            if(CollectionUtils.isEmpty(fullColumn)){
+            if(CollectionUtils.isEmpty(jdbcWriterConfig.getFullColumn())){
                 for(int i = 0; i < rd.getColumnCount(); ++i) {
-                    fullColumn.add(rd.getColumnName(i+1));
+                    jdbcWriterConfig.getFullColumn().add(rd.getColumnName(i+1));
                 }
             }
-            if(CollectionUtils.isEmpty(column)){
-                column = fullColumn;
+            if(CollectionUtils.isEmpty(jdbcWriterConfig.getColumn())){
+                jdbcWriterConfig.setColumn(jdbcWriterConfig.getFullColumn());
             }
 
             analyzePrimaryKeys();
@@ -206,8 +201,8 @@ public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
     protected void doWriteSingleRecord(Row row) throws WriteRecordException {
         int index = 0;
         try {
-            for (; index < row.getArity(); index++) {
-                preparedStatement.setObject(index+1, getField(row, this.column.get(index)));
+            for (; index < this.jdbcWriterConfig.getColumn().size(); index++) {
+                preparedStatement.setObject(index+1, getField(row, this.jdbcWriterConfig.getColumn().get(index)));
             }
 
             preparedStatement.execute();
@@ -243,8 +238,8 @@ public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
         try {
 
             for (Row row : rows) {
-                for (int index = 0; index < this.column.size(); index++) {
-                    preparedStatement.setObject(index+1, getField(row, this.column.get(index)));
+                for (int index = 0; index < this.jdbcWriterConfig.getColumn().size(); index++) {
+                    preparedStatement.setObject(index+1, getField(row, this.jdbcWriterConfig.getColumn().get(index)));
                 }
                 preparedStatement.addBatch();
 
@@ -413,27 +408,27 @@ public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
 
     @Override
     protected boolean needWaitBeforeWriteRecords() {
-        return  CollectionUtils.isNotEmpty(preSql);
+        return  CollectionUtils.isNotEmpty(jdbcWriterConfig.getPreSql());
     }
 
     @Override
     protected void beforeWriteRecords()  {
         // preSql
         if(taskNumber == 0) {
-            DbUtil.executeBatch(dbConn, preSql);
+            DbUtil.executeBatch(dbConn, jdbcWriterConfig.getPreSql());
         }
     }
 
     @Override
     protected boolean doNeedWaitBeforeClose() {
-        return  CollectionUtils.isNotEmpty(postSql);
+        return  CollectionUtils.isNotEmpty(jdbcWriterConfig.getPostSql());
     }
 
     @Override
     protected void beforeCloseInternal() {
         // 执行postSql
         if(taskNumber == 0) {
-            DbUtil.executeBatch(dbConn, postSql);
+            DbUtil.executeBatch(dbConn, jdbcWriterConfig.getPostSql());
         }
     }
 
@@ -442,7 +437,7 @@ public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
      * @return
      */
     protected String getTable(){
-        return table;
+        return jdbcWriterConfig.getTable();
     }
 
     public void setSchema(String schema){

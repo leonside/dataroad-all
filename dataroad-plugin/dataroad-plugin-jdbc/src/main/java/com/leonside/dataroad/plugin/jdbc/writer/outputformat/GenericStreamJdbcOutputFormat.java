@@ -25,8 +25,8 @@ public class GenericStreamJdbcOutputFormat extends GenericJdbcOutputFormat{
         super.doOpen(taskNumber, numTasks);
 
         try {
-            String deleteStatementByKey = databaseDialect.getDeleteStatementByKey(primaryKey, table);
-            String updateStatementByKey = databaseDialect.getUpdateStatementByKey(column, primaryKey, table);
+            String deleteStatementByKey = databaseDialect.getDeleteStatementByKey(primaryKey, jdbcWriterConfig.getTable());
+            String updateStatementByKey = databaseDialect.getUpdateStatementByKey(jdbcWriterConfig.getColumn(), primaryKey, jdbcWriterConfig.getTable());
             deletePreparedStatement =  dbConn.prepareStatement(deleteStatementByKey);
             updatePreparedStatement =  dbConn.prepareStatement(updateStatementByKey);
         } catch (SQLException sqe) {
@@ -39,7 +39,7 @@ public class GenericStreamJdbcOutputFormat extends GenericJdbcOutputFormat{
 
     @Override
     protected void analyzePrimaryKeys() throws SQLException {
-        ResultSet primaryKeys = dbConn.getMetaData().getPrimaryKeys(null, schema, table);
+        ResultSet primaryKeys = dbConn.getMetaData().getPrimaryKeys(null, schema, jdbcWriterConfig.getTable());
         if(primaryKeys.next()){
             primaryKey = primaryKeys.getString(JobCommonConstant.PRIMARYKEY_COLUMN_NAME);
         }else{
@@ -70,7 +70,7 @@ public class GenericStreamJdbcOutputFormat extends GenericJdbcOutputFormat{
     private void doUpdateSingleRecord(Row row) {
         int index = 0;
         try {
-            List<String> filterColumn = column.stream().filter(col -> !col.equals(primaryKey)).collect(Collectors.toList());
+            List<String> filterColumn = jdbcWriterConfig.getColumn().stream().filter(col -> !col.equals(primaryKey)).collect(Collectors.toList());
             for (; index < filterColumn.size(); index++) {
                 updatePreparedStatement.setObject(index+1, getField(row,filterColumn.get(index)));
             }

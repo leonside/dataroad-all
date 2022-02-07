@@ -1,0 +1,1 @@
+directLookup=com.leonside.dataroad.flink.processor.lookup.DirectAllLookupProcessor

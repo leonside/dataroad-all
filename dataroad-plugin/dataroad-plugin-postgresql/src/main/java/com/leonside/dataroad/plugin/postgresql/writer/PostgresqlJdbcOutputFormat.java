@@ -39,15 +39,16 @@ public class PostgresqlJdbcOutputFormat extends GenericJdbcOutputFormat {
 
     @Override
     protected PreparedStatement prepareTemplates() throws SQLException {
-        if(fullColumn == null || fullColumn.size() == 0) {
-            fullColumn = column;
+
+        if(jdbcWriterConfig.getFullColumn() == null || jdbcWriterConfig.getFullColumn().size() == 0) {
+            jdbcWriterConfig.setFullColumn(jdbcWriterConfig.getColumn());
         }
 
         //check is use copy mode for insert
         isCopyMode = checkIsCopyMode(insertSqlMode);
         if (WriteMode.INSERT.name().equalsIgnoreCase(mode) && isCopyMode) {
             copyManager = new CopyManager((BaseConnection) dbConn);
-            copySql = String.format(COPY_SQL_TEMPL, table, String.join(",", column), DEFAULT_FIELD_DELIM, DEFAULT_NULL_DELIM);
+            copySql = String.format(COPY_SQL_TEMPL, jdbcWriterConfig.getTable(), String.join(",", jdbcWriterConfig.getColumn()), DEFAULT_FIELD_DELIM, DEFAULT_NULL_DELIM);
             return null;
         }
 
@@ -67,7 +68,7 @@ public class PostgresqlJdbcOutputFormat extends GenericJdbcOutputFormat {
             StringBuilder sb = new StringBuilder();
             int lastIndex = row.getArity() - 1;
             for (; index < row.getArity(); index++) {
-                Object rowData = getField(row, this.column.get(index));
+                Object rowData = getField(row, this.jdbcWriterConfig.getColumn().get(index));
                 if(rowData==null){
                     sb.append(DEFAULT_NULL_DELIM);
                 }else{
@@ -107,7 +108,7 @@ public class PostgresqlJdbcOutputFormat extends GenericJdbcOutputFormat {
             int lastIndex = row.getArity() - 1;
             StringBuilder tempBuilder = new StringBuilder(128);
             for (int index =0; index < row.getArity(); index++) {
-                Object rowData = getField(row, this.column.get(index) );
+                Object rowData = getField(row, this.jdbcWriterConfig.getColumn().get(index) );
                 if(rowData==null){
                     tempBuilder.append(DEFAULT_NULL_DELIM);
                 }else{

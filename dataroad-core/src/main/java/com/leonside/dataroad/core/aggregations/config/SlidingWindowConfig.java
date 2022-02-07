@@ -1,15 +1,26 @@
 package com.leonside.dataroad.core.aggregations.config;
 
-import com.leonside.dataroad.core.component.Validation;
+import com.leonside.dataroad.common.config.ConfigKey;
 import lombok.Data;
+
+import java.util.Map;
 
 /**
  * @author leon
  */
 @Data
-public class SlidingWindowConfig extends TumblingWindowConfig implements Validation {
+public class SlidingWindowConfig extends TumblingWindowConfig  {
 
     public long slideSize;
+
+    public SlidingWindowConfig(Map<String, Object> parameter) {
+        super(parameter);
+    }
+
+    public SlidingWindowConfig(){
+        super(null);
+    }
+
 
     @Override
     public String windowComponentName() {
@@ -24,5 +35,10 @@ public class SlidingWindowConfig extends TumblingWindowConfig implements Validat
         }
 
         return super.validate();
+    }
+
+    @Override
+    public Class<? extends ConfigKey> bindConfigKey() {
+        return SlidingWindowConfigKey.class;
     }
 }

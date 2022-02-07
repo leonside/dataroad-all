@@ -1,0 +1,16 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: dataroad-dashboard
+
+
+logging:
+  level:
+    com:
+      leonside:
+        dataroad: DEBUG
+
+
+

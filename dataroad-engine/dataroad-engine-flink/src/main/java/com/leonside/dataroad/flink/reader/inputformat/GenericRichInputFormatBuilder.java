@@ -2,7 +2,7 @@ package com.leonside.dataroad.flink.reader.inputformat;
 
 import com.google.common.base.Preconditions;
 import com.leonside.dataroad.common.context.RestoreConfig;
-import com.leonside.dataroad.core.component.Validation;
+import com.leonside.dataroad.common.config.Validation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

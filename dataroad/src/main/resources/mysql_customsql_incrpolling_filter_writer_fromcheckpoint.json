@@ -11,7 +11,7 @@
             "jdbcUrl": "jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai",
             "where": "id<10",
             "customSql": "select * from student",
-            "splitPk": "id",
+            "splitKey": "id",
             "queryTimeOut": 1000,
             "fetchSize": 1000,
             "requestAccumulatorInterval": 2,

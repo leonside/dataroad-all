@@ -3,6 +3,7 @@ package com.leonside.dataroad.plugin.jdbc;
 
 import com.leonside.dataroad.common.enums.DatabaseType;
 import com.leonside.dataroad.flink.utils.RawTypeConverter;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
@@ -178,6 +179,18 @@ public interface DatabaseDialect {
     String getDeleteStatementByKey(String primaryKey, String table);
 
     String getUpdateStatementByKey(List<String> column, String primaryKey, String table);
+
+    default String getSelectFromStatement(String sql, String[] conditionFields){
+        if(ArrayUtils.isEmpty(conditionFields)){
+            return sql;
+        }
+        List<String> fieldExpressionCollector = Arrays.stream(conditionFields)
+                .map(f -> format("%s = ?", quoteIdentifier(f)))
+                .collect(Collectors.toList());
+        String fieldExpressions = StringUtils.join(fieldExpressionCollector, " AND ");
+
+        return "SELECT * FROM ("+ sql +") TMP_ WHERE " + fieldExpressions;
+    }
 
     default String getSelectFromStatement(
             String schema, String tableName, String[] selectFields, String whereClause, String[] conditionFields) {

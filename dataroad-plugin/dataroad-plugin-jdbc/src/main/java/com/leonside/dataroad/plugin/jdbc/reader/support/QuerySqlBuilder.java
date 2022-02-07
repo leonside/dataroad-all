@@ -56,17 +56,17 @@ public class QuerySqlBuilder {
 
     public QuerySqlBuilder(GenericJdbcReader reader) {
         databaseDialect = reader.getDatabaseDialect();
-        table = reader.getTable();
-        metaColumns = reader.getMetaColumns();
-        splitKey = reader.getSplitKey();
-        customFilter = reader.getWhere();
-        customSql = reader.getCustomSql();
+        table = reader.getJdbcReaderConfig().getTable();
+        metaColumns = reader.getJdbcReaderConfig().getMetaColumns();
+        splitKey = reader.getJdbcReaderConfig().getSplitKey();
+        customFilter = reader.getJdbcReaderConfig().getWhere();
+        customSql = reader.getJdbcReaderConfig().getCustomSql();
         isSplitByKey = reader.getNumPartitions() > 1 && StringUtils.isNotEmpty(splitKey);
-        isIncrement = reader.getIncrementConfig().isIncrement();
-        incrementColumn = reader.getIncrementConfig().getColumnName();
+        isIncrement = reader.getJdbcReaderConfig().getIncrementConfig().isIncrement();
+        incrementColumn = reader.getJdbcReaderConfig().getIncrementConfig().getColumnName();
         isRestore = reader.getRestoreConfig().isRestore();
         restoreColumn = reader.getRestoreConfig().getRestoreColumnName();
-        orderByColumn = reader.getOrderByColumn();
+        orderByColumn = reader.getJdbcReaderConfig().getOrderByColumn();
     }
 
     public QuerySqlBuilder(DatabaseDialect databaseInterface, String table, List<MetaColumn> metaColumns,

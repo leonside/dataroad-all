@@ -6,6 +6,7 @@ import com.leonside.dataroad.common.spi.ItemUnionProcessor;
 import com.leonside.dataroad.common.spi.ItemWriter;
 import com.leonside.dataroad.core.spi.ItemAggregationProcessor;
 import com.leonside.dataroad.core.spi.ItemDeciderProcessor;
+import com.leonside.dataroad.core.spi.ItemLookupProcessor;
 import com.leonside.dataroad.core.spi.JobPredicate;
 
 public enum ComponentType{
@@ -14,6 +15,7 @@ public enum ComponentType{
         writer("writer", ItemWriter.class),
         processor("processor", ItemProcessor.class),
 //        join("join", ItemJ.class),
+        lookup("lookup", ItemLookupProcessor.class),
         agg("agg", ItemAggregationProcessor.class),
         decider("decider", ItemDeciderProcessor.class),
         deciderOn("deciderOn", JobPredicate.class),

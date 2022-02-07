@@ -15,8 +15,12 @@ public class BshScriptEvaluator implements ScriptEvaluator {
 
     private String scriptSource;
 
+    private Interpreter interpreter;
+
     public BshScriptEvaluator(String scriptSource){
         this.scriptSource = scriptSource;
+        interpreter = new Interpreter();
+        interpreter.setClassLoader(BshScriptEvaluator.class.getClassLoader());
     }
 
 
@@ -24,8 +28,6 @@ public class BshScriptEvaluator implements ScriptEvaluator {
     public Object evaluate(Object record, Map<String, Object> param) throws Exception {
 
         try {
-            Interpreter interpreter = new Interpreter();
-            interpreter.setClassLoader(BshScriptEvaluator.class.getClassLoader());
             if (param != null) {
                 Iterator var4 = param.entrySet().iterator();
 

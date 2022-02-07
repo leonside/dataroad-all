@@ -2,11 +2,14 @@ package com.leonside.dataroad.core.builder;
 
 
 import com.leonside.dataroad.common.spi.ItemProcessor;
+import com.leonside.dataroad.common.spi.ItemUnionProcessor;
 import com.leonside.dataroad.common.spi.ItemWriter;
 import com.leonside.dataroad.common.utils.Asserts;
 import com.leonside.dataroad.core.aggregations.config.CountWindowConfig;
 import com.leonside.dataroad.core.aggregations.config.SlidingWindowConfig;
 import com.leonside.dataroad.core.aggregations.config.TumblingWindowConfig;
+import com.leonside.dataroad.core.component.ComponentType;
+import com.leonside.dataroad.core.component.JobExtensionLoader;
 import com.leonside.dataroad.core.flow.JobFlow;
 import com.leonside.dataroad.core.flow.SimpleJobFlow;
 
@@ -78,6 +81,22 @@ public abstract class BaseJobFlowBuilder<T extends BaseJobFlowBuilder> {
     public T writer(ItemWriter writer){
         Asserts.notNull(writer, "itemWriter can not be null");
         SimpleJobFlow jobFlow = SimpleJobFlow.of(writer);
+        addNextJobFlow(jobFlow);
+        return (T)this;
+    }
+
+
+    public T union(Integer... flowindexs){
+        ItemUnionProcessor itemUnionProcessor = JobExtensionLoader.getSingleComponent(ComponentType.union);
+        itemUnionProcessor.initializeUnionFlowIndex(flowindexs);
+        SimpleJobFlow jobFlow = SimpleJobFlow.of(itemUnionProcessor);
+        addNextJobFlow(jobFlow);
+        return (T)this;
+    }
+
+    public T union(){
+        //todo
+        SimpleJobFlow jobFlow = SimpleJobFlow.of(JobExtensionLoader.getSingleComponent(ComponentType.union));
         addNextJobFlow(jobFlow);
         return (T)this;
     }

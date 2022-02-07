@@ -5,10 +5,11 @@ import com.google.gson.Gson;
 import com.leonside.dataroad.common.constant.JobCommonConstant;
 import com.leonside.dataroad.common.spi.ItemReader;
 import com.leonside.dataroad.common.utils.ParameterUtils;
+import com.leonside.dataroad.core.component.ComponentInitialization;
 import com.leonside.dataroad.flink.context.FlinkExecuteContext;
 import com.leonside.dataroad.flink.reader.BaseItemReader;
-import com.leonside.dataroad.plugin.es.EsReaderKey;
-import com.leonside.dataroad.plugin.es.EsWriterKey;
+import com.leonside.dataroad.plugin.es.config.EsReaderConfig;
+import com.leonside.dataroad.plugin.es.config.EsReaderConfigKey;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.types.Row;
 import org.slf4j.Logger;
@@ -24,18 +25,12 @@ import java.util.Map;
  *
  */
 @SuppressWarnings("uncheck")
-public class EsReader extends BaseItemReader implements ItemReader<FlinkExecuteContext, DataStream<Row>> {
+public class EsReader extends BaseItemReader implements ItemReader<FlinkExecuteContext, DataStream<Row>>, ComponentInitialization<FlinkExecuteContext,EsReaderConfig> {
 
     private static Logger LOG = LoggerFactory.getLogger(EsReader.class);
 
-    private String address;
-    private String username;
-    private String password;
-    private String query;
+    private EsReaderConfig esReaderConfig;
 
-    private String[] index;
-    private String[] type;
-    private Integer batchSize;
     private Map<String,Object> clientConfig;
 
     protected List<String> columnType;
@@ -48,16 +43,18 @@ public class EsReader extends BaseItemReader implements ItemReader<FlinkExecuteC
         builder.setColumnNames(columnName)
                 .setColumnTypes(columnType)
                 .setColumnValues(columnValue)
-                .setAddress(address)
-                .setUsername(username)
-                .setPassword(password)
-                .setIndex(index)
-                .setType(type)
-                .setBatchSize(batchSize)
+                .setAddress(esReaderConfig.getAddress())
+                .setUsername(esReaderConfig.getUsername())
+                .setPassword(esReaderConfig.getPassword())
+                .setIndex(new String[]{esReaderConfig.getIndex()})
+                .setType(new String[]{esReaderConfig.getIndexType()})
+                .setBatchSize(esReaderConfig.getBatchSize())
                 .setClientConfig(clientConfig)
-                .setQuery(query)
                 .setBytes(bytes)
                 .setMonitorUrls(monitorUrls);
+        if(esReaderConfig.getQuery() != null){
+            builder.setQuery(new Gson().toJson(esReaderConfig.getQuery() ));
+        }
 //        builder.setTestConfig(testConfig);
 //        builder.setLogConfig(logConfig);
 
@@ -65,24 +62,25 @@ public class EsReader extends BaseItemReader implements ItemReader<FlinkExecuteC
     }
 
     @Override
-    public void initialize(FlinkExecuteContext executeContext, Map<String, Object> parameter) {
-        super.initialize(executeContext, parameter);
-        address = ParameterUtils.getString(parameter,EsReaderKey.KEY_ADDRESS);
-        username = ParameterUtils.getString(parameter,EsReaderKey.KEY_USERNAME);
-        password = ParameterUtils.getString(parameter,EsReaderKey.KEY_PASSWORD);
-        index = ParameterUtils.getArrayList(parameter,EsReaderKey.KEY_INDEX).toArray(new String[]{});
-        type = ParameterUtils.getArrayList(parameter,EsReaderKey.KEY_TYPE).toArray(new String[]{});
-        batchSize = ParameterUtils.getInteger(parameter,EsReaderKey.KEY_BATCH_SIZE);
+    public void doInitialize(FlinkExecuteContext executeContext, EsReaderConfig config) {
+        super.doInitialize(executeContext, config);
+        this.esReaderConfig = config;
+//        address = ParameterUtils.getString(parameter, EsReaderConfigKey.KEY_ADDRESS);
+//        username = ParameterUtils.getString(parameter, EsReaderConfigKey.KEY_USERNAME);
+//        password = ParameterUtils.getString(parameter, EsReaderConfigKey.KEY_PASSWORD);
+//        index = ParameterUtils.getArrayList(parameter, EsReaderConfigKey.KEY_INDEX).toArray(new String[]{});
+//        type = ParameterUtils.getArrayList(parameter, EsReaderConfigKey.KEY_TYPE).toArray(new String[]{});
+//        batchSize = ParameterUtils.getInteger(parameter, EsReaderConfigKey.KEY_BATCH_SIZE);
 
         clientConfig = new HashMap<>();
-        clientConfig.put(EsReaderKey.KEY_TIMEOUT.getName(), ParameterUtils.getInteger(parameter,EsReaderKey.KEY_TIMEOUT));
-        clientConfig.put(EsReaderKey.KEY_PATH_PREFIX.getName(), ParameterUtils.getString(parameter,EsReaderKey.KEY_PATH_PREFIX));
+        clientConfig.put(EsReaderConfigKey.KEY_TIMEOUT.getName(), esReaderConfig.getTimeout());
+        clientConfig.put(EsReaderConfigKey.KEY_PATH_PREFIX.getName(), esReaderConfig.getPathPrefix());
 
-        Object queryMap = parameter.get(EsReaderKey.KEY_QUERY.getName());
-        if(queryMap != null) {
-            query = new Gson().toJson(queryMap);
-        }
-        List columns = ParameterUtils.getArrayList(parameter, EsWriterKey.KEY_COLUMN);
+//        Object queryMap = esReaderConfig.getQuery();//parameter.get(EsReaderConfigKey.KEY_QUERY.getName());
+//        if(queryMap != null) {
+//            query = new Gson().toJson(queryMap);
+//        }
+        List columns = ParameterUtils.getArrayList(config.getParameter(), EsReaderConfigKey.KEY_COLUMN);
         if(columns != null && columns.size() > 0) {
             if(columns.get(0) instanceof Map) {
                 columnType = new ArrayList<>();
@@ -102,5 +100,15 @@ public class EsReader extends BaseItemReader implements ItemReader<FlinkExecuteC
         } else{
             throw new IllegalArgumentException("column argument error");
         }
+    }
+
+//    @Override
+//    public Class<? extends BaseConfig> configClass() {
+//        return EsReaderConfig.class;
+//    }
+
+    @Override
+    public String description() {
+        return super.description();
     }
 }

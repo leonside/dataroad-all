@@ -1,6 +1,7 @@
 package com.leonside.dataroad.config.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.leonside.dataroad.common.exception.JobConfigException;
@@ -27,11 +28,14 @@ public class GenericComponentConfig implements Serializable {
 
     private Map<String,Object> parameter;
 
+    @JsonIgnore
     @JsonIgnoreProperties(ignoreUnknown = true)
     private Set<GenericComponentConfig> childs = new LinkedHashSet<>();
     @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonIgnore
     private String name;
     @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonIgnore
     private boolean deciderLastFlow = false;
 
     public boolean isDeciderLastFlow() {

@@ -31,6 +31,10 @@ public class MultiJobFlowBuilder extends BaseJobFlowBuilder<MultiJobFlowBuilder>
 
     private JobPredicate currentState;
 
+    public Map<JobPredicate, JobFlow> getJobFlowDeciders() {
+        return jobFlowDeciders;
+    }
+
     public JobFlowBuilder getJobFlowBuilder() {
         return jobFlowBuilder;
     }
@@ -105,6 +109,22 @@ public class MultiJobFlowBuilder extends BaseJobFlowBuilder<MultiJobFlowBuilder>
             throw new JobFlowException("Must have decider started ");
         }
         return super.processor(processor);
+    }
+
+    @Override
+    public MultiJobFlowBuilder union() {
+        if(currentState == null){
+            throw new JobFlowException("Must have decider started ");
+        }
+        return super.union();
+    }
+
+    @Override
+    public MultiJobFlowBuilder union(Integer... flowindexs) {
+        if(currentState == null){
+            throw new JobFlowException("Must have decider started ");
+        }
+        return super.union(flowindexs);
     }
 
     @Override

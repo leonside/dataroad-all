@@ -3,20 +3,19 @@ package com.leonside.dataroad.plugin.mysqlstream.reader;
 import com.alibaba.ververica.cdc.connectors.mysql.MySQLSource;
 import com.alibaba.ververica.cdc.debezium.DebeziumDeserializationSchema;
 import com.alibaba.ververica.cdc.debezium.DebeziumSourceFunction;
+import com.leonside.dataroad.common.config.BaseConfig;
 import com.leonside.dataroad.common.context.JobSetting;
 import com.leonside.dataroad.common.spi.ItemReader;
 import com.leonside.dataroad.common.utils.ParameterUtils;
 import com.leonside.dataroad.core.component.ComponentInitialization;
 import com.leonside.dataroad.core.component.ComponentNameSupport;
 import com.leonside.dataroad.flink.context.FlinkExecuteContext;
+import com.leonside.dataroad.plugin.mysqlstream.config.MysqlStreamReaderConfig;
+import com.leonside.dataroad.plugin.mysqlstream.config.MysqlStreamReaderConfigKey;
 import io.debezium.data.Envelope;
-import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
-import org.apache.flink.api.common.typeinfo.Types;
-import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
-import org.apache.flink.streaming.api.operators.StreamFlatMap;
 import org.apache.flink.types.Row;
 import org.apache.flink.types.RowKind;
 import org.apache.flink.util.Collector;
@@ -29,28 +28,23 @@ import java.util.Map;
 /**
  * @author leon
  */
-public class MysqlStreamJdbcReader extends ComponentNameSupport implements ComponentInitialization<FlinkExecuteContext>, ItemReader<FlinkExecuteContext, DataStream<Row>> {
+public class MysqlStreamJdbcReader extends ComponentNameSupport implements ComponentInitialization<FlinkExecuteContext,MysqlStreamReaderConfig>, ItemReader<FlinkExecuteContext, DataStream<Row>> {
 
     private JobSetting jobSetting;
 
-    protected String hostname;
-    protected int port;
-    protected String schema;
+    private MysqlStreamReaderConfig mysqlStreamReaderConfig;
 
-    protected String username;
-    protected String password;
-    protected String table;
 
     @Override
     public DataStream<Row> read(FlinkExecuteContext executeContext) throws Exception {
 
         DebeziumSourceFunction<Row> build = MySQLSource.<Row>builder()
-                .hostname(hostname)
-                .port(port)
-                .databaseList(schema)
-                .tableList(schema +"." + table)
-                .username(username)
-                .password(password)
+                .hostname(mysqlStreamReaderConfig.getHostname())
+                .port(mysqlStreamReaderConfig.getPort())
+                .databaseList(mysqlStreamReaderConfig.getSchema())
+                .tableList(mysqlStreamReaderConfig.getSchema() +"." + mysqlStreamReaderConfig.getTable())
+                .username(mysqlStreamReaderConfig.getUsername())
+                .password(mysqlStreamReaderConfig.getPassword())
                 .deserializer(new JsonDebeziumDeserializationSchema())
                 .build();
 
@@ -60,14 +54,15 @@ public class MysqlStreamJdbcReader extends ComponentNameSupport implements Compo
     }
 
     @Override
-    public void initialize(FlinkExecuteContext executeContext, Map<String, Object> parameter) {
+    public void doInitialize(FlinkExecuteContext executeContext, MysqlStreamReaderConfig config) {
         this.jobSetting = executeContext.getJobSetting();
-        hostname = ParameterUtils.getString(parameter, MysqlStreamReaderKey.hostname);
-        port = ParameterUtils.getInteger(parameter, MysqlStreamReaderKey.port);
-        schema = ParameterUtils.getString(parameter, MysqlStreamReaderKey.schema);
-        username = ParameterUtils.getString(parameter, MysqlStreamReaderKey.username);
-        password = ParameterUtils.getString(parameter, MysqlStreamReaderKey.password);
-        table = ParameterUtils.getString(parameter, MysqlStreamReaderKey.table);
+        this.mysqlStreamReaderConfig = config;
+//        hostname = ParameterUtils.getString(parameter, MysqlStreamReaderConfigKey.hostname);
+//        port = ParameterUtils.getInteger(parameter, MysqlStreamReaderConfigKey.port);
+//        schema = ParameterUtils.getString(parameter, MysqlStreamReaderConfigKey.schema);
+//        username = ParameterUtils.getString(parameter, MysqlStreamReaderConfigKey.username);
+//        password = ParameterUtils.getString(parameter, MysqlStreamReaderConfigKey.password);
+//        table = ParameterUtils.getString(parameter, MysqlStreamReaderConfigKey.table);
     }
 
     public static class JsonDebeziumDeserializationSchema implements DebeziumDeserializationSchema<Row> {
@@ -75,7 +70,7 @@ public class MysqlStreamJdbcReader extends ComponentNameSupport implements Compo
         @Override
         public void deserialize(SourceRecord sourceRecord, Collector collector) throws Exception {
             Envelope.Operation op = Envelope.operationFor(sourceRecord);
-            String source = sourceRecord.topic();
+//            String source = sourceRecord.topic();
 //            if( !source.endsWith(".student")){
 //                return;
 //            }

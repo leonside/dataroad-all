@@ -35,7 +35,9 @@ long l = System.currentTimeMillis();
         }
         felContext.set(JobCommonConstant.SCRIPT_CONTEXT_KEY_ROW, row);
 
-System.out.println("cost:"+( System.currentTimeMillis() - l));
-        return felEngine.eval(scriptSource);
+
+        Object eval = felEngine.eval(scriptSource);
+        System.out.println(scriptSource + " cost:"+( System.currentTimeMillis() - l) + ",row:" + row +  ",result:" + eval);
+        return eval;
     }
 }

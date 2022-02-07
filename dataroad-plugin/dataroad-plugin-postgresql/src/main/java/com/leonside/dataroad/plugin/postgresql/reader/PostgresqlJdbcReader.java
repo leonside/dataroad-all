@@ -35,23 +35,31 @@ public class PostgresqlJdbcReader extends GenericJdbcReader {
 
     @Override
     public DataStream<Row> read(FlinkExecuteContext executeContext) throws Exception {
+        if(getJdbcReaderConfig().getFetchSize() == 0){
+            getJdbcReaderConfig().setFetchSize(databaseDialect.getFetchSize());
+        }
+        if(getJdbcReaderConfig().getQueryTimeOut() == 0){
+            getJdbcReaderConfig().setQueryTimeOut(databaseDialect.getQueryTimeout());
+        }
+
         GenericJdbcInputFormatBuilder builder = getGenericJdbcInputFormatBuilder();
         builder.setDriverName(databaseDialect.getDriverClass())
-                .setDbUrl(dbUrl)
-                .setUsername(username)
-                .setPassword(password)
                 .setBytes(bytes)
                 .setMonitorUrls(monitorUrls)
-                .setTable(table)
                 .setDatabaseDialect(databaseDialect)
                 .setTypeConverter(typeConverter)
-                .setMetaColumn(metaColumns)
-                .setFetchSize(fetchSize == 0 ? databaseDialect.getFetchSize() : fetchSize)
-                .setQueryTimeOut(queryTimeOut == 0 ? databaseDialect.getQueryTimeout() : queryTimeOut)
-                .setIncrementConfig(incrementConfig)
-                .setSplitKey(splitKey)
+                .jdbcReaderConfig(getJdbcReaderConfig())
+//                .setDbUrl(jdbcUrl)
+//                .setUsername(username)
+//                .setPassword(password)
+//                .setTable(table)
+//                .setMetaColumn(metaColumns)
+//                .setFetchSize(fetchSize == 0 ? databaseDialect.getFetchSize() : fetchSize)
+//                .setQueryTimeOut(queryTimeOut == 0 ? databaseDialect.getQueryTimeout() : queryTimeOut)
+//                .setIncrementConfig(incrementConfig)
+//                .setSplitKey(splitKey)
+//                .setCustomSql(customSql)
                 .setNumPartitions(numPartitions)
-                .setCustomSql(customSql)
                 .setRestoreConfig(restoreConfig);
 
         PostgresqlQuerySqlBuilder sqlBuilder = new PostgresqlQuerySqlBuilder(this);

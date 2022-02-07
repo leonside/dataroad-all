@@ -18,10 +18,10 @@ public class MysqlJdbcInputFormat extends GenericJdbcInputFormat {
     @Override
     public void doOpen(InputSplit inputSplit) throws IOException {
         // 避免result.next阻塞
-        if(incrementConfig.isPolling()
-                && StringUtils.isEmpty(incrementConfig.getStartLocation())
-                && fetchSize == databaseDialect.getFetchSize()){
-            fetchSize = 1000;
+        if(jdbcReaderConfig.getIncrementConfig().isPolling()
+                && StringUtils.isEmpty(jdbcReaderConfig.getIncrementConfig().getStartLocation())
+                && jdbcReaderConfig.getFetchSize() == databaseDialect.getFetchSize()){
+            jdbcReaderConfig.setFetchSize(1000);
         }
         super.doOpen(inputSplit);
     }

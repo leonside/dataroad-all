@@ -12,7 +12,7 @@
             "table": "job_execution_log",
             "column": ["id","job_name","ip"],
             "customSql": "",
-            "splitPk": "",
+            "splitKey": "",
             "queryTimeOut": 1000,
             "requestAccumulatorInterval": 2
           }

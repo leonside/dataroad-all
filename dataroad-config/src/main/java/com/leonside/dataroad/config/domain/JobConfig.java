@@ -1,5 +1,6 @@
 package com.leonside.dataroad.config.domain;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.leonside.dataroad.common.context.JobSetting;
 import lombok.Data;
 import org.apache.commons.collections.CollectionUtils;

@@ -35,7 +35,8 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Created by Administrator on 2021/4/6.
  */
-public class ExecuteContext implements Serializable {
+public class
+ExecuteContext implements Serializable {
 
 	private JobSetting jobSetting = new JobSetting();
 

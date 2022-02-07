@@ -23,7 +23,7 @@
               {"name": "area_code","type": "varchar"}
             ],
             "customSql": "",
-            "splitPk": "id",
+            "splitKey": "id",
             "queryTimeOut": 1000,
             "fetchSize": 1,
             "requestAccumulatorInterval": 2
@@ -55,7 +55,7 @@
             "idColumn": [
               {
                 "name": "id",
-                "type": "integer"
+                "type": "int"
               }
             ],
             "column": [

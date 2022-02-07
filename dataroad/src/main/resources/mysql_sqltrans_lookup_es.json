@@ -23,7 +23,7 @@
               {"name": "area_code","type": "varchar"}
             ],
             "customSql": "",
-            "splitPk": "id",
+            "splitKey": "id",
             "queryTimeOut": 1000,
             "fetchSize": 1000,
             "requestAccumulatorInterval": 2
@@ -38,7 +38,7 @@
           }
         },
         "jdbcLookup": {
-          "type": "processor",
+          "type": "lookup",
           "pluginName": "mysqlLookup",
           "parameter": {
             "cacheType": "all",
@@ -65,7 +65,7 @@
             "idColumn": [
               {
                 "name": "id",
-                "type": "integer"
+                "type": "int"
               }
             ],
             "column": [
@@ -79,7 +79,8 @@
               {"name": "phone","type": "string"},
               {"name": "code","type": "int"},
               {"name": "create_time","type": "timestamp"},
-              {"name": "area_code","type": "string"}
+              {"name": "area_code","type": "string"},
+              {"name": "score","type": "double"}
             ]
           }
         }

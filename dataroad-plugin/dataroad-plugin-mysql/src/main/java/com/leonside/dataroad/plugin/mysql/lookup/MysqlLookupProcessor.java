@@ -1,9 +1,11 @@
 package com.leonside.dataroad.plugin.mysql.lookup;
 
+import com.leonside.dataroad.common.config.BaseConfig;
 import com.leonside.dataroad.common.spi.ItemProcessor;
 import com.leonside.dataroad.common.utils.ConfigBeanUtils;
 import com.leonside.dataroad.core.component.ComponentInitialization;
 import com.leonside.dataroad.core.component.ComponentNameSupport;
+import com.leonside.dataroad.core.spi.ItemLookupProcessor;
 import com.leonside.dataroad.flink.context.FlinkExecuteContext;
 import com.leonside.dataroad.flink.processor.lookup.config.BaseLookupConfig;
 import com.leonside.dataroad.plugin.jdbc.lookup.config.JdbcLookupConfig;
@@ -22,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author leon
  */
-public class MysqlLookupProcessor extends ComponentNameSupport implements ComponentInitialization<FlinkExecuteContext>, ItemProcessor<FlinkExecuteContext, DataStream<Row>,DataStream<Row>> {
+public class MysqlLookupProcessor extends ComponentNameSupport implements ComponentInitialization<FlinkExecuteContext,JdbcLookupConfig>, ItemLookupProcessor<FlinkExecuteContext, DataStream<Row>,DataStream<Row>> {
 
     private JdbcLookupConfig lookupConfig;
 
@@ -71,9 +73,8 @@ public class MysqlLookupProcessor extends ComponentNameSupport implements Compon
     }
 
     @Override
-    public void initialize(FlinkExecuteContext executeContext, Map<String, Object> parameter) {
-        lookupConfig = new JdbcLookupConfig();
-        ConfigBeanUtils.copyConfig(lookupConfig, parameter, JdbcLookupKey.class);
+    public void doInitialize(FlinkExecuteContext executeContext, JdbcLookupConfig config) {
+        lookupConfig = config;
     }
 
     @Override

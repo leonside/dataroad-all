@@ -9,6 +9,7 @@ import com.leonside.dataroad.flink.metric.Metrics;
 import com.leonside.dataroad.flink.restore.FormatState;
 import com.leonside.dataroad.flink.utils.UrlUtil;
 import com.leonside.dataroad.plugin.jdbc.DatabaseDialect;
+import com.leonside.dataroad.plugin.jdbc.reader.config.JdbcReaderConfig;
 import com.leonside.dataroad.plugin.jdbc.type.TypeConverterInterface;
 import com.leonside.dataroad.plugin.jdbc.utils.DbUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -33,20 +34,23 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
     public static int resultSetType = ResultSet.TYPE_FORWARD_ONLY;
     public DatabaseDialect databaseDialect;
 
-    public String table;
+    public JdbcReaderConfig jdbcReaderConfig;
+
     public String queryTemplate;
-    public String customSql;
-    public String querySql;
 
-    public String splitKey;
-    public int fetchSize;
-    public int queryTimeOut;
-    public IncrementConfig incrementConfig;
-
-    public String username;
-    public String password;
     public String driverName;
-    public String dbUrl;
+    public String querySql;
+//    public String table;
+//    public String customSql;
+//    public String splitKey;
+//    public int fetchSize;
+//    public int queryTimeOut;
+//    public IncrementConfig incrementConfig;
+//    public String username;
+//    public String password;
+//    public String jdbcUrl;
+//    public List<MetaColumn> metaColumns;
+
     public Properties properties;
     public transient Connection dbConn;
     public transient Statement statement;
@@ -54,8 +58,6 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
     public transient ResultSet resultSet;
     public boolean hasNext;
 
-
-    public List<MetaColumn> metaColumns;
     public List<String> columnTypeList;
     public int columnCount;
     public ResultSetMetaData metaData;
@@ -86,7 +88,7 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
             throw new IllegalArgumentException("Restore column index must specified");
         }
 
-        restoreColumn = metaColumns.get(restoreConfig.getRestoreColumnIndex());
+        restoreColumn = jdbcReaderConfig.getMetaColumns().get(restoreConfig.getRestoreColumnIndex());
         if(StringUtils.isEmpty(restoreColumn.getType())){
             restoreColumn.setType(restoreConfig.getRestoreColumnType());
         }
@@ -96,7 +98,7 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
     protected InputSplit[] doCreateInputSplits(int minNumSplits) throws Exception {
         JdbcInputSplit[] splits = new JdbcInputSplit[minNumSplits];
         for (int i = 0; i < minNumSplits; i++) {
-            splits[i] = new JdbcInputSplit(i, numPartitions, i, incrementConfig.getStartLocation(), null);
+            splits[i] = new JdbcInputSplit(i, numPartitions, i, jdbcReaderConfig.getIncrementConfig().getStartLocation(), null);
         }
 
         return splits;
@@ -123,12 +125,12 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
             throw new IllegalArgumentException("open() failed." + se.getMessage(), se);
         }
 
-        boolean splitWithRowCol = numPartitions > 1 && StringUtils.isNotEmpty(splitKey) && splitKey.contains("(");
+        boolean splitWithRowCol = numPartitions > 1 && StringUtils.isNotEmpty(jdbcReaderConfig.getSplitKey()) && jdbcReaderConfig.getSplitKey().contains("(");
         if (splitWithRowCol) {
             columnCount = columnCount - 1;
         }
-        checkSize(columnCount, metaColumns);
-        columnTypeList = DbUtil.analyzeColumnType(resultSet, metaColumns);
+        checkSize(columnCount, jdbcReaderConfig.getMetaColumns());
+        columnTypeList = DbUtil.analyzeColumnType(resultSet, jdbcReaderConfig.getMetaColumns());
         LOG.info("JdbcInputFormat[{}]open: end", jobName);
     }
 
@@ -139,7 +141,7 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
      * @param metaColumns
      */
     protected void checkSize(int columnCount, List<MetaColumn> metaColumns) {
-        if (!JobCommonConstant.STAR_SYMBOL.equals(metaColumns.get(0).getName()) && columnCount != metaColumns.size()) {
+        if (/*StringUtils.isEmpty(jdbcReaderConfig.getCustomSql()) &&*/ !JobCommonConstant.STAR_SYMBOL.equals(metaColumns.get(0).getName()) && columnCount != metaColumns.size()) {
             String message = String.format("error config: column = %s, column size = %s, but columns size for query result is %s. And the query sql is %s.",
                     JsonUtil.getInstance().writeJson(metaColumns),
                     metaColumns.size(),
@@ -159,20 +161,20 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
         dbConn = getConnection();
         // 部分驱动需要关闭事务自动提交，fetchSize参数才会起作用
         dbConn.setAutoCommit(false);
-        if (incrementConfig.isPolling()) {
+        if (jdbcReaderConfig.getIncrementConfig().isPolling()) {
             if(StringUtils.isBlank(startLocation)){
                 //从数据库中获取起始位置
                 queryStartLocation();
             }else{
                 ps = dbConn.prepareStatement(querySql, resultSetType, resultSetConcurrency);
-                ps.setFetchSize(fetchSize);
-                ps.setQueryTimeout(queryTimeOut);
+                ps.setFetchSize(jdbcReaderConfig.getFetchSize());
+                ps.setQueryTimeout(jdbcReaderConfig.getQueryTimeOut());
                 queryForPolling(startLocation);
             }
         } else {
             statement = dbConn.createStatement(resultSetType, resultSetConcurrency);
-            statement.setFetchSize(fetchSize);
-            statement.setQueryTimeout(queryTimeOut);
+            statement.setFetchSize(jdbcReaderConfig.getFetchSize());
+            statement.setQueryTimeout(jdbcReaderConfig.getQueryTimeOut());
             resultSet = statement.executeQuery(querySql);
             hasNext = resultSet.next();
         }
@@ -187,20 +189,20 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
         builder.append(querySql)
                 .append("ORDER BY ")
                 .append(JobCommonConstant.DOUBLE_QUOTE_MARK_SYMBOL)
-                .append(incrementConfig.getColumnName())
+                .append(jdbcReaderConfig.getIncrementConfig().getColumnName())
                 .append(JobCommonConstant.DOUBLE_QUOTE_MARK_SYMBOL);
         ps = dbConn.prepareStatement(builder.toString(), resultSetType, resultSetConcurrency);
-        ps.setFetchSize(fetchSize);
+        ps.setFetchSize(jdbcReaderConfig.getFetchSize());
         //第一次查询数据库中增量字段的最大值
         ps.setFetchDirection(ResultSet.FETCH_REVERSE);
-        ps.setQueryTimeout(queryTimeOut);
+        ps.setQueryTimeout(jdbcReaderConfig.getQueryTimeOut());
         resultSet = ps.executeQuery();
         hasNext = resultSet.next();
 
         try {
             //间隔轮询一直循环，直到查询到数据库中的数据为止
             while(!hasNext){
-                TimeUnit.MILLISECONDS.sleep(incrementConfig.getPollingInterval());
+                TimeUnit.MILLISECONDS.sleep(jdbcReaderConfig.getIncrementConfig().getPollingInterval());
                 //执行到此处代表轮询任务startLocation为空，且数据库中无数据，此时需要查询增量字段的最小值
                 ps.setFetchDirection(ResultSet.FETCH_FORWARD);
                 resultSet.close();
@@ -209,7 +211,7 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
                 resultSet = ps.executeQuery();
                 hasNext = resultSet.next();
                 //每隔五分钟打印一次，(当前时间 - 任务开始时间) % 300秒 <= 一个间隔轮询周期
-                if((System.currentTimeMillis() - startTime) % 300000 <= incrementConfig.getPollingInterval()){
+                if((System.currentTimeMillis() - startTime) % 300000 <= jdbcReaderConfig.getIncrementConfig().getPollingInterval()){
                     LOG.info("no record matched condition in database, execute query sql = {}, startLocation = {}", querySql, endLocationAccumulator.getLocalValue());
                 }
             }
@@ -221,15 +223,15 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
         builder = new StringBuilder(128);
         builder.append(querySql)
                 .append("and ")
-                .append(databaseDialect.quoteColumn(incrementConfig.getColumnName()))
+                .append(databaseDialect.quoteColumn(jdbcReaderConfig.getIncrementConfig().getColumnName()))
                 .append(" > ? ORDER BY \"")
-                .append(incrementConfig.getColumnName())
+                .append(jdbcReaderConfig.getIncrementConfig().getColumnName())
                 .append(JobCommonConstant.DOUBLE_QUOTE_MARK_SYMBOL);
         querySql = builder.toString();
         ps = dbConn.prepareStatement(querySql, resultSetType, resultSetConcurrency);
         ps.setFetchDirection(ResultSet.FETCH_REVERSE);
-        ps.setFetchSize(fetchSize);
-        ps.setQueryTimeout(queryTimeOut);
+        ps.setFetchSize(jdbcReaderConfig.getFetchSize());
+        ps.setQueryTimeout(jdbcReaderConfig.getQueryTimeOut());
         LOG.info("update querySql, sql = {}", querySql);
     }
 
@@ -238,9 +240,9 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
         if (hasNext) {
             return false;
         } else {
-            if (incrementConfig.isPolling()) {
+            if (jdbcReaderConfig.getIncrementConfig().isPolling()) {
                 try {
-                    TimeUnit.MILLISECONDS.sleep(incrementConfig.getPollingInterval());
+                    TimeUnit.MILLISECONDS.sleep(jdbcReaderConfig.getIncrementConfig().getPollingInterval());
                     if(!dbConn.getAutoCommit()){
                         dbConn.setAutoCommit(true);
                     }
@@ -266,7 +268,7 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
      * @return connection
      */
     protected Connection getConnection() throws SQLException {
-        return RetryUtil.executeWithRetry(() -> DriverManager.getConnection(dbUrl, username, password), 3, 2000,false);
+        return RetryUtil.executeWithRetry(() -> DriverManager.getConnection(jdbcReaderConfig.getJdbcUrl(), jdbcReaderConfig.getUsername(), jdbcReaderConfig.getPassword()), 3, 2000,false);
     }
 
     /**
@@ -275,27 +277,27 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
      * @param inputSplit 数据分片
      */
     protected void initLocationAccumulator(InputSplit inputSplit) {
-        if (!incrementConfig.isIncrement()) {
+        if (!jdbcReaderConfig.getIncrementConfig().isIncrement()) {
             return;
         }
         //初始化增量、轮询字段类型
-        type = ColumnType.fromString(incrementConfig.getColumnType());
+        type = ColumnType.fromString(jdbcReaderConfig.getIncrementConfig().getColumnType());
         startLocationAccumulator = new BigIntegerMaximum();
         endLocationAccumulator = new BigIntegerMaximum();
-        String startLocation = StringUtil.stringToTimestampStr(incrementConfig.getStartLocation(), type);
+        String startLocation = StringUtil.stringToTimestampStr(jdbcReaderConfig.getIncrementConfig().getStartLocation(), type);
 
 
-        if (StringUtils.isNotEmpty(incrementConfig.getStartLocation())) {
+        if (StringUtils.isNotEmpty(jdbcReaderConfig.getIncrementConfig().getStartLocation())) {
             ((JdbcInputSplit) inputSplit).setStartLocation(startLocation);
             startLocationAccumulator.add(new BigInteger(startLocation));
         }
 
         //轮询任务endLocation设置为startLocation的值
-        if (incrementConfig.isPolling()) {
+        if (jdbcReaderConfig.getIncrementConfig().isPolling()) {
             if (StringUtils.isNotEmpty(startLocation)) {
                 endLocationAccumulator.add(new BigInteger(startLocation));
             }
-        } else if (incrementConfig.isUseMaxFunc()) {
+        } else if (jdbcReaderConfig.getIncrementConfig().isUseMaxFunc()) {
             //如果不是轮询任务，则只能是增量任务，若useMaxFunc设置为true，则去数据库查询当前增量字段的最大值
             getMaxValue(inputSplit);
             //endLocation设置为数据库中查询的最大值
@@ -352,10 +354,10 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
         }
 
         //The extra 10 times is to ensure that accumulator is updated
-        int maxAcquireTimes = (queryTimeOut / incrementConfig.getRequestAccumulatorInterval()) + 10;
+        int maxAcquireTimes = (jdbcReaderConfig.getQueryTimeOut() / jdbcReaderConfig.getIncrementConfig().getRequestAccumulatorInterval()) + 10;
 
         final String[] maxValue = new String[1];
-        UrlUtil.get(url, incrementConfig.getRequestAccumulatorInterval() * 1000, maxAcquireTimes, new UrlUtil.Callback() {
+        UrlUtil.get(url, jdbcReaderConfig.getIncrementConfig().getRequestAccumulatorInterval() * 1000, maxAcquireTimes, new UrlUtil.Callback() {
 
             @Override
             public void call(String response) {
@@ -400,18 +402,18 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
             long startTime = System.currentTimeMillis();
 
             String queryMaxValueSql;
-            if (StringUtils.isNotEmpty(customSql)) {
+            if (StringUtils.isNotEmpty(jdbcReaderConfig.getCustomSql())) {
                 queryMaxValueSql = String.format("select max(%s.%s) as max_value from ( %s ) %s", DbUtil.TEMPORARY_TABLE_NAME,
-                        databaseDialect.quoteColumn(incrementConfig.getColumnName()), customSql, DbUtil.TEMPORARY_TABLE_NAME);
+                        databaseDialect.quoteColumn(jdbcReaderConfig.getIncrementConfig().getColumnName()), jdbcReaderConfig.getCustomSql(), DbUtil.TEMPORARY_TABLE_NAME);
             } else {
                 queryMaxValueSql = String.format("select max(%s) as max_value from %s",
-                        databaseDialect.quoteColumn(incrementConfig.getColumnName()), databaseDialect.quoteTable(table));
+                        databaseDialect.quoteColumn(jdbcReaderConfig.getIncrementConfig().getColumnName()), databaseDialect.quoteTable(jdbcReaderConfig.getTable()));
             }
 
-            String startSql = buildStartLocationSql(incrementConfig.getColumnType(),
-                    databaseDialect.quoteColumn(incrementConfig.getColumnName()),
-                    incrementConfig.getStartLocation(),
-                    incrementConfig.isUseMaxFunc());
+            String startSql = buildStartLocationSql(jdbcReaderConfig.getIncrementConfig().getColumnType(),
+                    databaseDialect.quoteColumn(jdbcReaderConfig.getIncrementConfig().getColumnName()),
+                    jdbcReaderConfig.getIncrementConfig().getStartLocation(),
+                    jdbcReaderConfig.getIncrementConfig().isUseMaxFunc());
             if (StringUtils.isNotEmpty(startSql)) {
                 queryMaxValueSql += " where " + startSql;
             }
@@ -438,7 +440,7 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
 
             return maxValue;
         } catch (Throwable e) {
-            throw new RuntimeException("Get max value from " + table + " error", e);
+            throw new RuntimeException("Get max value from " + jdbcReaderConfig.getTable() + " error", e);
         } finally {
             DbUtil.closeDbResources(rs, st, conn, false);
         }
@@ -454,7 +456,7 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
      */
     protected boolean canReadData(InputSplit split) {
         //只排除增量同步
-        if (!incrementConfig.isIncrement() || incrementConfig.isPolling()) {
+        if (!jdbcReaderConfig.getIncrementConfig().isIncrement() || jdbcReaderConfig.getIncrementConfig().isPolling()) {
             return true;
         }
 
@@ -483,7 +485,7 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
 
         JdbcInputSplit jdbcInputSplit = (JdbcInputSplit) inputSplit;
 
-        if (StringUtils.isNotEmpty(splitKey)) {
+        if (StringUtils.isNotEmpty(jdbcReaderConfig.getSplitKey())) {
             querySql = queryTemplate.replace("${N}", String.valueOf(numPartitions)).replace("${M}", String.valueOf(indexOfSubTask));
         }
 
@@ -492,11 +494,11 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
             if (formatState == null) {
                 querySql = querySql.replace(DbUtil.RESTORE_FILTER_PLACEHOLDER, StringUtils.EMPTY);
 
-                if (incrementConfig.isIncrement()) {
+                if (jdbcReaderConfig.getIncrementConfig().isIncrement()) {
                     querySql = buildIncrementSql(jdbcInputSplit, querySql);
                 }
             } else {
-                boolean useMaxFunc = incrementConfig.isUseMaxFunc();
+                boolean useMaxFunc = jdbcReaderConfig.getIncrementConfig().isUseMaxFunc();
                 String startLocation = getLocation(restoreColumn.getType(), formatState.getState());
                 if (StringUtils.isNotBlank(startLocation)) {
                     LOG.info("update startLocation, before = {}, after = {}", jdbcInputSplit.getStartLocation(), startLocation);
@@ -507,7 +509,7 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
                         restoreColumn.getName(),
                         jdbcInputSplit.getStartLocation(),
                         jdbcInputSplit.getEndLocation(),
-                        customSql,
+                        jdbcReaderConfig.getCustomSql(),
                         useMaxFunc);
 
                 if (StringUtils.isNotEmpty(restoreFilter)) {
@@ -518,7 +520,7 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
             }
 
             querySql = querySql.replace(DbUtil.INCREMENT_FILTER_PLACEHOLDER, StringUtils.EMPTY);
-        } else if (incrementConfig.isIncrement()) {
+        } else if (jdbcReaderConfig.getIncrementConfig().isIncrement()) {
             querySql = buildIncrementSql(jdbcInputSplit, querySql);
         }
 
@@ -537,12 +539,12 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
      * @return
      */
     private String buildIncrementSql(JdbcInputSplit jdbcInputSplit, String querySql) {
-        String incrementFilter = buildIncrementFilter(incrementConfig.getColumnType(),
-                incrementConfig.getColumnName(),
+        String incrementFilter = buildIncrementFilter(jdbcReaderConfig.getIncrementConfig().getColumnType(),
+                jdbcReaderConfig.getIncrementConfig().getColumnName(),
                 jdbcInputSplit.getStartLocation(),
                 jdbcInputSplit.getEndLocation(),
-                customSql,
-                incrementConfig.isUseMaxFunc());
+                jdbcReaderConfig.getCustomSql(),
+                jdbcReaderConfig.getIncrementConfig().isUseMaxFunc());
         if (StringUtils.isNotEmpty(incrementFilter)) {
             incrementFilter = " and " + incrementFilter;
         }
@@ -622,7 +624,7 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
         String operator = useMaxFunc ? " >= " : " > ";
 
         //增量轮询，startLocation使用占位符代替
-        if (incrementConfig.isPolling()) {
+        if (jdbcReaderConfig.getIncrementConfig().isPolling()) {
             return incrementCol + operator + "?";
         }
 
@@ -635,9 +637,9 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
     protected Row doNextRecord(Row row) throws IOException {
         try {
             updateColumnCount();
-            if (!JobCommonConstant.STAR_SYMBOL.equals(metaColumns.get(0).getName())) {
+            if (!JobCommonConstant.STAR_SYMBOL.equals(jdbcReaderConfig.getMetaColumns().get(0).getName())) {
                 for (int i = 0; i < columnCount; i++) {
-                    MetaColumn metaColumn = metaColumns.get(i);
+                    MetaColumn metaColumn = jdbcReaderConfig.getMetaColumns().get(i);
                     Object val = row.getField(metaColumn.getName());
                     if (val == null && metaColumn.getValue() != null) {
                         val = metaColumn.getValue();
@@ -650,14 +652,14 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
                 }
             }
 
-            boolean isUpdateLocation = incrementConfig.isPolling() || (incrementConfig.isIncrement() && !incrementConfig.isUseMaxFunc());
+            boolean isUpdateLocation = jdbcReaderConfig.getIncrementConfig().isPolling() || (jdbcReaderConfig.getIncrementConfig().isIncrement() && !jdbcReaderConfig.getIncrementConfig().isUseMaxFunc());
             if (isUpdateLocation) {
                 String location = null;
-                Object obj = resultSet.getObject(incrementConfig.getColumnName());
+                Object obj = resultSet.getObject(jdbcReaderConfig.getIncrementConfig().getColumnName());
                 if(obj != null) {
                     if((obj instanceof java.util.Date
                             || obj.getClass().getSimpleName().toUpperCase().contains(ColumnType.TIMESTAMP.name())) ) {
-                        obj = resultSet.getTimestamp(incrementConfig.getColumnName()).getTime();
+                        obj = resultSet.getTimestamp(jdbcReaderConfig.getIncrementConfig().getColumnName()).getTime();
                     }
                     location = String.valueOf(obj);
                     endLocationAccumulator.add(new BigInteger(location));
@@ -688,7 +690,7 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
     private  void updateColumnCount() throws SQLException {
         if(columnCount == 0){
             columnCount =resultSet.getMetaData().getColumnCount();
-            boolean splitWithRowCol = numPartitions > 1 && StringUtils.isNotEmpty(splitKey) && splitKey.contains("(");
+            boolean splitWithRowCol = numPartitions > 1 && StringUtils.isNotEmpty(jdbcReaderConfig.getSplitKey()) && jdbcReaderConfig.getSplitKey().contains("(");
             if (splitWithRowCol) {
                 columnCount = columnCount - 1;
             }

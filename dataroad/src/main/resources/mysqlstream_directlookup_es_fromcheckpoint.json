@@ -15,7 +15,7 @@
           }
         },
         "directLookup": {
-          "type": "processor",
+          "type": "lookup",
           "pluginName": "directLookup",
           "parameter": {
             "directData": [

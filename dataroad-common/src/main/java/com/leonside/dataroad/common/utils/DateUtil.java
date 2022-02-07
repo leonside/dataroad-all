@@ -227,6 +227,10 @@ public class DateUtil {
         return datetimeFormatter.get().get(DATE_FORMAT).format(date);
     }
 
+    public static String dateToDateTimeString(Date date) {
+        return datetimeFormatter.get().get(STANDARD_DATETIME_FORMAT).format(date);
+    }
+
     public static String timestampToString(Date date) {
         return datetimeFormatter.get().get(STANDARD_DATETIME_FORMAT).format(date);
     }

@@ -1,6 +1,6 @@
 package com.leonside.dataroad.flink.processor.lookup.config;
 
-import com.leonside.dataroad.common.constant.ConfigKey;
+import com.leonside.dataroad.common.config.ConfigKey;
 
 /**
  * @author leon
@@ -8,17 +8,19 @@ import com.leonside.dataroad.common.constant.ConfigKey;
 public enum BaseLookupConfigKey implements ConfigKey {
 
 
-    KEY_DIRECT_DATA("directData",true,"", "表码数据"),
-    KEY_JOIN_COLUMNS("joinColumns",true,"", "Join字段"),
-    KEY_COLUMNS("columns",true,"", "列名");
+    KEY_DIRECT_DATA("directData","维表数据集",true,"", "例如：[{\"code\":\"0\", \"value\": \"男\"},{\"code\":\"1\", \"value\": \"女\"}]"),
+    KEY_COLUMNS("columns","维表列名",true,"", "对应维表数据集，例如：[\"code\",\"value\"]"),
+    KEY_JOIN_COLUMNS("joinColumns","Join字段",true,"", "事实表和维表的Join字段映射，例如：{\"sex\": \"code\"}");
 
     public String name;
+    public String cnName;
     public String desc;
     public boolean required;
     public String defaultValue;
 
-    BaseLookupConfigKey(String name,boolean required,String defaultValue, String desc) {
+    BaseLookupConfigKey(String name,String cnName,boolean required,String defaultValue, String desc) {
         this.name = name;
+        this.cnName = cnName;
         this.desc = desc;
         this.required = required;
         this.defaultValue = defaultValue;
@@ -42,6 +44,11 @@ public enum BaseLookupConfigKey implements ConfigKey {
     @Override
     public String getDesc() {
         return desc;
+    }
+
+    @Override
+    public String getCnName() {
+        return cnName;
     }
 
     @Override

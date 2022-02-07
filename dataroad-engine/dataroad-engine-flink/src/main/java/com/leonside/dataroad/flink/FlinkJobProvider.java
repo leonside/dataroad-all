@@ -88,7 +88,7 @@ public class FlinkJobProvider implements JobEngineProvider<FlinkExecuteContext> 
 
     private StreamExecutionEnvironment buildStreamExecutionEnvironment(ExecuteContext executeContext) {
         StreamExecutionEnvironment environment =
-                StringUtils.isNotEmpty(executeContext.getJobSetting().getMonitorUrls()) ?
+                (executeContext.getJobSetting().isLocal()) ?
                 StreamExecutionEnvironment.getExecutionEnvironment():
                 new LocalStreamEnvironment();
         return environment;

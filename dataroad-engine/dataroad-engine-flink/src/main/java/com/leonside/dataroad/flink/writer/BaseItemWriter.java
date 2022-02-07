@@ -18,6 +18,7 @@
 
 package com.leonside.dataroad.flink.writer;
 
+import com.leonside.dataroad.common.config.BaseConfig;
 import com.leonside.dataroad.common.context.RestoreConfig;
 import com.leonside.dataroad.core.component.ComponentInitialization;
 import com.leonside.dataroad.core.component.ComponentNameSupport;
@@ -28,13 +29,13 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSink;
 import org.apache.flink.util.Preconditions;
 
-import java.util.Map;
+import java.util.UUID;
 
 /**
  * Abstract specification of Writer Plugin
  *
  */
-public abstract class BaseItemWriter extends ComponentNameSupport implements ComponentInitialization<FlinkExecuteContext> {
+public abstract class BaseItemWriter extends ComponentNameSupport  {
 
     protected String mode;
 
@@ -61,9 +62,8 @@ public abstract class BaseItemWriter extends ComponentNameSupport implements Com
 //        this.srcCols = srcCols;
 //    }
 
-    @Override
-    public void initialize(FlinkExecuteContext executeContext, Map<String, Object> parameter) {
-        this.monitorUrls = executeContext.getJobSetting().getMonitorUrls();
+    public void doInitialize(FlinkExecuteContext executeContext, BaseConfig baseConfig) {
+//        this.monitorUrls = executeContext.getJobSetting().getMonitorUrls();
         this.restoreConfig = executeContext.getJobSetting().getRestore();
 //        this.errors = config.getJob().getSetting().getErrorLimit().getRecord();
 //        Double percentage = config.getJob().getSetting().getErrorLimit().getPercentage();
@@ -159,7 +159,7 @@ public abstract class BaseItemWriter extends ComponentNameSupport implements Com
     }
 
     protected DataStreamSink<?> createOutput(DataStream<?> dataSet, OutputFormat outputFormat) {
-        return createOutput(dataSet, outputFormat, this.getClass().getSimpleName().toLowerCase());
+        return createOutput(dataSet, outputFormat, this.getClass().getSimpleName().toLowerCase() );
     }
 
 }

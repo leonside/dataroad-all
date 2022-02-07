@@ -11,4 +11,5 @@ public interface Component extends Serializable {
 
     default void setName(String name){}
 
+    default String description(){ return "";}
 }

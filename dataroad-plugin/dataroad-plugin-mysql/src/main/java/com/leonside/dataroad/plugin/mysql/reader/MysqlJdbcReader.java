@@ -1,5 +1,6 @@
 package com.leonside.dataroad.plugin.mysql.reader;
 
+import com.leonside.dataroad.common.config.BaseConfig;
 import com.leonside.dataroad.plugin.jdbc.DatabaseDialect;
 import com.leonside.dataroad.plugin.jdbc.reader.GenericJdbcReader;
 import com.leonside.dataroad.plugin.jdbc.reader.inputformat.GenericJdbcInputFormatBuilder;

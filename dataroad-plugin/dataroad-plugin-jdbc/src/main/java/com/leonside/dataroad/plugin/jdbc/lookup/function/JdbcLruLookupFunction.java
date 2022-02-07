@@ -54,7 +54,7 @@ public class JdbcLruLookupFunction extends AbstractLruLookupFunction {
        super(jdbcLookupConfig);
         this.jdbcLookupConfig = jdbcLookupConfig;
         this.query = (StringUtils.isNotEmpty(jdbcLookupConfig.getCustomSql())) ?
-                jdbcLookupConfig.getCustomSql() :
+                databaseDialect.getSelectFromStatement(jdbcLookupConfig.getCustomSql(), valueColumns) :
                 databaseDialect.getSelectFromStatement(jdbcLookupConfig.getSchema(), jdbcLookupConfig.getTable(), baseLookupConfig.getColumns(), jdbcLookupConfig.getWhere(), valueColumns);
         this.databaseDialect = databaseDialect;
         this.asyncPoolSize = jdbcLookupConfig.getAsyncPoolSize();

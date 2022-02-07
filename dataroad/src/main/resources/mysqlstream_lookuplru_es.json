@@ -15,7 +15,7 @@
           }
         },
         "jdbcLookup": {
-          "type": "processor",
+          "type": "lookup",
           "pluginName": "mysqlLookup",
           "parameter": {
             "cacheType": "lru",

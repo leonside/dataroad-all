@@ -35,6 +35,9 @@ public class ComponentFactory {
             case agg:
                 component = getComponent(executeContext,ComponentType.agg, componentConfig);
                 break;
+            case lookup:
+                component = getComponent(executeContext,ComponentType.lookup, componentConfig);
+                break;
             default:
                 break;
         }
@@ -68,8 +71,8 @@ public class ComponentFactory {
 
     private static <T extends ExecuteContext> void initComponent(Object component, T executeContext,GenericComponentConfig componentConfig) {
         if(component instanceof ComponentInitialization){
-            ((ComponentInitialization<ExecuteContext>) component).initialize(executeContext,componentConfig.getParameter());
-            ((ComponentInitialization<ExecuteContext>) component).validate();
+            ((ComponentInitialization) component).initialize(executeContext,componentConfig.getParameter());
+            ((ComponentInitialization) component).validate();
         }
     }
 }

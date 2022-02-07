@@ -1,8 +1,11 @@
 
 package com.leonside.dataroad.common.context;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorLimitConfig implements Serializable {
 
     public static final int DEFAULT_ERROR_RECORD_LIMIT = 0;

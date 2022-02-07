@@ -1,7 +1,12 @@
 package com.leonside.dataroad.common.utils;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jdk.nashorn.internal.parser.JSONParser;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -26,6 +31,7 @@ public class JsonUtil {
 		mapper = new ObjectMapper();
 //		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
+//		mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS,true);
 	}
 
 	public ObjectMapper getMapper(){
@@ -39,6 +45,16 @@ public class JsonUtil {
             log.error("JSON parsing exception",e);
 		}
 		return str;
+	}
+
+	public <T> T readValue(String content, TypeReference<T> valueTypeRef)  {
+		T obj = null;
+		try {
+			obj = mapper.readValue(content, valueTypeRef);
+		} catch (Exception e) {
+			throw new RuntimeException("JSON parsing exception",e);
+		}
+		return obj;
 	}
 	
 	public <T> T readJson(String jsonStr, Class<T> T){
@@ -62,5 +78,49 @@ public class JsonUtil {
 	}
 
 
+	public String prettyJson(Object obj) {
+		String str = "";
+		try {
+			str = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
+		} catch (Exception e) {
+			log.error("JSON parsing exception",e);
+		}
+		return str;
+	}
 
+//	public String stringToJSON(String strJson) {
+//		int tabNum = 0;
+//		StringBuffer jsonFormat = new StringBuffer();
+//		int length = strJson.length();
+//		for (int i = 0; i < length; i++) {
+//			char c = strJson.charAt(i);
+//			if (c == '{') {
+//				tabNum++;
+//				jsonFormat.append(c + "\n");
+//				jsonFormat.append(getSpaceOrTab(true,tabNum));
+//			} else if (c == '}') {
+//				tabNum--;
+//				jsonFormat.append("\n");
+//				jsonFormat.append(getSpaceOrTab(true,tabNum));
+//				jsonFormat.append(c);
+//			} else if (c == ',') {
+//				jsonFormat.append(c + "\n");
+//				jsonFormat.append(getSpaceOrTab(true,tabNum));
+//			} else {
+//				jsonFormat.append(c);
+//			}
+//		}
+//		return jsonFormat.toString();
+//	}
+	private String getSpaceOrTab(boolean isTab, int tabNum) {
+		StringBuffer sbTab = new StringBuffer();
+		for (int i = 0; i < tabNum; i++) {
+			if (isTab) {
+				sbTab.append('\t');
+			} else {
+				sbTab.append("    ");
+			}
+		}
+		return sbTab.toString();
+	}
 }

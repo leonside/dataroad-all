@@ -17,15 +17,17 @@ import java.util.Optional;
  */
 public class GenericItemUnionProcessor extends ComponentNameAutoGenerator implements ItemUnionProcessor<FlinkExecuteContext, List<DataStream<Row>>, DataStream<Row>> {
 
-    private int[] flowindexs;
+    public static String COMPONENT_ID = "unionProcessor";
+
+    private Integer[] flowindexs;
 
     public GenericItemUnionProcessor(){
         super(JobConfigKeyConstants.COMPONENT_PREFIX_UNION_PROCESSOR);
     }
 
     @Override
-    public void initializeUnionFlowIndex(int[] indexs) {
-        this.flowindexs = flowindexs;
+    public void initializeUnionFlowIndex(Integer[] indexs) {
+        this.flowindexs = indexs;
     }
 
     @Override

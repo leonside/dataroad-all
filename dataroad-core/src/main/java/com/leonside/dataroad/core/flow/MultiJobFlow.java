@@ -44,8 +44,9 @@ public class MultiJobFlow extends JobFlow<ExecuteContext> {
                     throw new JobFlowException("multi job flow execute exception",e);
                 }
             });
+
+            executeContext.putJobFlowOutput(task.getComponentName(), multiJobFlowOutput);
         }
-        deciderOutput.ifPresent(o -> executeContext.putJobFlowOutput(task.getComponentName(), multiJobFlowOutput));
 
         return deciderOutput;
 

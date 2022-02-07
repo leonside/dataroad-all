@@ -1,9 +1,11 @@
 package com.leonside.dataroad.flink.processor.lookup;
 
+import com.leonside.dataroad.common.config.BaseConfig;
 import com.leonside.dataroad.common.spi.ItemProcessor;
 import com.leonside.dataroad.common.utils.ConfigBeanUtils;
 import com.leonside.dataroad.core.component.ComponentInitialization;
 import com.leonside.dataroad.core.component.ComponentNameSupport;
+import com.leonside.dataroad.core.spi.ItemLookupProcessor;
 import com.leonside.dataroad.flink.context.FlinkExecuteContext;
 import com.leonside.dataroad.flink.processor.lookup.config.BaseLookupConfig;
 import com.leonside.dataroad.flink.processor.lookup.config.BaseLookupConfigKey;
@@ -16,7 +18,7 @@ import java.util.Map;
 /**
  * @author leon
  */
-public class DirectAllLookupProcessor extends ComponentNameSupport implements ComponentInitialization<FlinkExecuteContext>, ItemProcessor<FlinkExecuteContext, DataStream<Row>,DataStream<Row>> {
+public class DirectAllLookupProcessor extends ComponentNameSupport implements ComponentInitialization<FlinkExecuteContext,BaseLookupConfig>, ItemLookupProcessor<FlinkExecuteContext, DataStream<Row>,DataStream<Row>> {
 
     private BaseLookupConfig lookupConfig;
 
@@ -31,13 +33,13 @@ public class DirectAllLookupProcessor extends ComponentNameSupport implements Co
     }
 
     @Override
-    public void initialize(FlinkExecuteContext executeContext, Map<String, Object> parameter) {
-        lookupConfig = new BaseLookupConfig();
-        ConfigBeanUtils.copyConfig(lookupConfig, parameter, BaseLookupConfigKey.class);
+    public void doInitialize(FlinkExecuteContext executeContext, BaseLookupConfig baseConfig) {
+        lookupConfig = baseConfig;
     }
 
-    @Override
-    public boolean validate() {
-        return lookupConfig.validate();
-    }
+
+//    @Override
+//    public Class<? extends BaseConfig> configClass() {
+//        return BaseLookupConfig.class;
+//    }
 }

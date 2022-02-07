@@ -1,16 +1,18 @@
 package com.leonside.dataroad.core.aggregations.config;
 
-import com.leonside.dataroad.core.component.Validation;
+import com.leonside.dataroad.common.config.ConfigKey;
+import com.leonside.dataroad.common.config.Validation;
 import lombok.Data;
 import org.apache.commons.lang.StringUtils;
 
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
  * @author leon
  */
 @Data
-public class TumblingWindowConfig extends BaseWindowConfig implements Validation {
+public class TumblingWindowConfig extends BaseWindowConfig  {
 
     public long timeSize;
 
@@ -21,6 +23,14 @@ public class TumblingWindowConfig extends BaseWindowConfig implements Validation
     public String eventTimeColumn;
 
     public int outOfOrderness = 0;
+
+    public TumblingWindowConfig(Map<String, Object> parameter) {
+        super(parameter);
+    }
+
+    public TumblingWindowConfig(){
+        super(null);
+    }
 
     @Override
     public String windowComponentName() {
@@ -35,5 +45,10 @@ public class TumblingWindowConfig extends BaseWindowConfig implements Validation
         }
 
         return super.validate();
+    }
+
+    @Override
+    public Class<? extends ConfigKey> bindConfigKey() {
+        return TumblingWindowConfigKey.class;
     }
 }

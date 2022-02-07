@@ -1,6 +1,6 @@
 //package com.leonside.dataroad.plugin;
 //
-//import com.leonside.dataroad.common.spi.ItemProcessor;
+//import com.leonside.dataroad.core.spi.ItemLookupProcessor;
 //import com.leonside.dataroad.flink.context.FlinkExecuteContext;
 //import org.apache.flink.api.common.functions.MapFunction;
 //import org.apache.flink.streaming.api.datastream.DataStream;

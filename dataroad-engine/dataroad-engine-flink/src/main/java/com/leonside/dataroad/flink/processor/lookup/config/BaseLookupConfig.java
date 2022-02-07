@@ -1,9 +1,9 @@
 package com.leonside.dataroad.flink.processor.lookup.config;
 
-import com.leonside.dataroad.core.component.Validation;
+import com.leonside.dataroad.common.config.BaseConfig;
+import com.leonside.dataroad.common.config.ConfigKey;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +11,7 @@ import java.util.Map;
  * @author leon
  */
 @Data
-public class BaseLookupConfig implements Validation , Serializable {
+public class BaseLookupConfig extends BaseConfig  {
 
     public List<Map<String,Object>> directData;
 
@@ -28,9 +28,18 @@ public class BaseLookupConfig implements Validation , Serializable {
 //    private int cachePeriod ;
 
 
+    public BaseLookupConfig(Map<String, Object> parameter) {
+        super(parameter);
+    }
+
     @Override
     public boolean validate() {
-        return Validation.super.validate();
+        return super.validate();
+    }
+
+    @Override
+    public Class<? extends ConfigKey> bindConfigKey() {
+        return BaseLookupConfigKey.class;
     }
 
     public enum CacheType{

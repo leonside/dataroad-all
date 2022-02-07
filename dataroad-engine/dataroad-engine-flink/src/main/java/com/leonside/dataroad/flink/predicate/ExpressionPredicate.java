@@ -3,13 +3,11 @@ package com.leonside.dataroad.flink.predicate;
 import com.leonside.dataroad.common.exception.ScriptExecuteException;
 import com.leonside.dataroad.common.script.ScriptEvaluator;
 import com.leonside.dataroad.common.script.ScriptEvaluatorFactory;
-import com.leonside.dataroad.common.utils.ConfigBeanUtils;
-import com.leonside.dataroad.core.spi.JobPredicate;
 import com.leonside.dataroad.core.component.ComponentInitialization;
 import com.leonside.dataroad.core.component.ComponentNameSupport;
-import com.leonside.dataroad.flink.context.FlinkExecuteContext;
+import com.leonside.dataroad.core.spi.JobPredicate;
 import com.leonside.dataroad.flink.config.ScriptExpressionConfig;
-import com.leonside.dataroad.flink.config.ScriptExpressionConfigKey;
+import com.leonside.dataroad.flink.context.FlinkExecuteContext;
 import org.apache.flink.types.Row;
 
 import java.util.Map;
@@ -17,7 +15,7 @@ import java.util.Map;
 /**
  * @author leon
  */
-public class ExpressionPredicate extends ComponentNameSupport implements ComponentInitialization<FlinkExecuteContext>, JobPredicate<FlinkExecuteContext, Row> {
+public class ExpressionPredicate extends ComponentNameSupport implements ComponentInitialization<FlinkExecuteContext,ScriptExpressionConfig>, JobPredicate<FlinkExecuteContext, Row> {
 
     private ScriptExpressionConfig scriptExpressionConfig;
 
@@ -41,10 +39,10 @@ public class ExpressionPredicate extends ComponentNameSupport implements Compone
     }
 
     @Override
-    public void initialize(FlinkExecuteContext executeContext, Map<String, Object> parameter) {
-        this.parameter = parameter;
-        this.scriptExpressionConfig = new ScriptExpressionConfig() ;
-        ConfigBeanUtils.copyConfig(scriptExpressionConfig, parameter, ScriptExpressionConfigKey.class);
+    public void doInitialize(FlinkExecuteContext executeContext, ScriptExpressionConfig config) {
+        this.parameter = config.getParameter();
+        this.scriptExpressionConfig =  config ;
         scriptEvalutor = ScriptEvaluatorFactory.createScriptEvalutor(scriptExpressionConfig.getLanguage(), scriptExpressionConfig.getExpression());
     }
+
 }

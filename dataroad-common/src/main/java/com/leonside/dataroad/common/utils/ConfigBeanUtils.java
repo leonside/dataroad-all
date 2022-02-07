@@ -1,11 +1,10 @@
 package com.leonside.dataroad.common.utils;
 
-import com.leonside.dataroad.common.constant.ConfigKey;
+import com.leonside.dataroad.common.config.BaseConfig;
+import com.leonside.dataroad.common.config.ConfigKey;
 import com.leonside.dataroad.common.exception.JobConfigException;
+import com.leonside.dataroad.common.exception.JobException;
 import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.enums.EnumUtils;
-import org.apache.commons.lang.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,11 +18,11 @@ public class ConfigBeanUtils {
 
     public Logger logger = LoggerFactory.getLogger(ConfigBeanUtils.class);
 
-    public static void copyConfig(Object configBean, Map<String,Object> parameter, Class<? extends Enum> configKeyClazz)  {
+    public static void copyConfig(Object configBean, Map<String,Object> parameter, Class<? extends ConfigKey> configKeyClazz)  {
 
         Field[] declaredFields = getFields(configBean.getClass());
 
-        Enum[] enumList = configKeyClazz.getEnumConstants();
+        Enum[] enumList = (Enum[]) configKeyClazz.getEnumConstants();
 
         for (int i = 0; i < enumList.length; i++) {
 
@@ -71,12 +70,19 @@ public class ConfigBeanUtils {
             }
             return value;
         }else{
-            throw new UnsupportedOperationException("unsupport field type["+ type +"] for " + configKey.getName());
+            return parameter.get(configKey.getName());
+//            throw new UnsupportedOperationException("unsupport field type["+ type +"] for " + configKey.getName());
         }
     }
 
     public static Field[] getFields(Class<?> beanClass) throws SecurityException {
         return getFieldsDirectly(beanClass, true);
+    }
+
+    public static Optional<Field> getField(Class<?> beanClass, String name) throws SecurityException {
+        return Arrays.stream(ConfigBeanUtils.getFields(beanClass))
+                .filter(field -> field.getName().equals(name))
+                .findFirst();
     }
 
     public static Field[] getFieldsDirectly(Class<?> beanClass, boolean withSuperClassFieds) throws SecurityException {
@@ -95,4 +101,13 @@ public class ConfigBeanUtils {
     }
 
 
+    public static <T extends BaseConfig> T newInstance(Class<? extends BaseConfig> bindConfig, Map<String,Object> parameter) {
+        T baseConfig = null;
+        try {
+            baseConfig = (T) bindConfig.getConstructor(Map.class).newInstance(parameter);
+        } catch (Exception e) {
+            throw new JobException("inistance class " + bindConfig.getName() + " exception", e);
+        }
+        return baseConfig;
+    }
 }

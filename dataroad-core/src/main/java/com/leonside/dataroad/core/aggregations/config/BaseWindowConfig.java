@@ -1,20 +1,23 @@
 package com.leonside.dataroad.core.aggregations.config;
 
+import com.leonside.dataroad.common.config.BaseConfig;
 import com.leonside.dataroad.core.aggregations.AggerationEnum;
-import com.leonside.dataroad.core.component.Validation;
 import lombok.Data;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang.enums.EnumUtils;
 
-import java.io.Serializable;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author leon
  */
 @Data
-public abstract class BaseWindowConfig implements Validation , Serializable {
+public abstract class BaseWindowConfig extends BaseConfig  {
+
+    public BaseWindowConfig(Map<String, Object> parameter) {
+        super(parameter);
+    }
 
     /**
      *  keyBy，支持多个分组字段，如下的agg和keyby数组对应，配置如：
@@ -59,7 +62,7 @@ public abstract class BaseWindowConfig implements Validation , Serializable {
         if(MapUtils.isEmpty(agg)){
             throw new IllegalArgumentException("agg config cannot be empty ");
         }
-        return Validation.super.validate();
+        return super.validate();
     }
 
     public abstract String windowComponentName();
