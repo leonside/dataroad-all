@@ -35,16 +35,6 @@ public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
 
     public JdbcWriterConfig jdbcWriterConfig;
 
-//    protected String username;
-//    protected String password;
-//    protected String dbUrl;
-//    protected List<String> preSql;
-//    protected List<String> postSql;
-//    protected List<String> fullColumn;
-//    protected String table;
-//    protected List<String> column;
-//    protected Map<String,List<String>> updateKey;
-
     protected String driverName;
 
     protected Connection dbConn;
@@ -73,8 +63,6 @@ public class GenericJdbcOutputFormat extends GenericRichOutputFormat {
     protected long rowsOfCurrentTransaction;
 
     protected String primaryKey;
-
-//    public Properties properties;
 
     /**
      * schema名

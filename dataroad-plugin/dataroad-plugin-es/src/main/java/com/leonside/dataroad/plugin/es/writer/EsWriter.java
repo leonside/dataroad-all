@@ -41,13 +41,6 @@ public class EsWriter extends BaseItemWriter implements ItemWriter<FlinkExecuteC
         super.doInitialize(executeContext, config);
         this.esWriterConfig = (EsWriterConfig)config;
 
-//        address = ParameterUtils.getString(parameter, EsWriterConfigKey.KEY_ADDRESS);
-//        username = ParameterUtils.getString(parameter, EsWriterConfigKey.KEY_USERNAME);
-//        password = ParameterUtils.getString(parameter, EsWriterConfigKey.KEY_PASSWORD);
-//        type = ParameterUtils.getString(parameter, EsWriterConfigKey.KEY_TYPE);
-//        index = ParameterUtils.getString(parameter, EsWriterConfigKey.KEY_INDEX);
-//        bulkAction = ParameterUtils.getInteger(parameter, EsWriterConfigKey.KEY_BULK_ACTION);
-
         clientConfig = new HashMap<>();
         clientConfig.put(EsWriterConfigKey.KEY_TIMEOUT.getName(), esWriterConfig.getTimeout());
         clientConfig.put(EsWriterConfigKey.KEY_PATH_PREFIX.getName(), esWriterConfig.getPathPrefix());
@@ -79,11 +72,6 @@ public class EsWriter extends BaseItemWriter implements ItemWriter<FlinkExecuteC
         }
     }
 
-//    @Override
-//    public Class<? extends BaseConfig> configClass() {
-//        return EsWriterConfig.class;
-//    }
-
     @Override
     public void write(FlinkExecuteContext executeContext, DataStream<Row> items) {
         EsOutputFormatBuilder builder = new EsOutputFormatBuilder();
@@ -101,7 +89,6 @@ public class EsWriter extends BaseItemWriter implements ItemWriter<FlinkExecuteC
                 .setIdColumnValues(idColumnValues)
                 .setMonitorUrls(monitorUrls)
                 .setErrors(errors);
-//        builder.setSrcCols(srcCols);
 
             createOutput(items, builder.finish());
     }

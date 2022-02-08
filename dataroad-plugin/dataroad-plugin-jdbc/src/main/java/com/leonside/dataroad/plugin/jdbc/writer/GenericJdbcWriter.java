@@ -42,15 +42,7 @@ import java.util.List;
 public abstract class GenericJdbcWriter extends BaseItemWriter implements ItemWriter<FlinkExecuteContext, DataStream<Row>>, ComponentInitialization<FlinkExecuteContext, JdbcWriterConfig> {
 
     protected DatabaseDialect databaseDialect;
-//    protected String jdbcUrl;
-//    protected String username;
-//    protected String password;
-//    protected List<String> column;
-//    protected String table;
-//    protected List<String> preSql;
-//    protected List<String> postSql;
-//    protected int batchSize;
-//    protected Map<String, List<String>> updateKey;
+
     private JdbcWriterConfig jdbcWriterConfig;
     protected List<String> fullColumn;
     protected TypeConverterInterface typeConverter;
@@ -75,16 +67,6 @@ public abstract class GenericJdbcWriter extends BaseItemWriter implements ItemWr
     public void write(FlinkExecuteContext executeContext, DataStream<Row> items) {
         GenericJdbcOutputFormatBuilder builder = getBuilder();
         builder.setDriverName(databaseDialect.getDriverClass())
-//                .setDbUrl(jdbcUrl)
-//                .setUsername(username)
-//                .setPassword(password)
-//                .setBatchInterval(batchSize)
-//                .setPreSql(preSql)
-//                .setPostSql(postSql)
-//                .setTable(table)
-//                .setColumn(column)
-//                .setUpdateKey(updateKey)
-//                .setFullColumn(fullColumn)
                 .setJdbcWriterConfig(jdbcWriterConfig)
                 .setMonitorUrls(monitorUrls)
                 .setErrors(errors)
@@ -99,31 +81,13 @@ public abstract class GenericJdbcWriter extends BaseItemWriter implements ItemWr
         createOutput(items, builder.finish());
     }
 
-//    @Override
-//    public Class<? extends BaseConfig> configClass() {
-//        return JdbcWriterConfig.class;
-//    }
-
     @Override
     public void doInitialize(FlinkExecuteContext executeContext, JdbcWriterConfig config) {
         super.doInitialize(executeContext, config);
 
         jdbcWriterConfig = config;
 
-//        Map<String, List<String>> updateKey = (Map<String, List<String>>) writerConfig.getParameter().getVal(KEY_UPDATE_KEY);
-//        jdbcUrl = ParameterUtils.getString(parameter, JdbcWriterConfigKey.KEY_JDBC_URL);
-//        username = ParameterUtils.getString(parameter, JdbcWriterConfigKey.KEY_USERNAME);
-//        password = ParameterUtils.getString(parameter, JdbcWriterConfigKey.KEY_PASSWORD);
-//        table = ParameterUtils.getString(parameter, JdbcWriterConfigKey.KEY_TABLE);
-//        preSql = (List<String>) ParameterUtils.getArrayList(parameter, JdbcWriterConfigKey.KEY_PRE_SQL);
-//        postSql = (List<String>) ParameterUtils.getArrayList(parameter, JdbcWriterConfigKey.KEY_POST_SQL);
-//        batchSize = ParameterUtils.getInteger(parameter, JdbcWriterConfigKey.KEY_BATCH_SIZE);
-//        column = (List<String>) ParameterUtils.getArrayList(parameter, JdbcWriterConfigKey.KEY_COLUMN);
         mode = jdbcWriterConfig.getWriteMode();
-
-//        fullColumn = (List<String>) MapParameterUtils.getArrayList(parameter, JdbcConfigKeys.KEY_FULL_COLUMN);
-//        insertSqlMode = MapParameterUtils.getString(parameter, JdbcConfigKeys.KEY_INSERT_SQL_MODE);
-//        properties = MapParameterUtils.getString(parameter, JdbcConfigKeys.KEY_PROPERTIES);
 
         this.databaseDialect = obtainDatabaseDialect();
     }

@@ -8,6 +8,7 @@ import com.leonside.dataroad.core.component.ComponentInitialization;
 import com.leonside.dataroad.core.component.ComponentNameSupport;
 import com.leonside.dataroad.flink.config.ScriptExpressionConfig;
 import com.leonside.dataroad.flink.context.FlinkExecuteContext;
+import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.types.Row;
@@ -15,10 +16,10 @@ import org.apache.flink.types.Row;
 import java.util.Map;
 
 /**
- * Script Transformer Processor
+ * Script Filter Processor
  * @author leon
  */
-public class ScriptTransformerProcessor extends ComponentNameSupport implements ComponentInitialization<FlinkExecuteContext,ScriptExpressionConfig>, ItemProcessor<FlinkExecuteContext, DataStream<Row>,DataStream<Row>> {
+public class ScriptFilterProcessor extends ComponentNameSupport implements ComponentInitialization<FlinkExecuteContext,ScriptExpressionConfig>, ItemProcessor<FlinkExecuteContext, DataStream<Row>,DataStream<Row>> {
 
     private ScriptExpressionConfig scriptExpressionConfig;
 
@@ -37,19 +38,26 @@ public class ScriptTransformerProcessor extends ComponentNameSupport implements 
     @Override
     public DataStream<Row> process(FlinkExecuteContext executeContext, DataStream<Row> dataStream) {
 
-        return dataStream.map(new MapFunction<Row,Row>() {
-
+        return dataStream.filter(new FilterFunction<Row>() {
             @Override
-            public Row map(Row row) throws Exception {
-                try{
-                    scriptEvalutor.evaluate(row, parameter);
+            public boolean filter(Row value) throws Exception {
 
-                    return row;
+                try{
+//long l = System.currentTimeMillis();
+                    Object evaluate = scriptEvalutor.evaluate(value, parameter);
+//System.out.println(Thread.currentThread().getId() + "-" + scriptEvalutor + " >>" +scriptExpressionConfig.getExpression() + ",language["+scriptExpressionConfig.getLanguage()+"] cost:"+( System.currentTimeMillis() - l) + ",row:" + value +  ",result:" + evaluate);
+
+                    if(evaluate == null || ! (evaluate instanceof Boolean)){
+                        throw new ScriptExecuteException("Boolean must be returned， check the expression is valid. [" + scriptExpressionConfig.getExpression() + "]");
+                    }
+                    return (Boolean)evaluate;
                 }catch (Exception exception){
-                    throw new ScriptExecuteException("Script execution error [" + scriptExpressionConfig.getExpression() + "],language ["+scriptExpressionConfig.getLanguage()+"]",exception);
+                    throw new ScriptExecuteException("Script execution error [" + scriptExpressionConfig.getExpression() + "]",exception);
                 }
             }
         });
+
+
     }
 
 

@@ -45,8 +45,10 @@ public class JobEngine_config {
 //        List<Job> jobs = jsonJobCreator.createJobByPath(homePath + "mysql_aggsliding_es.json");
 //        List<Job> jobs = jsonJobCreator.createJobByPath(homePath + "mysql_aggtumbling_es.json");
 //        List<Job> jobs = jsonJobCreator.createJobByPath(homePath + "es_filter_es.json");
-        List<Job> jobs = jsonJobCreator.createJobByPath(homePath + "oracle_incrpoll_filter_oracle.json");
+//        List<Job> jobs = jsonJobCreator.createJobByPath(homePath + "oracle_incrpoll_filter_oracle.json");
+//        List<Job> jobs = jsonJobCreator.createJobByPath(homePath + "mysql_scripttrans_mysql.json");
 
+        List<Job> jobs = jsonJobCreator.createJobByPath(homePath + "mysql_scriptfilter_mysql.json");
 
 
         jobs.forEach(job ->{

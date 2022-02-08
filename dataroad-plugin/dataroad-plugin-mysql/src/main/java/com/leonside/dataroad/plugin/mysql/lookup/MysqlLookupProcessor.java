@@ -31,28 +31,6 @@ public class MysqlLookupProcessor extends ComponentNameSupport implements Compon
     @Override
     public DataStream<Row> process(FlinkExecuteContext executeContext, DataStream<Row> dataStream) {
 
-        /*TypeInformation<Row> type = dataStream.getType();
-
-        RowTypeInfo rowTypeInfo = null;
-        if(type instanceof ExternalTypeInfo){
-            TypeInformation<?> typeInformation = TypeConversions.fromDataTypeToLegacyInfo(((ExternalTypeInfo) type).getDataType());
-            TypeInformation[] typeInformations = (TypeInformation[]) ArrayUtils.add(((RowTypeInfo) typeInformation).getFieldTypes(), Types.STRING);
-            String[] names = (String[]) ArrayUtils.add(((RowTypeInfo)typeInformation).getFieldNames(), "value");
-            rowTypeInfo = new RowTypeInfo(typeInformations, names);
-        }else if(type instanceof RowTypeInfo){
-            TypeInformation[] typeInformations = (TypeInformation[]) ArrayUtils.add(((RowTypeInfo) type).getFieldTypes(), Types.STRING);
-            String[] names = (String[]) ArrayUtils.add(((RowTypeInfo)type).getFieldNames(), "value");
-            rowTypeInfo = new RowTypeInfo(typeInformations, names);
-        }else{
-
-        }*/
-
-//        SingleOutputStreamOperator<Row> typeInfoTranslateStream = dataStream.transform("typeInfoTranslate", rowTypeInfo, new StreamFlatMap<Row, Row>(new FlatMapFunction<Row, Row>() {
-//            @Override
-//            public void flatMap(Row row, Collector<Row> collector) throws Exception {
-//                collector.collect(row);
-//            }
-//        }));
         if(lookupConfig.getCacheType().equalsIgnoreCase(BaseLookupConfig.CacheType.all.name())){
             JdbcAllLookupFunction jdbcAllLookupFunction = new JdbcAllLookupFunction.JdbcAllLookupFunctionBuilder()
                     .jdbcLookupConfig(lookupConfig)

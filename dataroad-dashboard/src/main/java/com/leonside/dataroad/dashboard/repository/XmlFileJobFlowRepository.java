@@ -3,6 +3,7 @@ package com.leonside.dataroad.dashboard.repository;
 import com.alibaba.fastjson.JSONObject;
 import com.leonside.dataroad.common.exception.JobFlowException;
 import com.leonside.dataroad.common.utils.JsonUtil;
+import com.leonside.dataroad.dashboard.converter.JobFlowConverter;
 import com.leonside.dataroad.dashboard.domian.JobFlowConfig;
 import com.leonside.dataroad.dashboard.domian.JobFlowConfigs;
 import com.leonside.dataroad.dashboard.utils.HomeFolderUtils;
@@ -82,8 +83,14 @@ public class XmlFileJobFlowRepository implements JobFlowRepository {
         loadJobFlowConfig.setGolbalSetting(jobFlowConfig.getGolbalSetting());
         loadJobFlowConfig.setDescription(jobFlowConfig.getDescription());
 
+        //更新json值
+        if(StringUtils.isNotEmpty(loadJobFlowConfig.getDesignerJson())){
+            String jobFlowJson = new JobFlowConverter(loadJobFlowConfig.getDesignerJson(),loadJobFlowConfig.getGolbalSetting() ).convert();
+            loadJobFlowConfig.setJobflowJson(jobFlowJson);
+        }
+
         createOrWriterXmlFile(file, JobFlowConfigs.of(jobFlowConfigs));
-        createOrWriterSchemaFile(getSchemaFile(jobFlowConfig.getId()), jobFlowConfig.getJobflowJson());
+        createOrWriterSchemaFile(getSchemaFile(jobFlowConfig.getId()), loadJobFlowConfig.getJobflowJson());
     }
 
     @Override

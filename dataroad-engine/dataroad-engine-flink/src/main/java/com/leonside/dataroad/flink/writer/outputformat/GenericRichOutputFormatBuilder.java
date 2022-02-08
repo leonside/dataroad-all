@@ -15,25 +15,10 @@ public abstract class GenericRichOutputFormatBuilder<T extends GenericRichOutput
 
     protected T format;
 
-//    public R setDirtyPath(String dirtyPath) {
-//        format.setDirtyPath(dirtyPath);
-//        return (R)this;
-//    }
-
-//    public R setDirtyHadoopConfig(Map<String,Object> dirtyHadoopConfig) {
-//        format.setDirtyHadoopConfig(dirtyHadoopConfig);
-//        return (R)this;
-//    }
-
     public R setRestore(RestoreConfig restore){
         format.setRestoreConfig(restore);
         return (R)this;
     }
-
-//    public R setSrcCols(List<String> srcCols) {
-//        format.setSrcFieldNames(srcCols);
-//        return (R)this;
-//    }
 
     public R setErrors(Integer errors) {
         format.errors = errors;
@@ -59,18 +44,6 @@ public abstract class GenericRichOutputFormatBuilder<T extends GenericRichOutput
         format.restoreConfig = restoreConfig;
         return (R)this;
     }
-
-//    public R setInitAccumulatorAndDirty(boolean initAccumulatorAndDirty) {
-//        this.format.initAccumulatorAndDirty = initAccumulatorAndDirty;
-//        return (R)this;
-//    }
-//
-//    protected R notSupportBatchWrite(String writerName) {
-//        if (this.format.getBatchInterval() > 1) {
-//            throw new IllegalArgumentException(writerName + "不支持批量写入");
-//        }
-//        return (R)this;
-//    }
 
     /**
      * Check the value of parameters

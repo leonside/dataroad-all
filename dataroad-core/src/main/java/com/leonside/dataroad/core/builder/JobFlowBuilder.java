@@ -12,10 +12,12 @@ import com.leonside.dataroad.core.component.ComponentType;
 import com.leonside.dataroad.core.flow.SimpleJobFlow;
 import com.leonside.dataroad.core.spi.JobEngineProvider;
 import com.leonside.dataroad.core.spi.JobExecutionDecider;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author leon
  */
+@Slf4j
 public class JobFlowBuilder extends BaseJobFlowBuilder<JobFlowBuilder> {
 
     private JobEngineProvider jobEngineCreator = ExtensionLoader.getExtensionLoader(JobEngineProvider.class).getFirstExtension();
@@ -56,8 +58,7 @@ public class JobFlowBuilder extends BaseJobFlowBuilder<JobFlowBuilder> {
 
     public Job build(){
 
-        System.out.println(startJobFlow.toString());
-        //todo SPI  构建flink的job、全局配置的传递？
+        log.debug(startJobFlow.toString());
 
         ExecuteContext executeContext = jobBuilder.getExecuteContext();
 

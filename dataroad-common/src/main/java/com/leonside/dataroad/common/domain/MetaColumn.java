@@ -18,11 +18,10 @@ public class MetaColumn implements Serializable {
 
     private String name;
     private String type;
-    private Integer index;  //?
+    private Integer index;
     private String value;
     private SimpleDateFormat timeFormat;
-    private String splitter;  //?
-//    private Boolean isPart; //?
+    private String splitter;
 
     public Object convertToColumn(String value){
         return StringUtil.object2col(value, getType(), getTimeFormat());
@@ -163,11 +162,4 @@ public class MetaColumn implements Serializable {
         this.timeFormat = timeFormat;
     }
 
-//    public Boolean getPart() {
-//        return isPart;
-//    }
-//
-//    public void setPart(Boolean part) {
-//        isPart = part;
-//    }
 }

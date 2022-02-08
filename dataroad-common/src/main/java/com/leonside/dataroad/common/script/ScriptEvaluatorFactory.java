@@ -1,7 +1,7 @@
 package com.leonside.dataroad.common.script;
 
 import com.leonside.dataroad.common.script.bsh.BshScriptEvaluator;
-import com.leonside.dataroad.common.script.fel.AviatorScriptEvaluator;
+import com.leonside.dataroad.common.script.fel.FelScriptEvaluator;
 import com.leonside.dataroad.common.script.groovy.GroovyScriptEvaluator;
 import com.leonside.dataroad.common.script.javascript.JavaScriptEvaluator;
 import com.leonside.dataroad.common.utils.Asserts;
@@ -26,8 +26,8 @@ public class ScriptEvaluatorFactory {
             case javascript:
                 scriptEvaluator = new JavaScriptEvaluator(scriptSource);
                 break;
-            case aviator:
-                scriptEvaluator = new AviatorScriptEvaluator(scriptSource);
+            case fel:
+                scriptEvaluator = new FelScriptEvaluator(scriptSource);
                 break;
             default:
                 throw new UnsupportedOperationException("unsupport script engine ["+ scriptEngine +"]");
@@ -39,7 +39,7 @@ public class ScriptEvaluatorFactory {
         bsh,
         javascript,
         groovy,
-        aviator;
+        fel;
 
 
     }

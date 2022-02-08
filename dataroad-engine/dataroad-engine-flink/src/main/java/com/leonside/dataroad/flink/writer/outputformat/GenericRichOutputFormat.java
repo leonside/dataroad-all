@@ -42,18 +42,6 @@ public abstract class GenericRichOutputFormat extends org.apache.flink.api.commo
 
     public static final int LOG_PRINT_INTERNAL = 2000;
 
-    /** Dirty data manager */
-//    protected DirtyDataManager dirtyDataManager;
-
-    /** Dirty data storage path */
-//    protected String dirtyPath;
-
-    /** The hadoop config for dirty data storage */
-//    protected Map<String,Object> dirtyHadoopConfig;
-
-    /** The source table field names  */
-//    protected List<String> srcFieldNames;
-
     /** 批量提交条数 */
     protected int batchInterval = 1;
 
@@ -128,17 +116,11 @@ public abstract class GenericRichOutputFormat extends org.apache.flink.api.commo
     public void setRestoreConfig(RestoreConfig restoreConfig) {
         this.restoreConfig = restoreConfig;
     }
-//    public void setDirtyDataManager(DirtyDataManager dirtyDataManager) {
-//        this.dirtyDataManager = dirtyDataManager;
-//    }
-//
+
     public void setErrorLimiter(ErrorLimiter errorLimiter) {
         this.errorLimiter = errorLimiter;
     }
 
-//    public void setSrcFieldNames(List<String> srcFieldNames) {
-//        this.srcFieldNames = srcFieldNames;
-//    }
 
     @Override
     public void configure(Configuration parameters) {
@@ -273,14 +255,6 @@ public abstract class GenericRichOutputFormat extends org.apache.flink.api.commo
         }
     }
 
-//    private void openDirtyDataManager(){
-//        if(StringUtils.isNotBlank(dirtyPath)) {
-//            dirtyDataManager = new DirtyDataManager(dirtyPath, dirtyHadoopConfig, srcFieldNames.toArray(new String[srcFieldNames.size()]), jobId);
-//            dirtyDataManager.open();
-//            LOG.info("init dirtyDataManager, {}", this.dirtyDataManager);
-//        }
-//    }
-
     protected boolean doNeedWaitBeforeOpen() {
         return false;
     }
@@ -338,18 +312,6 @@ public abstract class GenericRichOutputFormat extends org.apache.flink.api.commo
 
     private void updateStatisticsOfDirtyData(Row row, WriteRecordException e){
         errCounter.add(1);
-//        if(dirtyDataManager != null) {
-//            String errorType = dirtyDataManager.writeData(row, e);
-//            if (ERR_NULL_POINTER.equals(errorType)){
-//                nullErrCounter.add(1);
-//            } else if(ERR_FORMAT_TRANSFORM.equals(errorType)){
-//                conversionErrCounter.add(1);
-//            } else if(ERR_PRIMARY_CONFLICT.equals(errorType)){
-//                duplicateErrCounter.add(1);
-//            } else {
-//                otherErrCounter.add(1);
-//            }
-//        }
     }
 
     protected String recordConvertDetailErrorMessage(int pos, Row row) {
@@ -415,13 +377,6 @@ public abstract class GenericRichOutputFormat extends org.apache.flink.api.commo
         }
     }
 
-//    private Row setChannelInfo(Row row){
-//        Row internalRow = new Row(row.getArity() - 1);
-//        for (int i = 0; i < internalRow.getArity(); i++) {
-//            internalRow.setField(i, row.getField(i));
-//        }
-//        return internalRow;
-//    }
 
     @Override
     public void close() throws IOException {
@@ -452,9 +407,6 @@ public abstract class GenericRichOutputFormat extends org.apache.flink.api.commo
                     outputMetric.waitForReportMetrics();
                 }
             }finally {
-//                if(dirtyDataManager != null) {
-//                    dirtyDataManager.close();
-//                }
 
                 checkErrorLimit();
                 if(accumulatorCollector != null){
@@ -575,20 +527,6 @@ public abstract class GenericRichOutputFormat extends org.apache.flink.api.commo
     protected void doAfterClose()  {
         // nothing
     }
-
-//    protected void waitWhile(String latchName){
-//        BaseLatch latch = newLatch(latchName);
-//        latch.addOne();
-//        latch.waitUntil(numTasks);
-//    }
-
-//    protected BaseLatch newLatch(String latchName) {
-//        if(StringUtils.isNotBlank(monitorUrl)) {
-//            return new MetricLatch(getRuntimeContext(), monitorUrl, latchName);
-//        } else {
-//            return new LocalLatch(jobId + latchName);
-//        }
-//    }
 
     public int getBatchInterval() {
         return batchInterval;

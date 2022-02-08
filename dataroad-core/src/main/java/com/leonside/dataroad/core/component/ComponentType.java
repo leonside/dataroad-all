@@ -14,7 +14,6 @@ public enum ComponentType{
         reader("reader", ItemReader.class),
         writer("writer", ItemWriter.class),
         processor("processor", ItemProcessor.class),
-//        join("join", ItemJ.class),
         lookup("lookup", ItemLookupProcessor.class),
         agg("agg", ItemAggregationProcessor.class),
         decider("decider", ItemDeciderProcessor.class),

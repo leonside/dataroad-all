@@ -57,12 +57,6 @@ public class MysqlStreamJdbcReader extends ComponentNameSupport implements Compo
     public void doInitialize(FlinkExecuteContext executeContext, MysqlStreamReaderConfig config) {
         this.jobSetting = executeContext.getJobSetting();
         this.mysqlStreamReaderConfig = config;
-//        hostname = ParameterUtils.getString(parameter, MysqlStreamReaderConfigKey.hostname);
-//        port = ParameterUtils.getInteger(parameter, MysqlStreamReaderConfigKey.port);
-//        schema = ParameterUtils.getString(parameter, MysqlStreamReaderConfigKey.schema);
-//        username = ParameterUtils.getString(parameter, MysqlStreamReaderConfigKey.username);
-//        password = ParameterUtils.getString(parameter, MysqlStreamReaderConfigKey.password);
-//        table = ParameterUtils.getString(parameter, MysqlStreamReaderConfigKey.table);
     }
 
     public static class JsonDebeziumDeserializationSchema implements DebeziumDeserializationSchema<Row> {
@@ -83,10 +77,6 @@ public class MysqlStreamJdbcReader extends ComponentNameSupport implements Compo
                     Row row = extractBeforeRow(RowKind.DELETE, value, schema);
                     collector.collect(row);
                 } else {
-
-//                    Row updateBeforeRow = extractBeforeRow(RowKind.UPDATE_BEFORE, value, schema);
-//                    collector.collect(updateBeforeRow);
-
                     Row updateAfterRow = extractAfterRow(RowKind.UPDATE_AFTER, value, schema);
                     collector.collect(updateAfterRow);
                 }

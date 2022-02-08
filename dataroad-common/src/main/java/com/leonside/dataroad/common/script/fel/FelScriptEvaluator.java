@@ -11,11 +11,13 @@ import java.util.Map;
 /**
  * @author leon
  */
-public class AviatorScriptEvaluator implements ScriptEvaluator {
+public class FelScriptEvaluator implements ScriptEvaluator {
 
     private String scriptSource;
 
-    public AviatorScriptEvaluator(String scriptSource, String... packages){
+    private volatile FelEngine felEngine;
+
+    public FelScriptEvaluator(String scriptSource, String... packages){
         this.scriptSource = scriptSource;
        ;
     }
@@ -23,8 +25,14 @@ public class AviatorScriptEvaluator implements ScriptEvaluator {
     @Override
     public Object evaluate(Object row, Map<String, Object> params) throws Exception {
 
-long l = System.currentTimeMillis();
-        FelEngine felEngine = new FelEngineImpl();
+
+        if(felEngine == null){
+            synchronized(FelScriptEvaluator.class){
+                if(felEngine == null){
+                    felEngine = new FelEngineImpl();
+                }
+            }
+        }
         //获取引擎上下文
         FelContext felContext = felEngine.getContext();
 
@@ -37,7 +45,6 @@ long l = System.currentTimeMillis();
 
 
         Object eval = felEngine.eval(scriptSource);
-        System.out.println(scriptSource + " cost:"+( System.currentTimeMillis() - l) + ",row:" + row +  ",result:" + eval);
         return eval;
     }
 }

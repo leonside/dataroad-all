@@ -15,8 +15,6 @@ import java.util.List;
  */
 public class JobBuilder {
 
-
-//    private JobSetting jobSetting ;
     private List<JobExecutionListener> jobExecutionListeners = new ArrayList<>();
     private ExecuteContext executeContext;
 
@@ -29,21 +27,11 @@ public class JobBuilder {
         return this;
     }
 
-//    public JobBuilder setting(JobSetting jobSetting){
-//        this.jobSetting = jobSetting;
-//        return this;
-//    }
-
     public JobFlowBuilder reader(ItemReader itemReader){
         Asserts.notNull(itemReader, "itemReader can not be null");
         JobFlowBuilder jobFlowBuilder = JobFlowBuilder.newInstance(this);
         return jobFlowBuilder.reader(itemReader);
     }
-
-//    public ExecuteContext buildExecuteContext(){
-//        return ExecuteContext.of(jobSetting, jobExecutionListeners);
-//    }
-
 
     public ExecuteContext getExecuteContext() {
         return executeContext;

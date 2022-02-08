@@ -55,8 +55,6 @@ public class EsReader extends BaseItemReader implements ItemReader<FlinkExecuteC
         if(esReaderConfig.getQuery() != null){
             builder.setQuery(new Gson().toJson(esReaderConfig.getQuery() ));
         }
-//        builder.setTestConfig(testConfig);
-//        builder.setLogConfig(logConfig);
 
         return createInput(executeContext, builder.finish());
     }
@@ -65,21 +63,11 @@ public class EsReader extends BaseItemReader implements ItemReader<FlinkExecuteC
     public void doInitialize(FlinkExecuteContext executeContext, EsReaderConfig config) {
         super.doInitialize(executeContext, config);
         this.esReaderConfig = config;
-//        address = ParameterUtils.getString(parameter, EsReaderConfigKey.KEY_ADDRESS);
-//        username = ParameterUtils.getString(parameter, EsReaderConfigKey.KEY_USERNAME);
-//        password = ParameterUtils.getString(parameter, EsReaderConfigKey.KEY_PASSWORD);
-//        index = ParameterUtils.getArrayList(parameter, EsReaderConfigKey.KEY_INDEX).toArray(new String[]{});
-//        type = ParameterUtils.getArrayList(parameter, EsReaderConfigKey.KEY_TYPE).toArray(new String[]{});
-//        batchSize = ParameterUtils.getInteger(parameter, EsReaderConfigKey.KEY_BATCH_SIZE);
 
         clientConfig = new HashMap<>();
         clientConfig.put(EsReaderConfigKey.KEY_TIMEOUT.getName(), esReaderConfig.getTimeout());
         clientConfig.put(EsReaderConfigKey.KEY_PATH_PREFIX.getName(), esReaderConfig.getPathPrefix());
 
-//        Object queryMap = esReaderConfig.getQuery();//parameter.get(EsReaderConfigKey.KEY_QUERY.getName());
-//        if(queryMap != null) {
-//            query = new Gson().toJson(queryMap);
-//        }
         List columns = ParameterUtils.getArrayList(config.getParameter(), EsReaderConfigKey.KEY_COLUMN);
         if(columns != null && columns.size() > 0) {
             if(columns.get(0) instanceof Map) {
@@ -101,11 +89,6 @@ public class EsReader extends BaseItemReader implements ItemReader<FlinkExecuteC
             throw new IllegalArgumentException("column argument error");
         }
     }
-
-//    @Override
-//    public Class<? extends BaseConfig> configClass() {
-//        return EsReaderConfig.class;
-//    }
 
     @Override
     public String description() {

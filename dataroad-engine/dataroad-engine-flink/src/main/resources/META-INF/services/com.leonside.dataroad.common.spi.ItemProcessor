@@ -1,1 +1,2 @@
 scriptTransformer=com.leonside.dataroad.flink.processor.filter.ScriptTransformerProcessor
+scriptFilter=com.leonside.dataroad.flink.processor.filter.ScriptFilterProcessor

@@ -17,8 +17,6 @@ import java.util.Map;
 @SPI
 public interface ItemAggregationProcessor<T extends ExecuteContext,IN,OUT> extends ItemProcessor<T,IN,OUT> {
 
-//    void initialize(AggerationBuilder.Window window, Map<String, List<AggerationEnum>> aggerations);
-
     void initialize(BaseWindowConfig baseWindowConfig);
 
 }

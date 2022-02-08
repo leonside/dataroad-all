@@ -44,46 +44,6 @@ public class GenericJdbcInputFormatBuilder extends GenericRichInputFormatBuilder
         format.driverName = driverName;
         return this;
     }
-   /*  public GenericJdbcInputFormatBuilder setDbUrl(String dbUrl) {
-        format.jdbcUrl = dbUrl;
-        return this;
-    }
-    public GenericJdbcInputFormatBuilder setUsername(String username) {
-        format.username = username;
-        return this;
-    }
-    public GenericJdbcInputFormatBuilder setPassword(String password) {
-        format.password = password;
-        return this;
-    }
-    public GenericJdbcInputFormatBuilder setTable(String table) {
-        format.table = table;
-        return this;
-    }
-    public GenericJdbcInputFormatBuilder setMetaColumn(List<MetaColumn> metaColumns){
-        format.metaColumns = metaColumns;
-        return this;
-    }
-    public GenericJdbcInputFormatBuilder setFetchSize(int fetchSize){
-        format.fetchSize = fetchSize;
-        return this;
-    }
-    public GenericJdbcInputFormatBuilder setQueryTimeOut(int queryTimeOut){
-        format.queryTimeOut = queryTimeOut;
-        return this;
-    }
-    public GenericJdbcInputFormatBuilder setSplitKey(String splitKey){
-        format.splitKey = splitKey;
-        return this;
-    }
-    public GenericJdbcInputFormatBuilder setCustomSql(String customSql){
-        format.customSql = customSql;
-        return this;
-    }
-    public GenericJdbcInputFormatBuilder setIncrementConfig(IncrementConfig incrementConfig){
-        format.incrementConfig = incrementConfig;
-        return this;
-    }*/
 
     public GenericJdbcInputFormatBuilder setNumPartitions(int numPartitions){
         format.numPartitions = numPartitions;
@@ -97,18 +57,6 @@ public class GenericJdbcInputFormatBuilder extends GenericRichInputFormatBuilder
 
     @Override
     public boolean validate() {
-
-//        if (format.jdbcReaderConfig.getUsername() == null) {
-//            LOG.info("Username was not supplied separately.");
-//        }
-//
-//        if (format.jdbcReaderConfig.getPassword() == null) {
-//            LOG.info("Password was not supplied separately.");
-//        }
-//
-//        if (format.jdbcUrl == null) {
-//            throw new IllegalArgumentException("No database URL supplied");
-//        }
 
         if (format.driverName == null) {
             throw new IllegalArgumentException("No driver supplied");

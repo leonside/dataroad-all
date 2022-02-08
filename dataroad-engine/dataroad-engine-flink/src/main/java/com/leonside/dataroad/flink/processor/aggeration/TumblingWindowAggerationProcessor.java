@@ -46,11 +46,6 @@ public class TumblingWindowAggerationProcessor extends ComponentNameAutoGenerato
 
     }
 
-//    @Override
-//    public Class<? extends BaseConfig> configClass() {
-//        return TumblingWindowConfig.class;
-//    }
-
     @Override
     public boolean validate() {
         return tumblingWindowConfig.validate();

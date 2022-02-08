@@ -31,7 +31,7 @@ public class MysqlJdbcInputFormat extends GenericJdbcInputFormat {
         if (!hasNext) {
             return null;
         }
-        row = Row.withNames();//new Row(columnCount);
+        row = Row.withNames();
 
         try {
             for (int pos = 0; pos < columnCount; pos++) {

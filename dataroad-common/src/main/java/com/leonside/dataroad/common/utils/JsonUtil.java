@@ -88,30 +88,6 @@ public class JsonUtil {
 		return str;
 	}
 
-//	public String stringToJSON(String strJson) {
-//		int tabNum = 0;
-//		StringBuffer jsonFormat = new StringBuffer();
-//		int length = strJson.length();
-//		for (int i = 0; i < length; i++) {
-//			char c = strJson.charAt(i);
-//			if (c == '{') {
-//				tabNum++;
-//				jsonFormat.append(c + "\n");
-//				jsonFormat.append(getSpaceOrTab(true,tabNum));
-//			} else if (c == '}') {
-//				tabNum--;
-//				jsonFormat.append("\n");
-//				jsonFormat.append(getSpaceOrTab(true,tabNum));
-//				jsonFormat.append(c);
-//			} else if (c == ',') {
-//				jsonFormat.append(c + "\n");
-//				jsonFormat.append(getSpaceOrTab(true,tabNum));
-//			} else {
-//				jsonFormat.append(c);
-//			}
-//		}
-//		return jsonFormat.toString();
-//	}
 	private String getSpaceOrTab(boolean isTab, int tabNum) {
 		StringBuffer sbTab = new StringBuffer();
 		for (int i = 0; i < tabNum; i++) {

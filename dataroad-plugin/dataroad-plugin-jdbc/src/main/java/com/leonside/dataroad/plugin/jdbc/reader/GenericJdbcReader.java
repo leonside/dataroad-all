@@ -38,22 +38,6 @@ public abstract class GenericJdbcReader extends BaseItemReader implements  ItemR
     private JobSetting jobSetting;
 
     private JdbcReaderConfig jdbcReaderConfig;
-//    protected String username;
-//    protected String password;
-//    protected String jdbcUrl;
-//
-//    protected String table;
-//    protected String where;
-//    protected String customSql;
-//    protected String orderByColumn;
-//
-//    protected String splitKey;
-//    protected int fetchSize;
-//    protected int queryTimeOut;
-//    protected List<MetaColumn> metaColumns;
-//
-//    protected IncrementConfig incrementConfig;
-
 
     protected DatabaseDialect databaseDialect;
     protected TypeConverterInterface typeConverter;
@@ -75,16 +59,6 @@ public abstract class GenericJdbcReader extends BaseItemReader implements  ItemR
 
         GenericJdbcInputFormatBuilder builder = getGenericJdbcInputFormatBuilder();
         builder.setDriverName(databaseDialect.getDriverClass())
-//                .setDbUrl(jdbcUrl)
-//                .setUsername(username)
-//                .setPassword(password)
-//                .setTable(table)
-//                .setMetaColumn(metaColumns)
-//                .setFetchSize(fetchSize == 0 ? databaseDialect.getFetchSize() : fetchSize)
-//                .setQueryTimeOut(queryTimeOut == 0 ? databaseDialect.getQueryTimeout() : queryTimeOut)
-//                .setIncrementConfig(incrementConfig)
-//                .setSplitKey(splitKey)
-//                .setCustomSql(customSql)
                 .jdbcReaderConfig(jdbcReaderConfig)
                 .setDatabaseDialect(databaseDialect)
                 .setBytes(bytes)
@@ -116,27 +90,13 @@ public abstract class GenericJdbcReader extends BaseItemReader implements  ItemR
 
     protected abstract GenericJdbcInputFormatBuilder getGenericJdbcInputFormatBuilder() ;
 
-//    @Override
-//    public Class<? extends BaseConfig> configClass() {
-//        return JdbcReaderConfig.class;
-//    }
-
     @Override
     public void doInitialize(FlinkExecuteContext executeContext, JdbcReaderConfig config) {
         super.doInitialize(executeContext,config);
         this.jobSetting = executeContext.getJobSetting();
         this.restoreConfig = jobSetting.getRestore();
         jdbcReaderConfig = (JdbcReaderConfig)config;
-//        jdbcUrl = ParameterUtils.getString(parameter, JdbcReaderConfigKey.KEY_JDBC_URL);
-//        username = ParameterUtils.getString(parameter, JdbcReaderConfigKey.KEY_USER_NAME);
-//        password = ParameterUtils.getString(parameter, JdbcReaderConfigKey.KEY_PASSWORD);
-//        table = ParameterUtils.getString(parameter, JdbcReaderConfigKey.KEY_TABLE);
-//        where = ParameterUtils.getString(parameter, JdbcReaderConfigKey.KEY_WHERE);
-//        fetchSize = ParameterUtils.getInteger(parameter, JdbcReaderConfigKey.KEY_FETCH_SIZE);
-//        queryTimeOut = ParameterUtils.getInteger(parameter, JdbcReaderConfigKey.KEY_QUERY_TIME_OUT);
-//        splitKey = ParameterUtils.getString(parameter, JdbcReaderConfigKey.KEY_SPLIK_KEY);
-//        customSql = ParameterUtils.getString(parameter, JdbcReaderConfigKey.KEY_CUSTOM_SQL);
-//        orderByColumn = ParameterUtils.getString(parameter, JdbcReaderConfigKey.KEY_ORDER_BY_COLUMN);
+
         List<MetaColumn> metaColumns = MetaColumn.getMetaColumns(ParameterUtils.getArrayList(config.getParameter(), JdbcReaderConfigKey.KEY_COLUMN));
         jdbcReaderConfig.setMetaColumns(metaColumns);
 
@@ -148,11 +108,6 @@ public abstract class GenericJdbcReader extends BaseItemReader implements  ItemR
     protected abstract DatabaseDialect obtainDatabaseDialect();
 
     private void buildIncrementConfig(Map<String,Object> parameter,JdbcReaderConfig jdbcReaderConfig){
-//        boolean polling = ParameterUtils.getBooleanNullable(parameter, JdbcReaderConfigKey.KEY_POLLING.getName(), false);
-//        String startLocation = ParameterUtils.getStringNullable(parameter, JdbcReaderConfigKey.KEY_START_LOCATION.getName());
-//        boolean useMaxFunc = ParameterUtils.getBooleanNullable(parameter, JdbcReaderConfigKey.KEY_USE_MAX_FUNC.getName(), false);
-//        int requestAccumulatorInterval = ParameterUtils.getIntegerNullable(parameter, JdbcReaderConfigKey.KEY_REQUEST_ACCUMULATOR_INTERVAL.getName(), 2);
-//        long pollingInterval = ParameterUtils.getIntegerNullable(parameter, JdbcReaderConfigKey.KEY_POLLING_INTERVAL.getName(), 5000);
         String increColumn = ParameterUtils.getStringNullable(parameter, JdbcReaderConfigKey.KEY_INCRE_COLUMN.getName());
 
         IncrementConfig incrementConfig = new IncrementConfig();
@@ -183,11 +138,7 @@ public abstract class GenericJdbcReader extends BaseItemReader implements  ItemR
             incrementConfig.setColumnName(name);
             incrementConfig.setColumnType(type);
             incrementConfig.setColumnIndex(index);
-//            incrementConfig.setPolling(polling);
-//            incrementConfig.setStartLocation(startLocation);
-//            incrementConfig.setUseMaxFunc(useMaxFunc);
-//            incrementConfig.setRequestAccumulatorInterval(requestAccumulatorInterval);
-//            incrementConfig.setPollingInterval(pollingInterval);
+
         }
     }
 

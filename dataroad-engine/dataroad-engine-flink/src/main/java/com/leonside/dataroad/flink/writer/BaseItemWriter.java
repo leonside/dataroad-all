@@ -45,51 +45,15 @@ public abstract class BaseItemWriter extends ComponentNameSupport  {
 
     protected Double errorRatio;
 
-//    protected String dirtyPath;
-//    protected Map<String, Object> dirtyHadoopConfig;
-
     protected RestoreConfig restoreConfig;
 
-//    protected List<String> srcCols = new ArrayList<>();
-
-//    protected static ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-//    public List<String> getSrcCols() {
-//        return srcCols;
-//    }
-//
-//    public void setSrcCols(List<String> srcCols) {
-//        this.srcCols = srcCols;
-//    }
-
     public void doInitialize(FlinkExecuteContext executeContext, BaseConfig baseConfig) {
-//        this.monitorUrls = executeContext.getJobSetting().getMonitorUrls();
         this.restoreConfig = executeContext.getJobSetting().getRestore();
-//        this.errors = config.getJob().getSetting().getErrorLimit().getRecord();
-//        Double percentage = config.getJob().getSetting().getErrorLimit().getPercentage();
-//        if (percentage != null) {
-//            this.errorRatio = percentage / 100.0;
-//        }
-
-//        DirtyConfig dirtyConfig = config.getJob().getSetting().getDirty();
-//        if (dirtyConfig != null) {
-//            String dirtyPath = dirtyConfig.getPath();
-//            Map<String, Object> dirtyHadoopConfig = dirtyConfig.getHadoopConfig();
-//            if (dirtyPath != null) {
-//                this.dirtyPath = dirtyPath;
-//            }
-//            if (dirtyHadoopConfig != null) {
-//                this.dirtyHadoopConfig = dirtyHadoopConfig;
-//            }
-//        }
-
-//        List columns = config.getJob().getContent().get(0).getReader().getParameter().getColumn();
-//        parseSrcColumnNames(columns);
 
         if (restoreConfig.isStream()) {
             return;
         }
-//todo
+// todo
 //        if (restoreConfig.isRestore()) {
 //            MetaColumn metaColumn = MetaColumn.getMetaColumn(columns, restoreConfig.getRestoreColumnName());
 //            if (metaColumn == null) {
@@ -99,52 +63,6 @@ public abstract class BaseItemWriter extends ComponentNameSupport  {
 //            restoreConfig.setRestoreColumnType(metaColumn.getType());
 //        }
     }
-
-//    private void parseSrcColumnNames(List columns) {
-//        if (columns == null) {
-//            return;
-//        }
-//
-//        if (columns.isEmpty()) {
-//            throw new RuntimeException("source columns can't be null or empty");
-//        }
-//
-//        if (columns.get(0) instanceof String) {
-//            for (Object column : columns) {
-//                srcCols.add((String) column);
-//            }
-//            return;
-//        }
-//
-//        if (columns.get(0) instanceof Map) {
-//            for (Object column : columns) {
-//                Map<String, Object> colMap = (Map<String, Object>) column;
-//                String colName = (String) colMap.get("name");
-//                if (StringUtils.isBlank(colName)) {
-//                    Object colIndex = colMap.get("index");
-//                    if (colIndex != null) {
-//                        if (colIndex instanceof Integer) {
-//                            colName = String.valueOf(colIndex);
-//                        } else if (colIndex instanceof Double) {
-//                            Double doubleColIndex = (Double) colIndex;
-//                            colName = String.valueOf(doubleColIndex.intValue());
-//                        } else {
-//                            throw new RuntimeException("invalid src col index");
-//                        }
-//                    } else {
-//                        String colValue = (String) colMap.get("value");
-//                        if (StringUtils.isNotBlank(colValue)) {
-//                            colName = "val_" + colValue;
-//                        } else {
-//                            throw new RuntimeException("can't determine source column name");
-//                        }
-//                    }
-//                }
-//                srcCols.add(colName);
-//            }
-//        }
-//    }
-
 
     @SuppressWarnings("unchecked")
     protected DataStreamSink<?> createOutput(DataStream<?> dataSet, OutputFormat outputFormat, String sinkName) {

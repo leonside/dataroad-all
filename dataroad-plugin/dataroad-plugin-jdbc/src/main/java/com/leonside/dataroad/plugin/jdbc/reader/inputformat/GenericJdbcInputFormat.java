@@ -40,16 +40,6 @@ public class GenericJdbcInputFormat extends GenericRichInputFormat {
 
     public String driverName;
     public String querySql;
-//    public String table;
-//    public String customSql;
-//    public String splitKey;
-//    public int fetchSize;
-//    public int queryTimeOut;
-//    public IncrementConfig incrementConfig;
-//    public String username;
-//    public String password;
-//    public String jdbcUrl;
-//    public List<MetaColumn> metaColumns;
 
     public Properties properties;
     public transient Connection dbConn;

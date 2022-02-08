@@ -40,8 +40,4 @@ public class SqlTransformerProcessor extends ComponentNameSupport implements Com
         sqlTransformerConfig = config;
     }
 
-//    @Override
-//    public Class<? extends BaseConfig> configClass() {
-//        return SqlTransformerConfig.class;
-//    }
 }

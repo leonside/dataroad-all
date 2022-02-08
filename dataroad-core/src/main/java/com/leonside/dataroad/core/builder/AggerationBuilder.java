@@ -111,7 +111,6 @@ public class AggerationBuilder<T extends BaseJobFlowBuilder> {
     @Data
     public static class TumblingWindow extends Window{
         private Time size;
-//        private TimeUnit unit = TimeUnit.SECONDS;
         public TumblingWindow(Time size) {
             this.size = size;
         }
@@ -124,7 +123,6 @@ public class AggerationBuilder<T extends BaseJobFlowBuilder> {
     public static class SlidingWindow extends Window{
         private Time size;
         private Time slide;
-//        private TimeUnit unit = TimeUnit.SECONDS;
         public SlidingWindow(Time size, Time slide) {
             this.size = size;
             this.slide = slide;

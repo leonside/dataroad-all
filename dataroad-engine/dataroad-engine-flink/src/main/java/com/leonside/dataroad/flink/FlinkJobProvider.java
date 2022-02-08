@@ -23,12 +23,9 @@ public class FlinkJobProvider implements JobEngineProvider<FlinkExecuteContext> 
     @Override
     public Job createJob(FlinkExecuteContext executeContext, SimpleJobFlow startJobFlow) {
 
-        //checkpoint\configuration\Parallelism\isolation classloader
-
         buildGlobalSetting(executeContext, startJobFlow);
 
         initLoggerSetting(executeContext);
-        //metric??
 //
 //        buildJobExecuteListener();
 

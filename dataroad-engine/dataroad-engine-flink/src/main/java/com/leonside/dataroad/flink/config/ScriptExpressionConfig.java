@@ -14,7 +14,7 @@ import java.util.Map;
 @Data
 public class ScriptExpressionConfig extends BaseConfig {
 
-    public ScriptEvaluatorFactory.ScriptEngine language = ScriptEvaluatorFactory.ScriptEngine.aviator;
+    public ScriptEvaluatorFactory.ScriptEngine language = ScriptEvaluatorFactory.ScriptEngine.fel;
 
     public String expression;
 
