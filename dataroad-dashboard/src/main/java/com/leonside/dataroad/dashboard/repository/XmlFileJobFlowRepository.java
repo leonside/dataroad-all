@@ -168,7 +168,7 @@ public class XmlFileJobFlowRepository implements JobFlowRepository {
                 try {
                     File schemaFile = getSchemaFile(item.getId());
                     if(schemaFile.exists()){
-                        String jobflowJson = IOUtils.toString(new FileInputStream(file), Charsets.UTF_8);
+                        String jobflowJson = IOUtils.toString(new FileInputStream(schemaFile), Charsets.UTF_8);
                         item.setJobflowJson(jobflowJson);
                     }
                 } catch (IOException e) {

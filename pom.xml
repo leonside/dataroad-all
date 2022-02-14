@@ -7,7 +7,7 @@
     <groupId>io.github.leonside</groupId>
     <artifactId>dataroad-all</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.5</version>
     <modules>
         <module>dataroad-config</module>
         <module>dataroad-engine</module>
@@ -15,9 +15,8 @@
         <module>dataroad-plugin</module>
         <module>dataroad-common</module>
         <module>dataroad</module>
-        <module>dataroad-plugin</module>
-        <module>dataroad-plugin/dataroad-plugin-kafka</module>
         <module>dataroad-dashboard</module>
+        <module>dataroad-client</module>
     </modules>
 
     <properties>
@@ -28,6 +27,7 @@
         <flink.version>1.13.0</flink.version>
         <http.version>4.5.3</http.version>
         <scala.binary.version>2.11</scala.binary.version>
+        <dist.dir>dataroad-dist</dist.dir>
     </properties>
 
     <dependencyManagement>
@@ -139,6 +139,21 @@
         </dependencies>
     </dependencyManagement>
 
+    <build>
+        <plugins>
+
+        <!-- Java Compiler -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     <repositories>
         <repository>
             <id>duceap-releases</id>

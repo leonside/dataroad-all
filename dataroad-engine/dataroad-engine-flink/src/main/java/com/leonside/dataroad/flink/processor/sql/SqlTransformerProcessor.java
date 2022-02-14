@@ -1,19 +1,14 @@
-package com.leonside.dataroad.plugin.jdbc.sql;
+package com.leonside.dataroad.flink.processor.sql;
 
-import com.leonside.dataroad.common.config.BaseConfig;
 import com.leonside.dataroad.common.spi.ItemProcessor;
-import com.leonside.dataroad.common.utils.ConfigBeanUtils;
 import com.leonside.dataroad.core.component.ComponentInitialization;
 import com.leonside.dataroad.core.component.ComponentNameSupport;
 import com.leonside.dataroad.flink.context.FlinkExecuteContext;
-import com.leonside.dataroad.plugin.jdbc.sql.config.SqlTransformerConfig;
-import com.leonside.dataroad.plugin.jdbc.sql.config.SqlTransformerConfigKey;
+import com.leonside.dataroad.flink.processor.sql.config.SqlTransformerConfig;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.types.Row;
-
-import java.util.Map;
 
 /**
  * @author leon

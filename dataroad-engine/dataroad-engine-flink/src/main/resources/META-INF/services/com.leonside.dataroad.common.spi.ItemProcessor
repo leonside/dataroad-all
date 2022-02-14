@@ -1,2 +1,3 @@
 scriptTransformer=com.leonside.dataroad.flink.processor.filter.ScriptTransformerProcessor
 scriptFilter=com.leonside.dataroad.flink.processor.filter.ScriptFilterProcessor
+sqlTransformer=com.leonside.dataroad.flink.processor.sql.SqlTransformerProcessor

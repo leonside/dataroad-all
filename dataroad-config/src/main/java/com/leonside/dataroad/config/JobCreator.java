@@ -13,7 +13,8 @@ import java.util.List;
  */
 public interface JobCreator extends Serializable {
 
-    List<Job> createJob(JobConfigs jobConfigs) throws Exception;
+//    List<Job> createJob(JobConfigs jobConfigs) throws Exception;
 
-    List<Job> createJobByPath(String path) throws Exception;
+    List<Job> createJob() throws Exception;
+
 }

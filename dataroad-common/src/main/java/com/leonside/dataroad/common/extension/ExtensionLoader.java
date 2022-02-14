@@ -21,10 +21,12 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Dubbo使用的扩展点获取。<p>
@@ -371,7 +373,7 @@ public class ExtensionLoader<T> {
         }
 
         Map<String, Class<?>> extensionClasses = new HashMap<String, Class<?>>();
-        loadFile(extensionClasses, CMP_DIRECTORY);
+//        loadFile(extensionClasses, CMP_DIRECTORY);
         loadFile(extensionClasses, INTERNAL_DIRECTORY);
         return extensionClasses;
     }
@@ -468,7 +470,8 @@ public class ExtensionLoader<T> {
 
 
     private static ClassLoader findClassLoader() {
-        return ExtensionLoader.class.getClassLoader();
+        ClassLoader classLoader = ExtensionLoader.class.getClassLoader();
+        return classLoader;
     }
 
     @Override

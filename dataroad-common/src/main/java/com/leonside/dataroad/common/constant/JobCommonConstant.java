@@ -27,7 +27,9 @@ public class JobCommonConstant {
 
 
     public static final String JOBSCHEMA_PATH_PREFIX_CLASSPATH = "classpath:";
-    public static final String JOBSCHEMA_PATH_PREFIX_FILESYSTEM = "filesystem:";
+    public static final String JOBSCHEMA_PATH_PREFIX_FILESYSTEM = "file:";
+    public static final String JOBSCHEMA_PATH_PREFIX_HTTP = "http:";
+    public static final String JOBSCHEMA_PATH_PREFIX_HTTPS = "https:";
     /**
      * Jdbc获取主键列名
      */

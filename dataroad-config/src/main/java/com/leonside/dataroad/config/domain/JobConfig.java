@@ -1,12 +1,12 @@
 package com.leonside.dataroad.config.domain;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.leonside.dataroad.common.context.ComponentHolder;
 import com.leonside.dataroad.common.context.JobSetting;
 import lombok.Data;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author leon
@@ -17,6 +17,13 @@ public class JobConfig {
     private JobSetting setting;
 
     public List<Map<String, GenericComponentConfig>> content;
+
+    public List<ComponentHolder> getAllComponents(){
+        return content.stream()
+                .flatMap(stringGenericComponentConfigMap -> stringGenericComponentConfigMap.values().stream())
+                .map(config->new ComponentHolder(config.getType().name(), config.getPluginName()))
+                .collect(Collectors.toList());
+    }
 
     public void buildJobFlowRelation(){
         this.getContent().forEach(contents->{

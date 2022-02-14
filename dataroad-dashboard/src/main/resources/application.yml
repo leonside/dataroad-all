@@ -5,6 +5,10 @@ spring:
   application:
     name: dataroad-dashboard
 
+dataroad:
+  dataroad-dist: D:\myblog\dataroad-dist\
+  web-ui: http://bigdata32:8081
+  server-address: 10.11.1.14
 
 logging:
   level:

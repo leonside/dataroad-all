@@ -5,7 +5,7 @@
     <parent>
         <artifactId>dataroad-engine</artifactId>
         <groupId>io.github.leonside</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>0.5</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -20,7 +20,7 @@
         <dependency>
             <groupId>io.github.leonside</groupId>
             <artifactId>dataroad-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>

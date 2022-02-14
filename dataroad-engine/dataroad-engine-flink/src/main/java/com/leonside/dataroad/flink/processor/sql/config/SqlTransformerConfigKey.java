@@ -1,4 +1,4 @@
-package com.leonside.dataroad.plugin.jdbc.sql.config;
+package com.leonside.dataroad.flink.processor.sql.config;
 
 import com.leonside.dataroad.common.config.ConfigKey;
 

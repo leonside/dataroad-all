@@ -9,6 +9,7 @@ import com.leonside.dataroad.common.spi.JobExecutionListener;
 import com.leonside.dataroad.config.ComponentFactory;
 import com.leonside.dataroad.config.JobCreator;
 import com.leonside.dataroad.config.JobSchemaParser;
+import com.leonside.dataroad.common.config.Options;
 import com.leonside.dataroad.config.domain.GenericComponentConfig;
 import com.leonside.dataroad.config.domain.JobConfig;
 import com.leonside.dataroad.config.domain.JobConfigs;
@@ -24,7 +25,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author leon
@@ -33,20 +33,21 @@ public class JsonJobCreator implements JobCreator {
 
     private JobSchemaParser jobSchemaParser;
 
-    private JobEngineProvider jobEngineProvider = ExtensionLoader.getExtensionLoader(JobEngineProvider.class).getFirstExtension();
+    private Options options;
 
-    public JsonJobCreator(JobSchemaParser jobSchemaParser) {
+    public JsonJobCreator(JobSchemaParser jobSchemaParser, Options options) {
         this.jobSchemaParser = jobSchemaParser;
+        this.options = options;
     }
 
     @Override
-    public List<Job> createJobByPath(String path) throws Exception {
-
-        return createJob(jobSchemaParser.parserJSONPath(path));
+    public List<Job> createJob() throws Exception {
+        return createJob(jobSchemaParser.parserJSONPath(options.getConf()));
     }
 
-    @Override
-    public List<Job> createJob(JobConfigs jobs) throws Exception {
+    private List<Job> createJob(JobConfigs jobs) throws Exception {
+        JobEngineProvider jobEngineProvider = ExtensionLoader.getExtensionLoader(JobEngineProvider.class).getFirstExtension();
+
         JobConfig job = jobs.getJob();
 
         if(CollectionUtils.isEmpty(job.getContent())){
@@ -65,7 +66,7 @@ public class JsonJobCreator implements JobCreator {
         for (Map<String, GenericComponentConfig> componentConfigMap : job.getContent()) {
             GenericComponentConfig startComponentConfig = componentConfigMap.values().iterator().next();
 
-            ExecuteContext executeContext = jobEngineProvider.createExecuteContext(job.getSetting(), null);
+            ExecuteContext executeContext = jobEngineProvider.createExecuteContext(job.getSetting(),job.getAllComponents(), options);
             JobBuilder jobBuilder = JobBuilder.newInstance().listener(new JobExecutionListener() {
             }).executeContext(executeContext); //todo
             JobFlowBuilder jobFlowBuilder = jobBuilder.reader(ComponentFactory.getComponent(executeContext, startComponentConfig));

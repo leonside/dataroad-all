@@ -2,7 +2,7 @@ package com.leonside.dataroad.config.job;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.leonside.dataroad.common.constant.JobCommonConstant;
-import com.leonside.dataroad.common.constant.JobConfigKeyConstants;
+import com.leonside.dataroad.common.utils.HttpUtil;
 import com.leonside.dataroad.common.utils.JsonUtil;
 import com.leonside.dataroad.config.JobSchemaParser;
 import com.leonside.dataroad.config.domain.JobConfigs;
@@ -26,13 +26,20 @@ public class JsonJobSchemaParser implements JobSchemaParser {
     @Override
     public JobConfigs parserJSONPath(String path) throws IOException, URISyntaxException {
         JobConfigs job = null;
+
         if(path.startsWith(JobCommonConstant.JOBSCHEMA_PATH_PREFIX_CLASSPATH)) {
             path = path.replaceAll(JobCommonConstant.JOBSCHEMA_PATH_PREFIX_CLASSPATH,"");
             URL resource = JsonJobSchemaParser.class.getResource(path);
             job = JsonUtil.getInstance().readJson(new File(resource.toURI()), JobConfigs.class);
+
         }else if(path.startsWith(JobCommonConstant.JOBSCHEMA_PATH_PREFIX_FILESYSTEM)){
-            path = path.replaceAll(JobCommonConstant.JOBSCHEMA_PATH_PREFIX_FILESYSTEM,"");
-            job = JsonUtil.getInstance().readJson(new File(path), JobConfigs.class);
+//            path = path.replaceAll(JobCommonConstant.JOBSCHEMA_PATH_PREFIX_FILESYSTEM,"");
+            job = JsonUtil.getInstance().readJson(new File(new URL(path).toURI()), JobConfigs.class);
+
+        }else if(path.startsWith(JobCommonConstant.JOBSCHEMA_PATH_PREFIX_HTTP) ){
+            String json = HttpUtil.doGet(path);
+            job = JsonUtil.getInstance().readJson(json, JobConfigs.class);
+
         }else{
             throw new UnsupportedOperationException("不支持的文件路径："+ path);
         }

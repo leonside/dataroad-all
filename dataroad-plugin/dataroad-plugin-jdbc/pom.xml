@@ -5,7 +5,7 @@
     <parent>
         <artifactId>dataroad-plugin</artifactId>
         <groupId>io.github.leonside</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>0.5</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -23,19 +23,21 @@
         <dependency>
             <groupId>io.github.leonside</groupId>
             <artifactId>dataroad-common</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>io.github.leonside</groupId>
             <artifactId>dataroad-engine-flink</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -46,6 +48,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <!--异步数据库连接-->

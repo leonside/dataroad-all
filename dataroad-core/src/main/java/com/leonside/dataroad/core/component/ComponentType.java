@@ -9,6 +9,9 @@ import com.leonside.dataroad.core.spi.ItemDeciderProcessor;
 import com.leonside.dataroad.core.spi.ItemLookupProcessor;
 import com.leonside.dataroad.core.spi.JobPredicate;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 public enum ComponentType{
 
         reader("reader", ItemReader.class),
@@ -44,4 +47,8 @@ public enum ComponentType{
                 this.spi = spi;
         }
 
+        public static ComponentType valueOfNotException(String name){
+                Optional<ComponentType> first = Arrays.stream(ComponentType.values()).filter(it -> it.name.equals(name)).findFirst();
+               return first.isPresent() ? first.get() : null;
+        }
 }
