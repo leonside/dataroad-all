@@ -1,0 +1,2 @@
+org.springframework.context.ApplicationContextInitializer=\
+com.leonside.dataroad.dashboard.listener.ApplicationEnvPreparedInitializer

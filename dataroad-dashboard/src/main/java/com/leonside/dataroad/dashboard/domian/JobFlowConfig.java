@@ -2,6 +2,8 @@ package com.leonside.dataroad.dashboard.domian;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.leonside.dataroad.common.context.JobSetting;
+import com.leonside.dataroad.common.utils.JsonUtil;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +32,15 @@ public class JobFlowConfig {
     @JsonIgnore
     @XmlTransient
     private String jobflowJson;
+
+    public boolean checkGlobalSetting(){
+        if(StringUtils.isNotEmpty(golbalSetting)){
+            JobSetting jobSetting = JsonUtil.getInstance().readJson(golbalSetting, JobSetting.class);
+            return jobSetting.validate();
+        }
+        return true;
+
+    }
 
     public void copy(JobFlowConfig jobFlowConfig){
         this.description = jobFlowConfig.getDescription();

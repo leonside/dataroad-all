@@ -1,14 +1,24 @@
 server:
-  port: 8080
+  port: 8089
 
 spring:
   application:
     name: dataroad-dashboard
+  mvc:
+    view:
+      suffix: .html
+      prefix: /
 
 dataroad:
-  dataroad-dist: D:\myblog\dataroad-dist\
+  #dataroad-dist 包路径地址，docker中默认在/opt/dataroad-dist/下
+  dataroad-dist: /opt/dataroad-dist/
+  #Flink web-ui地址
   web-ui: http://bigdata32:8081
-  server-address: 10.11.1.14
+  #当前服务器IP地址，当不能获取正确的外部IP地址时候可设置此参数
+  host-address: 10.11.1.14
+  #是否初始化示例流程数据
+  sample-enabled: false
+
 
 logging:
   level:

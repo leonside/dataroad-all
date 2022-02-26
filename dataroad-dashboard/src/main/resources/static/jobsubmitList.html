@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Dataroad dashboard</title>
+    <link rel="stylesheet" href="js/layui/css/layui.css">
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo layui-hide-xs layui-bg-black">Dataroad控制台</div>
+        <!-- 头部区域（可配合layui 已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left">
+            <!-- 移动端显示 -->
+            <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-header-event="menuLeft">
+                <i class="layui-icon layui-icon-spread-left"></i>
+            </li>
+
+            <li class="layui-nav-item layui-hide-xs"><a href="index.html">首页</a></li>
+            <li class="layui-nav-item layui-hide-xs"><a href="designer.html">流程设计</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">设计管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="index.html">流程设计</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;">运行管理</a>
+                    <dl class="layui-nav-child">
+                        <dd class="layui-this"><a href="jobsubmitList.html">流程运行</a></dd>
+                        <dd><a href="jobscheduleList.html">定时调度</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <div class="layui-btn-group demoTable">
+                <button class="layui-btn" data-type="getCheckData" onclick="uploadJar()">上传Jar包</button>
+            </div>
+
+            <table class="layui-table" lay-data="{url:  'api/jobflowconfig?isComplete=true', page:true, id:'id'}"  id="jobflowTaskTable" lay-filter="jobflowTaskTable">
+                <thead>
+                <tr>
+                    <th lay-data="{type:'checkbox', fixed: 'left'}"></th>
+                    <th lay-data="{field:'id'}">流程标识</th>
+                    <th lay-data="{field:'description'}">流程描述</th>
+                    <th lay-data="{field:'status',sort: true,templet:function(data){
+                        if(data.status){
+                            return '已设计';
+                        }else{
+                            return '未设计';
+                        }
+                    }}">流程状态</th>
+                    <th lay-data="{field:'createTime',sort: true}">创建时间</th>
+                    <th lay-data="{fixed: 'right',align:'center', toolbar: '#barJobflow'}"></th>
+                </tr>
+                </thead>
+            </table>
+
+            <script type="text/html" id="barJobflow">
+                <a class="layui-btn layui-btn-xs" lay-event="submitEvent" >提交JOB</a>
+                <!--<a class="layui-btn layui-btn-xs" lay-event="showJson">查看流程JSON</a>-->
+            </script>
+        </div>
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+    </div>
+</div>
+
+
+<div style="display: none" id="submitContent">
+    <form class="layui-form" action="" id="submitContentForm" style="width:90%;">
+
+        <div style="padding: 15px;">
+            <input hidden="true"  id="jobId" type="text" name="jobId" value="" >
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">entryClass<span style="color: red">*</span></label>
+                <div class="layui-input-block" >
+                    <input  type="text" name="entryClass" value="com.leonside.dataroad.DataroadEngine" readonly="true" required  lay-verify="required" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux"></div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">Parallelism</label>
+                <div class="layui-input-block">
+                    <input  type="text" name="parallelism" value=""  placeholder="并行度" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux"></div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">savepointPath</label>
+                <div class="layui-input-block">
+                    <input  type="text" name="savepointPath" value="" placeholder="快照目录" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux"></div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">allowNonRestoredState</label>
+                <div class="layui-input-block">
+                    <input  type="text" name="allowNonRestoredState" value=""    placeholder="是否跳过恢复已经删除的算子的状态" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux"></div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">confProp</label>
+            <div class="layui-input-block">
+                <textarea name="confProp" value=""  placeholder="更多参数，JSON格式，例如：{'参数名':'参数值'}" class="layui-textarea"></textarea>
+            </div>
+            <div class="layui-form-mid layui-word-aux"></div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button id="editFormBtn" class="layui-btn" lay-filter="submitContentForm"  lay-submit=""  >提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                <!--<button id="closeFormBtn" class="layui-btn layui-btn-primary" onclick="doCloseForm()">关闭</button>-->
+            </div>
+        </div>
+    </form>
+
+</div>
+<script src="js/layui/layui.js"></script>
+<script src="js/flow-config.js"></script>
+<script src="js/jquery/jquery.min.js"></script>
+<script>
+    window.url = "";
+
+    layui.use('table', function(){
+        var table = layui.table;
+        //监听工具条
+        table.on('tool(jobflowTaskTable)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'submitEvent'){
+                $("#jobId").val(data.id);
+                layer.open({
+                    type: 1,
+                    title: "提交" + $("#jobId").val() + "任务",
+                    area: ['50%', '90%'],
+                    content: $('#submitContent'),
+                    success: function () {
+                        layui.use('form', function() {
+                            var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+                            form.on('submit(submitContentForm)', function(data){
+                                var loading = layer.msg('正在提交并运行中...', {icon: 16, shade: 0.3, time:0});
+                                var params = $(data.form).serialize();
+                                $.ajax({
+                                    url: window.url + "api/jobflowtask/submit"  ,
+                                    type: 'post',
+                                    data: params,
+                                    success:function(data){
+                                        layer.close(loading);
+                                        layer.msg("提交成功" );
+                                    },
+                                    error:function(data){
+                                        layer.close(loading);
+                                        layer.alert('提交失败', {
+                                            title: "信息"
+                                        });
+                                    }
+                                });
+                                return false;
+                            });
+                        });
+                    },
+                    error: function () {
+                    },
+                    cancel:function () {
+                        $('#submitContent').attr("style","display:none;");
+                    },
+                });
+            }
+        });
+    });
+
+
+    var uploadJar = function () {
+        $.ajax({
+            url: window.url + "api/dataroadjar/check"  ,
+            type:"get",
+            contentType:'application/json',
+            success:function(data){
+                if(data.code == 0){
+                    layer.confirm(data.msg, function(index){
+                        var loading = layer.msg('正在上传', {icon: 16, shade: 0.3, time:0});
+                        $.ajax({
+                            url: window.url + "api/dataroadjar/upload",
+                            type: "post",
+                            contentType: 'application/json',
+                            success: function (data) {
+                                layer.close(loading);
+                                layer.msg(data.msg);
+
+                            },
+                            error: function (data) {
+                                layer.close(loading);
+                                layer.msg(data.msg);
+
+                            }
+                        });
+                        layer.close(index);
+                    });
+                }else{
+                    layer.msg(data.msg);
+                }
+            },
+            error:function(data){
+                layer.alert(JSON.stringify(data.responseText), {
+                    title: "信息"
+                });
+            }
+        });
+
+    };
+</script>
+</body>
+</html>

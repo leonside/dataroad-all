@@ -6,6 +6,7 @@ import org.apache.commons.collections.CollectionUtils;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author leon
@@ -18,16 +19,21 @@ public class JobJarsReponse {
 
     private List<FileJarInfo> files;
 
+    public List<FileJarInfo> findDataroadJars(){
+        List<FileJarInfo> dataroadJars = files.stream().filter(fileJarInfo -> fileJarInfo.getName().startsWith("dataroad")).collect(Collectors.toList());
+        return dataroadJars;
+    }
+
     public FileJarInfo findFirstJarNotNull(){
         if(CollectionUtils.isEmpty(files)){
             throw new JobFlowException("请先上传dataroad Jar");
         }
 
-        Optional<FileJarInfo> jarInfoOptional = files.stream().filter(fileJarInfo -> fileJarInfo.getName().startsWith("dataroad")).findFirst();
-        if(!jarInfoOptional.isPresent()){
+        List<FileJarInfo> dataroadJars = findDataroadJars();
+        if(CollectionUtils.isEmpty(dataroadJars)){
             throw new JobFlowException("请先上传dataroad Jar");
         }
-        return jarInfoOptional.get();
+        return dataroadJars.get(0);
     }
 
     @Data

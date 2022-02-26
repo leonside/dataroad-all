@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<jobFlowConfigs>
+    <jobFlowConfigs>
+        <id>mysql_mysql</id>
+        <description>mysql抽取至mysql库</description>
+        <golbalSetting></golbalSetting>
+        <status>true</status>
+        <createTime>2022-01-18 20:18:45</createTime>
+        <designerJson>{ "class": "go.GraphLinksModel",
+  "modelData": {"position":"-21.594166564941418 -11.338333129882812"},
+  "nodeDataArray": [ 
+{"key":"6e24c8a0-5801-4d12-8e81-a104977bb2b3", "text":"Mysql Reader", "figure":"Circle", "fill":"#4fba4f", "nodeType":"step", "pluginType":"reader", "size":"100 100", "loc":"270 110", "parameter":{"stepName":"Mysql Reader", "type":"reader", "pluginName":"mysqlReader", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "table":"student", "column":"[               {\"name\": \"id\",\"type\": \"int\"},               {\"name\": \"name\",\"type\": \"varchar\"},               {\"name\": \"sex\",\"type\": \"int\"},               {\"name\": \"age\",\"type\": \"int\"},               {\"name\": \"address\",\"type\": \"varchar\"},               {\"name\": \"idcard\",\"type\": \"varchar\"},               {\"name\": \"phone\",\"type\": \"varchar\"},               {\"name\": \"code\",\"type\": \"int\"},               {\"name\": \"create_time\",\"type\": \"datetime\"},               {\"name\": \"area_code\",\"type\": \"varchar\"}             ]", "where":"id&lt;10", "orderByColumn":"", "customSql":"", "splitKey":"", "fetchSize":"", "queryTimeOut":"", "increColumn":"", "startLocation":"", "useMaxFunc":"", "polling":"", "pollingInterval":"", "requestAccumulatorInterval":"", "id":"mysqlReader-6e24c8a0-5801-4d12-8e81-a104977bb2b3"}},
+{"key":"30563eb2-c57c-4723-a3fd-28d9a56b7c35", "text":"MysqlWriter", "figure":"Circle", "fill":"#CE0620", "nodeType":"step", "pluginType":"writer", "size":"100 100", "loc":"610 120", "parameter":{"stepName":"MysqlWriter", "type":"writer", "pluginName":"mysqlWriter", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "table":"student1", "column":"[\r\n                \"id\",\r\n                \"name\",\r\n                \"sex\",\r\n                \"age\",\r\n                \"address\",\r\n                \"idcard\",\r\n                \"phone\",\r\n                \"code\",\r\n                \"create_time\"\r\n              ]", "fullColumn":"", "writeMode":"INSERT", "updateKey":"", "insertSqlMode":"", "preSql":"", "postSql":"", "batchSize":"", "id":"mysqlWriter-30563eb2-c57c-4723-a3fd-28d9a56b7c35"}}
+ ],
+  "linkDataArray": [ {"from":"6e24c8a0-5801-4d12-8e81-a104977bb2b3", "to":"30563eb2-c57c-4723-a3fd-28d9a56b7c35"} ]}</designerJson>
+    </jobFlowConfigs>
+    <jobFlowConfigs>
+        <id>mysql_splitpk_filter_mysql</id>
+        <description>mysql分片抽取至mysql库，并经过条件过滤</description>
+        <golbalSetting>{   &#xD;
+    "name":"myjob",&#xD;
+     "speed": {&#xD;
+        "channel":10&#xD;
+      }&#xD;
+}</golbalSetting>
+        <status>true</status>
+        <createTime>2022-01-18 20:32:57</createTime>
+        <designerJson>{ "class": "go.GraphLinksModel",
+  "modelData": {"position":"-5 -5"},
+  "nodeDataArray": [ 
+{"key":"79afdbff-a032-4d8e-8275-bb046e593e95", "text":"Mysql Reader", "figure":"Circle", "fill":"#4fba4f", "nodeType":"step", "pluginType":"reader", "size":"100 100", "loc":"260 190", "parameter":{"stepName":"Mysql Reader", "type":"reader", "pluginName":"mysqlReader", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "table":"student_1w", "column":"[               {\"name\": \"id\",\"type\": \"int\"},               {\"name\": \"name\",\"type\": \"varchar\"},               {\"name\": \"sex\",\"type\": \"int\"},               {\"name\": \"age\",\"type\": \"int\"},               {\"name\": \"address\",\"type\": \"varchar\"},               {\"name\": \"idcard\",\"type\": \"varchar\"},               {\"name\": \"phone\",\"type\": \"varchar\"},               {\"name\": \"code\",\"type\": \"int\"},               {\"name\": \"create_time\",\"type\": \"datetime\"},               {\"name\": \"area_code\",\"type\": \"varchar\"}             ]", "where":"", "orderByColumn":"", "customSql":"", "splitKey":"id", "fetchSize":"200", "queryTimeOut":"", "increColumn":"", "startLocation":"", "useMaxFunc":"", "polling":"", "pollingInterval":"", "requestAccumulatorInterval":"", "id":"mysqlReader-79afdbff-a032-4d8e-8275-bb046e593e95"}},
+{"key":"6ca38215-6ed9-4dd3-b344-5a526b838ff6", "text":"MysqlWriter", "figure":"Circle", "fill":"#CE0620", "nodeType":"step", "pluginType":"writer", "size":"100 100", "loc":"490 180", "parameter":{"stepName":"MysqlWriter", "type":"writer", "pluginName":"mysqlWriter", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "table":"student1", "column":"[\r\n                \"id\",\r\n                \"name\",\r\n                \"sex\",\r\n                \"age\",\r\n                \"address\",\r\n                \"idcard\",\r\n                \"phone\",\r\n                \"code\",\r\n                \"create_time\",\r\n\"area_code\",\"score\"\r\n              ]", "fullColumn":"", "writeMode":"INSERT", "updateKey":"", "insertSqlMode":"", "preSql":"[\"delete from student1\"]", "postSql":"", "batchSize":"500", "id":"mysqlWriter-6ca38215-6ed9-4dd3-b344-5a526b838ff6"}}
+ ],
+  "linkDataArray": [ {"from":"79afdbff-a032-4d8e-8275-bb046e593e95", "to":"6ca38215-6ed9-4dd3-b344-5a526b838ff6"} ]}</designerJson>
+    </jobFlowConfigs>
+    <jobFlowConfigs>
+        <id>mysql_incrpolling_mysql</id>
+        <description>mysql增量轮询抽取至mysql</description>
+        <golbalSetting></golbalSetting>
+        <status>true</status>
+        <createTime>2022-01-18 20:33:21</createTime>
+        <designerJson>{ "class": "go.GraphLinksModel",
+  "modelData": {"position":"-5 -5"},
+  "nodeDataArray": [ 
+{"key":"44df2006-e511-4a71-9064-5d29dc707c43", "text":"Mysql Reader", "figure":"Circle", "fill":"#4fba4f", "nodeType":"step", "pluginType":"reader", "size":"100 100", "loc":"240 160", "parameter":{"stepName":"Mysql Reader", "type":"reader", "pluginName":"mysqlReader", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "table":"student", "column":"[               {\"name\": \"id\",\"type\": \"int\"},               {\"name\": \"name\",\"type\": \"varchar\"},               {\"name\": \"sex\",\"type\": \"int\"},               {\"name\": \"age\",\"type\": \"int\"},               {\"name\": \"address\",\"type\": \"varchar\"},               {\"name\": \"idcard\",\"type\": \"varchar\"},               {\"name\": \"phone\",\"type\": \"varchar\"},               {\"name\": \"code\",\"type\": \"int\"},               {\"name\": \"create_time\",\"type\": \"datetime\"},               {\"name\": \"area_code\",\"type\": \"varchar\"}             ]", "where":"", "orderByColumn":"", "customSql":"", "splitKey":"", "fetchSize":"", "queryTimeOut":"1000", "increColumn":"id", "startLocation":"5", "useMaxFunc":"", "polling":"true", "pollingInterval":"500", "requestAccumulatorInterval":"2", "id":"mysqlReader-44df2006-e511-4a71-9064-5d29dc707c43"}},
+{"key":"b5921185-8b53-48e7-9939-b0f3bad26a94", "text":"MysqlWriter", "figure":"Circle", "fill":"#CE0620", "nodeType":"step", "pluginType":"writer", "size":"100 100", "loc":"550 160", "parameter":{"stepName":"MysqlWriter", "type":"writer", "pluginName":"mysqlWriter", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "table":"student1", "column":"[\r\n                \"id\",\r\n                \"name\",\r\n                \"sex\",\r\n                \"age\",\r\n                \"address\",\r\n                \"idcard\",\r\n                \"phone\",\r\n                \"code\",\r\n                \"create_time\"\r\n              ]", "fullColumn":"", "writeMode":"INSERT", "updateKey":"", "insertSqlMode":"", "preSql":"[\"delete from student1\"]", "postSql":"", "batchSize":"", "id":"mysqlWriter-b5921185-8b53-48e7-9939-b0f3bad26a94"}}
+ ],
+  "linkDataArray": [ {"from":"44df2006-e511-4a71-9064-5d29dc707c43", "to":"b5921185-8b53-48e7-9939-b0f3bad26a94"} ]}</designerJson>
+    </jobFlowConfigs>
+    <jobFlowConfigs>
+        <id>mysql_incrpolling_mysql_checkpoint</id>
+        <description>mysql增量轮询抽取至mysql，并启用checkpoint实现断点续传</description>
+        <golbalSetting>{   &#xD;
+    "name":"myjob",&#xD;
+    "isLocal":"true",&#xD;
+     "speed": {&#xD;
+        "channel": 2&#xD;
+      },&#xD;
+      "restore": {&#xD;
+        "isRestore": true,&#xD;
+        "savepointPath": "file:///D:\\conf\\checkpoint",&#xD;
+        "savepointInterval": 30000,&#xD;
+        "restoreColumnName": "id",&#xD;
+        "restoreColumnType": "int"&#xD;
+    }&#xD;
+}</golbalSetting>
+        <status>true</status>
+        <createTime>2022-01-18 20:34:00</createTime>
+        <designerJson>{ "class": "go.GraphLinksModel",
+  "modelData": {"position":"-5 -5"},
+  "nodeDataArray": [ 
+{"key":"5041be3e-7726-43aa-b056-da3f9a6686de", "text":"Mysql Reader", "figure":"Circle", "fill":"#4fba4f", "nodeType":"step", "pluginType":"reader", "size":"100 100", "loc":"290 150", "parameter":{"stepName":"Mysql Reader", "type":"reader", "pluginName":"mysqlReader", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "table":"student", "column":"[               {\"name\": \"id\",\"type\": \"int\"},               {\"name\": \"name\",\"type\": \"varchar\"},               {\"name\": \"sex\",\"type\": \"int\"},               {\"name\": \"age\",\"type\": \"int\"},               {\"name\": \"address\",\"type\": \"varchar\"},               {\"name\": \"idcard\",\"type\": \"varchar\"},               {\"name\": \"phone\",\"type\": \"varchar\"},               {\"name\": \"code\",\"type\": \"int\"},               {\"name\": \"create_time\",\"type\": \"datetime\"},               {\"name\": \"area_code\",\"type\": \"varchar\"}             ]", "where":"", "orderByColumn":"", "customSql":"", "splitKey":"id", "fetchSize":"", "queryTimeOut":"", "increColumn":"id", "startLocation":"", "useMaxFunc":"", "polling":"true", "pollingInterval":"500", "requestAccumulatorInterval":"2", "id":"mysqlReader-5041be3e-7726-43aa-b056-da3f9a6686de"}},
+{"key":"896cbf2c-5bb9-4e44-aa15-57ae14bc8f70", "text":"MysqlWriter", "figure":"Circle", "fill":"#CE0620", "nodeType":"step", "pluginType":"writer", "size":"100 100", "loc":"510 160", "parameter":{"stepName":"MysqlWriter", "type":"writer", "pluginName":"mysqlWriter", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "table":"student1", "column":"[\r\n                \"id\",\r\n                \"name\",\r\n                \"sex\",\r\n                \"age\",\r\n                \"address\",\r\n                \"idcard\",\r\n                \"phone\",\r\n                \"code\",\r\n                \"create_time\"\r\n              ]", "fullColumn":"", "writeMode":"INSERT", "updateKey":"", "insertSqlMode":"", "preSql":"[\"delete from student1\"]", "postSql":"", "batchSize":"", "id":"mysqlWriter-896cbf2c-5bb9-4e44-aa15-57ae14bc8f70"}}
+ ],
+  "linkDataArray": [ {"from":"5041be3e-7726-43aa-b056-da3f9a6686de", "to":"896cbf2c-5bb9-4e44-aa15-57ae14bc8f70"} ]}</designerJson>
+    </jobFlowConfigs>
+    <jobFlowConfigs>
+        <id>mysql_customsql_decider_parallel_mysql</id>
+        <description>mysql（自定义sql）并行分支抽取至mysql</description>
+        <golbalSetting></golbalSetting>
+        <status>true</status>
+        <createTime>2022-01-18 20:34:42</createTime>
+        <designerJson>{ "class": "go.GraphLinksModel",
+  "modelData": {"position":"-5 -5"},
+  "nodeDataArray": [ 
+{"key":"f083568e-3cc6-452b-ba9f-76696e3a948f", "text":"Mysql Reader", "figure":"Circle", "fill":"#4fba4f", "nodeType":"step", "pluginType":"reader", "size":"100 100", "loc":"190 180", "parameter":{"stepName":"Mysql Reader", "type":"reader", "pluginName":"mysqlReader", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "table":"", "column":"[\"*\"]", "where":"", "orderByColumn":"", "customSql":"select * from student ", "splitKey":"", "fetchSize":"", "queryTimeOut":"", "increColumn":"", "startLocation":"", "useMaxFunc":"", "polling":"", "pollingInterval":"", "requestAccumulatorInterval":"", "id":"mysqlReader-f083568e-3cc6-452b-ba9f-76696e3a948f"}},
+{"key":"2ba57eb0-cc0e-4b58-82c5-e7846858ad4f", "text":"Mysql Writer1", "figure":"Circle", "fill":"#CE0620", "nodeType":"step", "pluginType":"writer", "size":"100 100", "loc":"700 100", "parameter":{"stepName":"Mysql Writer1", "type":"writer", "pluginName":"mysqlWriter", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "table":"student1", "column":"[\r\n                \"id\",\r\n                \"name\",\r\n                \"sex\",\r\n                \"age\",\r\n                \"address\",\r\n                \"idcard\",\r\n                \"phone\",\r\n                \"code\",\r\n                \"create_time\", \r\n               \"score\"\r\n\r\n              ]", "fullColumn":"", "writeMode":"REPLACE", "updateKey":"", "insertSqlMode":"", "preSql":"", "postSql":"", "batchSize":"", "id":"mysqlWriter-2ba57eb0-cc0e-4b58-82c5-e7846858ad4f"}},
+{"key":"2ba57eb0-cc0e-4b58-82c5-e7846858ad4f2", "text":"Mysql Writer2", "figure":"Circle", "fill":"#CE0620", "nodeType":"step", "pluginType":"writer", "size":"100 100", "loc":"700 250", "parameter":{"stepName":"Mysql Writer2", "type":"writer", "pluginName":"mysqlWriter", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "table":"student2", "column":"[\r\n                \"id\",\r\n                \"name\",\r\n                \"sex\",\r\n                \"age\",\r\n                \"address\",\r\n                \"idcard\",\r\n                \"phone\",\r\n                \"code\",\r\n                \"create_time\",\r\n              \"score\"\r\n              ]", "fullColumn":"", "writeMode":"INSERT", "updateKey":"", "insertSqlMode":"", "preSql":"[\"delete from student2\"]", "postSql":"", "batchSize":"", "id":"mysqlWriter-2ba57eb0-cc0e-4b58-82c5-e7846858ad4f2"}},
+{"key":"c5715a93-ab9f-494e-9583-efd49b5c240c", "text":"过滤分数大于500", "remark":"", "nodeType":"step", "pluginType":"processor", "pluginName":"scriptTransformer", "loc":"400 100", "parameter":{"stepName":"过滤分数大于500", "type":"processor", "pluginName":"scriptFilter", "language":"fel", "expression":"row.getField('score')&gt;=500", "id":"scriptFilter-c5715a93-ab9f-494e-9583-efd49b5c240c"}},
+{"key":"c5715a93-ab9f-494e-9583-efd49b5c240c2", "text":"过滤分数大于550", "remark":"", "nodeType":"step", "pluginType":"processor", "pluginName":"scriptTransformer", "loc":"410 250", "parameter":{"stepName":"过滤分数大于550", "type":"processor", "pluginName":"scriptFilter", "language":"fel", "expression":"row.getField('score')&gt;=550", "id":"scriptFilter-c5715a93-ab9f-494e-9583-efd49b5c240c2"}}
+ ],
+  "linkDataArray": [ 
+{"from":"c5715a93-ab9f-494e-9583-efd49b5c240c2", "to":"2ba57eb0-cc0e-4b58-82c5-e7846858ad4f2"},
+{"from":"c5715a93-ab9f-494e-9583-efd49b5c240c", "to":"2ba57eb0-cc0e-4b58-82c5-e7846858ad4f"},
+{"from":"f083568e-3cc6-452b-ba9f-76696e3a948f", "to":"c5715a93-ab9f-494e-9583-efd49b5c240c2"},
+{"from":"f083568e-3cc6-452b-ba9f-76696e3a948f", "to":"c5715a93-ab9f-494e-9583-efd49b5c240c"}
+ ]}</designerJson>
+    </jobFlowConfigs>
+    <jobFlowConfigs>
+        <id>mysql_customsql_decider_exclusive_mysql</id>
+        <description>mysql(自定义sql)基于条件分支抽取至mysql</description>
+        <golbalSetting></golbalSetting>
+        <status>true</status>
+        <createTime>2022-01-18 20:35:05</createTime>
+        <designerJson>{ "class": "go.GraphLinksModel",
+  "modelData": {"position":"-5 -5"},
+  "nodeDataArray": [ 
+{"key":"32a49aa5-216d-4334-823d-375c59279bc9", "text":"Mysql Reader", "figure":"Circle", "fill":"#4fba4f", "nodeType":"step", "pluginType":"reader", "size":"100 100", "loc":"270 180", "parameter":{"stepName":"Mysql Reader", "type":"reader", "pluginName":"mysqlReader", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "table":"", "column":"[\"*\"]", "where":"", "orderByColumn":"", "customSql":"select * from student ", "splitKey":"", "fetchSize":"", "queryTimeOut":"", "increColumn":"", "startLocation":"", "useMaxFunc":"", "polling":"", "pollingInterval":"", "requestAccumulatorInterval":"", "id":"mysqlReader-32a49aa5-216d-4334-823d-375c59279bc9"}},
+{"key":"3a6e8c3d-8ba9-4bda-8051-ef2ac6a6eff3", "text":"Mysql Writer1", "figure":"Circle", "fill":"#CE0620", "nodeType":"step", "pluginType":"writer", "size":"100 100", "loc":"720 110", "parameter":{"stepName":"Mysql Writer1", "type":"writer", "pluginName":"mysqlWriter", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "table":"student1", "column":"[\r\n                \"id\",\r\n                \"name\",\r\n                \"sex\",\r\n                \"age\",\r\n                \"address\",\r\n                \"idcard\",\r\n                \"phone\",\r\n                \"code\",\r\n                \"create_time\", \r\n               \"score\"\r\n\r\n              ]", "fullColumn":"", "writeMode":"REPLACE", "updateKey":"", "insertSqlMode":"", "preSql":"", "postSql":"", "batchSize":"", "id":"mysqlWriter-3a6e8c3d-8ba9-4bda-8051-ef2ac6a6eff3"}},
+{"key":"4d88ced4-0355-41ff-aae4-ff671bc684f2", "text":"过滤分数大于500", "remark":"", "nodeType":"step", "pluginType":"processor", "pluginName":"scriptTransformer", "loc":"460 110", "parameter":{"stepName":"过滤分数大于500", "type":"processor", "pluginName":"scriptFilter", "language":"fel", "expression":"row.getField('score')&gt;=500", "id":"scriptFilter-4d88ced4-0355-41ff-aae4-ff671bc684f2"}},
+{"key":"4d88ced4-0355-41ff-aae4-ff671bc684f22", "text":"过滤分数大于550", "remark":"", "nodeType":"step", "pluginType":"processor", "pluginName":"scriptTransformer", "loc":"470 230", "parameter":{"stepName":"过滤分数大于550", "type":"processor", "pluginName":"scriptFilter", "language":"fel", "expression":"row.getField('score')&gt;=550", "id":"scriptFilter-4d88ced4-0355-41ff-aae4-ff671bc684f22"}},
+{"key":"3a6e8c3d-8ba9-4bda-8051-ef2ac6a6eff32", "text":"Mysql Writer2", "figure":"Circle", "fill":"#CE0620", "nodeType":"step", "pluginType":"writer", "size":"100 100", "loc":"720 230", "parameter":{"stepName":"Mysql Writer2", "type":"writer", "pluginName":"mysqlWriter", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "table":"student2", "column":"[\r\n                \"id\",\r\n                \"name\",\r\n                \"sex\",\r\n                \"age\",\r\n                \"address\",\r\n                \"idcard\",\r\n                \"phone\",\r\n                \"code\",\r\n                \"create_time\",\r\n              \"score\"\r\n              ]", "fullColumn":"", "writeMode":"INSERT", "updateKey":"", "insertSqlMode":"", "preSql":"[\"delete from student2\"]", "postSql":"", "batchSize":"", "id":"mysqlWriter-3a6e8c3d-8ba9-4bda-8051-ef2ac6a6eff32"}}
+ ],
+  "linkDataArray": [ 
+{"from":"32a49aa5-216d-4334-823d-375c59279bc9", "to":"4d88ced4-0355-41ff-aae4-ff671bc684f2", "text":"性别男", "parameter":{"type":"deciderOn", "pluginName":"expressionPredicate", "linkName":"性别男", "language":"fel", "expression":"row.getField('sex')==0", "id":"expressionPredicate-32a49aa5-216d-4334-823d-375c59279bc9-4d88ced4-0355-41ff-aae4-ff671bc684f2"}, "pFill":{"class":"go.Brush", "type":"Radial", "start":{"class":"go.Spot", "x":0.5, "y":0.5, "offsetX":0, "offsetY":0}, "end":{"class":"go.Spot", "x":0.5, "y":0.5, "offsetX":0, "offsetY":0}, "colorStops":{"0":"rgb(240, 240, 240)", "1":"rgba(240, 240, 240, 0)", "0.3":"rgb(240, 240, 240)"}}},
+{"from":"32a49aa5-216d-4334-823d-375c59279bc9", "to":"4d88ced4-0355-41ff-aae4-ff671bc684f22", "text":"性别女", "parameter":{"type":"deciderOn", "pluginName":"expressionPredicate", "linkName":"性别女", "language":"fel", "expression":"row.getField('sex')==1", "id":"expressionPredicate-32a49aa5-216d-4334-823d-375c59279bc9-4d88ced4-0355-41ff-aae4-ff671bc684f22"}, "pFill":{"class":"go.Brush", "type":"Radial", "start":{"class":"go.Spot", "x":0.5, "y":0.5, "offsetX":0, "offsetY":0}, "end":{"class":"go.Spot", "x":0.5, "y":0.5, "offsetX":0, "offsetY":0}, "colorStops":{"0":"rgb(240, 240, 240)", "1":"rgba(240, 240, 240, 0)", "0.3":"rgb(240, 240, 240)"}}},
+{"from":"4d88ced4-0355-41ff-aae4-ff671bc684f2", "to":"3a6e8c3d-8ba9-4bda-8051-ef2ac6a6eff3"},
+{"from":"4d88ced4-0355-41ff-aae4-ff671bc684f22", "to":"3a6e8c3d-8ba9-4bda-8051-ef2ac6a6eff32"}
+ ]}</designerJson>
+    </jobFlowConfigs>
+    <jobFlowConfigs>
+        <id>mysql_customsql_decider_union_mysql</id>
+        <description>mysql（自定义sql）分支合并转换抽取至mysql</description>
+        <golbalSetting></golbalSetting>
+        <status>true</status>
+        <createTime>2022-01-18 20:35:44</createTime>
+        <designerJson>{ "class": "go.GraphLinksModel",
+  "modelData": {"position":"-5 -5"},
+  "nodeDataArray": [ 
+{"key":"b40e517f-e3e8-4902-9f97-84c7c7045e61", "text":"Mysql Reader", "figure":"Circle", "fill":"#4fba4f", "nodeType":"step", "pluginType":"reader", "size":"100 100", "loc":"210 190", "parameter":{"stepName":"Mysql Reader", "type":"reader", "pluginName":"mysqlReader", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "table":"", "column":"[\"*\"]", "where":"", "orderByColumn":"", "customSql":"select * from student ", "splitKey":"", "fetchSize":"", "queryTimeOut":"", "increColumn":"", "startLocation":"", "useMaxFunc":"", "polling":"", "pollingInterval":"", "requestAccumulatorInterval":"", "id":"mysqlReader-b40e517f-e3e8-4902-9f97-84c7c7045e61"}},
+{"key":"12ab34d9-0eda-42e3-8e9d-7cec85f8e5ae", "text":"Mysql Writer1", "figure":"Circle", "fill":"#CE0620", "nodeType":"step", "pluginType":"writer", "size":"100 100", "loc":"740 130", "parameter":{"stepName":"Mysql Writer1", "type":"writer", "pluginName":"mysqlWriter", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "table":"student1", "column":"[\r\n                \"id\",\r\n                \"name\",\r\n                \"sex\",\r\n                \"age\",\r\n                \"address\",\r\n                \"idcard\",\r\n                \"phone\",\r\n                \"code\",\r\n                \"create_time\",\r\n                \"area_code\",\r\n              \"score\"\r\n              ]", "fullColumn":"", "writeMode":"REPLACE", "updateKey":"", "insertSqlMode":"", "preSql":"[\"delete from student1\"]", "postSql":"", "batchSize":"", "id":"mysqlWriter-12ab34d9-0eda-42e3-8e9d-7cec85f8e5ae"}},
+{"key":"12ab34d9-0eda-42e3-8e9d-7cec85f8e5ae2", "text":"Mysql Writer2", "figure":"Circle", "fill":"#CE0620", "nodeType":"step", "pluginType":"writer", "size":"100 100", "loc":"610 290", "parameter":{"stepName":"Mysql Writer2", "type":"writer", "pluginName":"mysqlWriter", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "table":"student2", "column":"[\r\n                \"id\",\r\n                \"name\",\r\n                \"sex\",\r\n                \"age\",\r\n                \"address\",\r\n                \"idcard\",\r\n                \"phone\",\r\n                \"code\",\r\n                \"create_time\",\r\n                \"area_code\",\r\n              \"score\"\r\n              ]", "fullColumn":"", "writeMode":"INSERT", "updateKey":"", "insertSqlMode":"", "preSql":"[\"delete from student2\"]", "postSql":"", "batchSize":"", "id":"mysqlWriter-12ab34d9-0eda-42e3-8e9d-7cec85f8e5ae2"}},
+{"key":"9817e466-243f-4ceb-96af-1511161a69e0", "text":"脚本过滤分数大于500", "remark":"", "nodeType":"step", "pluginType":"processor", "pluginName":"scriptTransformer", "loc":"440 90", "parameter":{"stepName":"脚本过滤分数大于500", "type":"processor", "pluginName":"scriptFilter", "language":"fel", "expression":"row.getField('score')&gt;=500", "id":"scriptFilter-9817e466-243f-4ceb-96af-1511161a69e0"}},
+{"key":"9817e466-243f-4ceb-96af-1511161a69e02", "text":"脚本过滤分数大于550", "remark":"", "nodeType":"step", "pluginType":"processor", "pluginName":"scriptTransformer", "loc":"440 170", "parameter":{"stepName":"脚本过滤分数大于550", "type":"processor", "pluginName":"scriptFilter", "language":"fel", "expression":"row.getField('score')&gt;=550", "id":"scriptFilter-9817e466-243f-4ceb-96af-1511161a69e02"}},
+{"key":"9817e466-243f-4ceb-96af-1511161a69e03", "text":"脚本过滤分数大于600", "remark":"", "nodeType":"step", "pluginType":"processor", "pluginName":"scriptTransformer", "loc":"440 290", "parameter":{"stepName":"脚本过滤分数大于600", "type":"processor", "pluginName":"scriptFilter", "language":"fel", "expression":"row.getField('score')&gt;=600", "id":"scriptFilter-9817e466-243f-4ceb-96af-1511161a69e03"}}
+ ],
+  "linkDataArray": [ 
+{"from":"b40e517f-e3e8-4902-9f97-84c7c7045e61", "to":"9817e466-243f-4ceb-96af-1511161a69e0", "text":"区划为3502", "parameter":{"type":"deciderOn", "pluginName":"expressionPredicate", "linkName":"区划为3502", "language":"fel", "expression":"row.getField('area_code').startsWith(\"3502\")", "id":"expressionPredicate-b40e517f-e3e8-4902-9f97-84c7c7045e61-9817e466-243f-4ceb-96af-1511161a69e0"}, "pFill":{"class":"go.Brush", "type":"Radial", "start":{"class":"go.Spot", "x":0.5, "y":0.5, "offsetX":0, "offsetY":0}, "end":{"class":"go.Spot", "x":0.5, "y":0.5, "offsetX":0, "offsetY":0}, "colorStops":{"0":"rgb(240, 240, 240)", "1":"rgba(240, 240, 240, 0)", "0.3":"rgb(240, 240, 240)"}}},
+{"from":"b40e517f-e3e8-4902-9f97-84c7c7045e61", "to":"9817e466-243f-4ceb-96af-1511161a69e02", "text":"区划为3501", "parameter":{"type":"deciderOn", "pluginName":"expressionPredicate", "linkName":"区划为3501", "language":"fel", "expression":"row.getField('area_code').startsWith(\"3501\")", "id":"expressionPredicate-b40e517f-e3e8-4902-9f97-84c7c7045e61-9817e466-243f-4ceb-96af-1511161a69e02"}, "pFill":{"class":"go.Brush", "type":"Radial", "start":{"class":"go.Spot", "x":0.5, "y":0.5, "offsetX":0, "offsetY":0}, "end":{"class":"go.Spot", "x":0.5, "y":0.5, "offsetX":0, "offsetY":0}, "colorStops":{"0":"rgb(240, 240, 240)", "1":"rgba(240, 240, 240, 0)", "0.3":"rgb(240, 240, 240)"}}},
+{"from":"b40e517f-e3e8-4902-9f97-84c7c7045e61", "to":"9817e466-243f-4ceb-96af-1511161a69e03", "text":"其他", "parameter":{"type":"deciderOn", "pluginName":"otherwisePredicate", "linkName":"其他", "language":"", "expression":"", "id":"expressionPredicate-b40e517f-e3e8-4902-9f97-84c7c7045e61-9817e466-243f-4ceb-96af-1511161a69e03"}, "pFill":{"class":"go.Brush", "type":"Radial", "start":{"class":"go.Spot", "x":0.5, "y":0.5, "offsetX":0, "offsetY":0}, "end":{"class":"go.Spot", "x":0.5, "y":0.5, "offsetX":0, "offsetY":0}, "colorStops":{"0":"rgb(240, 240, 240)", "1":"rgba(240, 240, 240, 0)", "0.3":"rgb(240, 240, 240)"}}},
+{"from":"9817e466-243f-4ceb-96af-1511161a69e0", "to":"12ab34d9-0eda-42e3-8e9d-7cec85f8e5ae"},
+{"from":"9817e466-243f-4ceb-96af-1511161a69e02", "to":"12ab34d9-0eda-42e3-8e9d-7cec85f8e5ae"},
+{"from":"9817e466-243f-4ceb-96af-1511161a69e03", "to":"12ab34d9-0eda-42e3-8e9d-7cec85f8e5ae2"}
+ ]}</designerJson>
+    </jobFlowConfigs>
+    <jobFlowConfigs>
+        <id>mysql_sqltrans_es</id>
+        <description>mysql经sql转换抽取至es</description>
+        <golbalSetting></golbalSetting>
+        <status>true</status>
+        <createTime>2022-01-18 20:36:25</createTime>
+        <designerJson>{ "class": "go.GraphLinksModel",
+  "modelData": {"position":"-5 -5"},
+  "nodeDataArray": [ 
+{"key":"1e42e32e-7112-4dc8-89bd-6150513f8e00", "text":"Mysql Reader", "figure":"Circle", "fill":"#4fba4f", "nodeType":"step", "pluginType":"reader", "size":"100 100", "loc":"220 160", "parameter":{"stepName":"Mysql Reader", "type":"reader", "pluginName":"mysqlReader", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "table":"student", "column":"[               {\"name\": \"id\",\"type\": \"int\"},               {\"name\": \"name\",\"type\": \"varchar\"},               {\"name\": \"sex\",\"type\": \"int\"},               {\"name\": \"age\",\"type\": \"int\"},               {\"name\": \"address\",\"type\": \"varchar\"},               {\"name\": \"idcard\",\"type\": \"varchar\"},               {\"name\": \"phone\",\"type\": \"varchar\"},               {\"name\": \"code\",\"type\": \"int\"},               {\"name\": \"create_time\",\"type\": \"datetime\"},               {\"name\": \"area_code\",\"type\": \"varchar\"} ,{\"name\": \"score\",\"type\": \"double\"}             ]", "where":"", "orderByColumn":"", "customSql":"", "splitKey":"", "fetchSize":"", "queryTimeOut":"", "increColumn":"", "startLocation":"", "useMaxFunc":"", "polling":"", "pollingInterval":"", "requestAccumulatorInterval":"", "id":"mysqlReader-1e42e32e-7112-4dc8-89bd-6150513f8e00"}},
+{"key":"e8c696e8-d014-4390-a752-c96e53a24a1c", "text":"ES Writer", "figure":"Circle", "fill":"#CE0620", "nodeType":"step", "pluginType":"writer", "size":"100 100", "loc":"600 160", "parameter":{"stepName":"ES Writer", "type":"writer", "pluginName":"esWriter", "address":"bigdata33:9200", "username":"", "password":"", "index":"student1", "indexType":"_doc", "column":" [               {\"name\": \"id\",\"type\": \"int\"},               {\"name\": \"name\",\"type\": \"string\"},               {\"name\": \"sex\",\"type\": \"int\"},               {\"name\": \"age\",\"type\": \"int\"},               {\"name\": \"address\",\"type\": \"string\"},               {\"name\": \"idcard\",\"type\": \"string\"},               {\"name\": \"phone\",\"type\": \"string\"},               {\"name\": \"code\",\"type\": \"int\"},               {\"name\": \"create_time\",\"type\": \"timestamp\"},               {\"name\": \"area_code\",\"type\": \"string\"},               {\"name\": \"score\",\"type\": \"double\"}             ]", "idColumn":"[               {                 \"name\": \"id\",                 \"type\": \"int\"               }             ]", "bulkAction":"1", "timeout":"", "pathPrefix":"", "id":"esWriter-e8c696e8-d014-4390-a752-c96e53a24a1c"}},
+{"key":"de53a47e-a426-478f-a1b2-45b4b5c481e0", "text":"SQL过滤分数大于600且区划是3501", "remark":"SQL转换", "nodeType":"step", "pluginType":"processor", "pluginName":"sqlTransformer", "loc":"400 160", "parameter":{"stepName":"SQL过滤分数大于600且区划是3501", "type":"processor", "pluginName":"sqlTransformer", "sql":"select * from t1 where score&gt;=600 and area_code like '3501%'", "tableName":"t1", "id":"sqlTransformer-de53a47e-a426-478f-a1b2-45b4b5c481e0"}}
+ ],
+  "linkDataArray": [ 
+{"from":"1e42e32e-7112-4dc8-89bd-6150513f8e00", "to":"de53a47e-a426-478f-a1b2-45b4b5c481e0"},
+{"from":"de53a47e-a426-478f-a1b2-45b4b5c481e0", "to":"e8c696e8-d014-4390-a752-c96e53a24a1c"}
+ ]}</designerJson>
+    </jobFlowConfigs>
+    <jobFlowConfigs>
+        <id>mysql_scripttrans_lookup_direct_es</id>
+        <description>mysql脚本语言转换+补全（静态数据）抽取至es</description>
+        <golbalSetting></golbalSetting>
+        <status>true</status>
+        <createTime>2022-01-18 20:37:06</createTime>
+        <designerJson>{ "class": "go.GraphLinksModel",
+  "modelData": {"position":"-5 -5"},
+  "nodeDataArray": [ 
+{"key":"689d792b-0f1a-4932-89f2-680dd431fffc", "text":"Mysql Reader", "figure":"Circle", "fill":"#4fba4f", "nodeType":"step", "pluginType":"reader", "size":"100 100", "loc":"180 160", "parameter":{"stepName":"Mysql Reader", "type":"reader", "pluginName":"mysqlReader", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "table":"student", "column":"[               {\"name\": \"id\",\"type\": \"int\"},               {\"name\": \"name\",\"type\": \"varchar\"},               {\"name\": \"sex\",\"type\": \"int\"},               {\"name\": \"age\",\"type\": \"int\"},               {\"name\": \"address\",\"type\": \"varchar\"},               {\"name\": \"idcard\",\"type\": \"varchar\"},               {\"name\": \"phone\",\"type\": \"varchar\"},               {\"name\": \"code\",\"type\": \"int\"},               {\"name\": \"create_time\",\"type\": \"datetime\"},               {\"name\": \"area_code\",\"type\": \"varchar\"} ,{\"name\": \"score\",\"type\": \"double\"}             ]", "where":"", "orderByColumn":"", "customSql":"", "splitKey":"", "fetchSize":"", "queryTimeOut":"", "increColumn":"", "startLocation":"", "useMaxFunc":"", "polling":"", "pollingInterval":"", "requestAccumulatorInterval":"", "id":"mysqlReader-689d792b-0f1a-4932-89f2-680dd431fffc"}},
+{"key":"f83705a5-d2ff-42c5-b741-352b701d97e0", "text":"ES Writer", "figure":"Circle", "fill":"#CE0620", "nodeType":"step", "pluginType":"writer", "size":"100 100", "loc":"750 160", "parameter":{"stepName":"ES Writer", "type":"writer", "pluginName":"esWriter", "address":"bigdata33:9200", "username":"", "password":"", "index":"student1", "indexType":"_doc", "column":" [               {\"name\": \"id\",\"type\": \"int\"},               {\"name\": \"name\",\"type\": \"string\"},               {\"name\": \"sex\",\"type\": \"int\"},               {\"name\": \"age\",\"type\": \"int\"},               {\"name\": \"address\",\"type\": \"string\"},               {\"name\": \"idcard\",\"type\": \"string\"},               {\"name\": \"phone\",\"type\": \"string\"},               {\"name\": \"code\",\"type\": \"int\"},               {\"name\": \"create_time\",\"type\": \"timestamp\"},               {\"name\": \"area_code\",\"type\": \"string\"},               {\"name\": \"score\",\"type\": \"double\"}  , {\"name\": \"sex_value\",\"type\": \"string\"}           ]", "idColumn":"[               {                 \"name\": \"id\",                 \"type\": \"int\"               }             ]", "bulkAction":"", "timeout":"", "pathPrefix":"", "id":"esWriter-f83705a5-d2ff-42c5-b741-352b701d97e0"}},
+{"key":"e9bbc6ee-041d-48d6-be2b-198bc455f279", "text":"脚本转换（过滤分数大于500）", "remark":"", "nodeType":"step", "pluginType":"processor", "pluginName":"scriptTransformer", "loc":"350 160", "parameter":{"stepName":"脚本转换（过滤分数大于500）", "type":"processor", "pluginName":"scriptFilter", "language":"fel", "expression":"row.getField('score')&gt;=500", "id":"scriptFilter-e9bbc6ee-041d-48d6-be2b-198bc455f279"}},
+{"key":"8e9b6aee-951b-4d97-a7b6-28949bec58c0", "text":"性别表码转换", "remark":"", "nodeType":"step", "pluginType":"lookup", "loc":"570 160", "parameter":{"stepName":"性别表码转换", "type":"lookup", "pluginName":"directLookup", "directData":"[\r\n              {\"sex_code\":\"0\", \"sex_value\": \"男\"},\r\n              {\"sex_code\":\"1\", \"sex_value\": \"女\"}\r\n            ]", "columns":" [\"sex_code\",\"sex_value\"]", "joinColumns":"{\"sex\": \"sex_code\"}", "id":"directLookup-8e9b6aee-951b-4d97-a7b6-28949bec58c0"}}
+ ],
+  "linkDataArray": [ 
+{"from":"689d792b-0f1a-4932-89f2-680dd431fffc", "to":"e9bbc6ee-041d-48d6-be2b-198bc455f279"},
+{"from":"e9bbc6ee-041d-48d6-be2b-198bc455f279", "to":"8e9b6aee-951b-4d97-a7b6-28949bec58c0"},
+{"from":"8e9b6aee-951b-4d97-a7b6-28949bec58c0", "to":"f83705a5-d2ff-42c5-b741-352b701d97e0"}
+ ]}</designerJson>
+    </jobFlowConfigs>
+    <jobFlowConfigs>
+        <id>mysql_lookup_lru_es</id>
+        <description>mysql补全（基于lru缓存）抽取至es</description>
+        <golbalSetting></golbalSetting>
+        <status>true</status>
+        <createTime>2022-01-18 20:37:32</createTime>
+        <designerJson>{ "class": "go.GraphLinksModel",
+  "modelData": {"position":"-5 -5"},
+  "nodeDataArray": [ 
+{"key":"69da79b4-054b-4454-8a45-96858c9ea5f9", "text":"Mysql Reader", "figure":"Circle", "fill":"#4fba4f", "nodeType":"step", "pluginType":"reader", "size":"100 100", "loc":"200 170", "parameter":{"stepName":"Mysql Reader", "type":"reader", "pluginName":"mysqlReader", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "table":"student", "column":"[               {\"name\": \"id\",\"type\": \"int\"},               {\"name\": \"name\",\"type\": \"varchar\"},               {\"name\": \"sex\",\"type\": \"int\"},               {\"name\": \"age\",\"type\": \"int\"},               {\"name\": \"address\",\"type\": \"varchar\"},               {\"name\": \"idcard\",\"type\": \"varchar\"},               {\"name\": \"phone\",\"type\": \"varchar\"},               {\"name\": \"code\",\"type\": \"int\"},               {\"name\": \"create_time\",\"type\": \"datetime\"},               {\"name\": \"area_code\",\"type\": \"varchar\"} ,{\"name\": \"score\",\"type\": \"double\"}             ]", "where":"", "orderByColumn":"", "customSql":"", "splitKey":"", "fetchSize":"", "queryTimeOut":"", "increColumn":"", "startLocation":"", "useMaxFunc":"", "polling":"", "pollingInterval":"", "requestAccumulatorInterval":"", "id":"mysqlReader-69da79b4-054b-4454-8a45-96858c9ea5f9"}},
+{"key":"742be91d-d1b6-4cd3-8f4e-3449e1ef3c36", "text":"ES Writer", "figure":"Circle", "fill":"#CE0620", "nodeType":"step", "pluginType":"writer", "size":"100 100", "loc":"600 170", "parameter":{"stepName":"ES Writer", "type":"writer", "pluginName":"esWriter", "address":"bigdata33:9200", "username":"", "password":"", "index":"student1", "indexType":"_doc", "column":" [               {\"name\": \"id\",\"type\": \"int\"},               {\"name\": \"name\",\"type\": \"string\"},               {\"name\": \"sex\",\"type\": \"int\"},               {\"name\": \"age\",\"type\": \"int\"},               {\"name\": \"address\",\"type\": \"string\"},               {\"name\": \"idcard\",\"type\": \"string\"},               {\"name\": \"phone\",\"type\": \"string\"},               {\"name\": \"code\",\"type\": \"int\"},               {\"name\": \"create_time\",\"type\": \"timestamp\"},               {\"name\": \"area_code\",\"type\": \"string\"},               {\"name\": \"score\",\"type\": \"double\"}  , {\"name\": \"sex_value\",\"type\": \"string\"}           ]", "idColumn":"[               {                 \"name\": \"id\",                 \"type\": \"int\"               }             ]", "bulkAction":"1", "timeout":"", "pathPrefix":"", "id":"esWriter-742be91d-d1b6-4cd3-8f4e-3449e1ef3c36"}},
+{"key":"5c39cdc4-8f9d-435a-8e83-2f45da5d89ad", "text":"MysqlLookup（LRU缓存）性别表码转换", "remark":"", "nodeType":"step", "pluginType":"lookup", "loc":"370 170", "parameter":{"stepName":"MysqlLookup（LRU缓存）性别表码转换", "type":"lookup", "pluginName":"mysqlLookup", "cacheType":"lru", "cacheMaxrows":"", "cacheTtl":"", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "schema":"", "table":"", "columns":"[\"sex_code\",\"sex_value\"]", "where":"", "customSql":"select code as sex_code,value as sex_value from dm_sys_code where code_id='dm_sex' ", "joinColumns":"{\"sex\": \"sex_code\"}", "fetchSize":"", "id":"mysqlLookup-5c39cdc4-8f9d-435a-8e83-2f45da5d89ad"}}
+ ],
+  "linkDataArray": [ 
+{"from":"69da79b4-054b-4454-8a45-96858c9ea5f9", "to":"5c39cdc4-8f9d-435a-8e83-2f45da5d89ad"},
+{"from":"5c39cdc4-8f9d-435a-8e83-2f45da5d89ad", "to":"742be91d-d1b6-4cd3-8f4e-3449e1ef3c36"}
+ ]}</designerJson>
+    </jobFlowConfigs>
+    <jobFlowConfigs>
+        <id>mysql_lookup_none_mysql</id>
+        <description>mysql补全（无缓存）抽取至mysql</description>
+        <golbalSetting></golbalSetting>
+        <status>true</status>
+        <createTime>2022-01-18 20:39:28</createTime>
+        <designerJson>{ "class": "go.GraphLinksModel",
+  "modelData": {"position":"-5 -5"},
+  "nodeDataArray": [ 
+{"key":"469d77e1-cc6d-4ebe-8e6f-7a5686b55b61", "text":"Mysql Reader", "figure":"Circle", "fill":"#4fba4f", "nodeType":"step", "pluginType":"reader", "size":"100 100", "loc":"220 170", "parameter":{"stepName":"Mysql Reader", "type":"reader", "pluginName":"mysqlReader", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "table":"student", "column":"[               {\"name\": \"id\",\"type\": \"int\"},               {\"name\": \"name\",\"type\": \"varchar\"},               {\"name\": \"sex\",\"type\": \"int\"},               {\"name\": \"age\",\"type\": \"int\"},               {\"name\": \"address\",\"type\": \"varchar\"},               {\"name\": \"idcard\",\"type\": \"varchar\"},               {\"name\": \"phone\",\"type\": \"varchar\"},               {\"name\": \"code\",\"type\": \"int\"},               {\"name\": \"create_time\",\"type\": \"datetime\"},               {\"name\": \"area_code\",\"type\": \"varchar\"} ,{\"name\": \"score\",\"type\": \"double\"}             ]", "where":"", "orderByColumn":"", "customSql":"", "splitKey":"", "fetchSize":"", "queryTimeOut":"", "increColumn":"", "startLocation":"", "useMaxFunc":"", "polling":"", "pollingInterval":"", "requestAccumulatorInterval":"", "id":"mysqlReader-469d77e1-cc6d-4ebe-8e6f-7a5686b55b61"}},
+{"key":"52ab2a1d-b6ab-45f1-a524-451b7eb755a2", "text":"ES Writer", "figure":"Circle", "fill":"#CE0620", "nodeType":"step", "pluginType":"writer", "size":"100 100", "loc":"610 170", "parameter":{"stepName":"ES Writer", "type":"writer", "pluginName":"esWriter", "address":"bigdata33:9200", "username":"", "password":"", "index":"student1", "indexType":"_doc", "column":" [               {\"name\": \"id\",\"type\": \"int\"},               {\"name\": \"name\",\"type\": \"string\"},               {\"name\": \"sex\",\"type\": \"int\"},               {\"name\": \"age\",\"type\": \"int\"},               {\"name\": \"address\",\"type\": \"string\"},               {\"name\": \"idcard\",\"type\": \"string\"},               {\"name\": \"phone\",\"type\": \"string\"},               {\"name\": \"code\",\"type\": \"int\"},               {\"name\": \"create_time\",\"type\": \"timestamp\"},               {\"name\": \"area_code\",\"type\": \"string\"},               {\"name\": \"score\",\"type\": \"double\"}  , {\"name\": \"value\",\"type\": \"string\"}           ]", "idColumn":"[               {                 \"name\": \"id\",                 \"type\": \"int\"               }             ]", "bulkAction":"1", "timeout":"", "pathPrefix":"", "id":"esWriter-52ab2a1d-b6ab-45f1-a524-451b7eb755a2"}},
+{"key":"3cda1572-f1c3-4035-8c12-38d0421fa8da", "text":"MysqlLookup（无缓存）性别表码转换", "remark":"", "nodeType":"step", "pluginType":"lookup", "loc":"380 170", "parameter":{"stepName":"MysqlLookup（无缓存）性别表码转换", "type":"lookup", "pluginName":"mysqlLookup", "cacheType":"none", "cacheMaxrows":"", "cacheTtl":"", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "schema":"", "table":"dm_sys_code", "columns":"[\"code\",\"value\"]", "where":"code_id='dm_sex' ", "customSql":"", "joinColumns":"{\"sex\": \"code\"}", "fetchSize":"", "id":"mysqlLookup-3cda1572-f1c3-4035-8c12-38d0421fa8da"}}
+ ],
+  "linkDataArray": [ 
+{"from":"469d77e1-cc6d-4ebe-8e6f-7a5686b55b61", "to":"3cda1572-f1c3-4035-8c12-38d0421fa8da"},
+{"from":"3cda1572-f1c3-4035-8c12-38d0421fa8da", "to":"52ab2a1d-b6ab-45f1-a524-451b7eb755a2"}
+ ]}</designerJson>
+    </jobFlowConfigs>
+    <jobFlowConfigs>
+        <id>mysqlstream_es</id>
+        <description>基于mysql binlog流抽取至es</description>
+        <golbalSetting></golbalSetting>
+        <status>true</status>
+        <createTime>2022-01-18 20:40:17</createTime>
+        <designerJson>{ "class": "go.GraphLinksModel",
+  "modelData": {"position":"-5 -5"},
+  "nodeDataArray": [ 
+{"key":"414bb5e5-6ad9-4d3f-a9b6-97cc86eb96fe", "text":"Mysql Stream", "figure":"Circle", "fill":"#4fba4f", "nodeType":"step", "pluginType":"reader", "size":"100 100", "loc":"210 150", "parameter":{"stepName":"Mysql Stream", "type":"reader", "pluginName":"mysqlStreamReader", "hostname":"10.254.10.31", "port":"3306", "schema":"duceap_job_demo", "table":"student", "username":"root", "password":"dragon@1qaz!QAZ", "id":"mysqlStreamReader-414bb5e5-6ad9-4d3f-a9b6-97cc86eb96fe"}},
+{"key":"e6249782-834a-40fb-baf4-cb79d33a6f85", "text":"ES Writer", "figure":"Circle", "fill":"#CE0620", "nodeType":"step", "pluginType":"writer", "size":"100 100", "loc":"470 150", "parameter":{"stepName":"ES Writer", "type":"writer", "pluginName":"esWriter", "address":"bigdata33:9200", "username":"", "password":"", "index":"student1", "indexType":"_doc", "column":"[               {\"name\": \"id\",\"type\": \"int\"},               {\"name\": \"name\",\"type\": \"string\"},               {\"name\": \"sex\",\"type\": \"int\"},               {\"name\": \"age\",\"type\": \"int\"},               {\"name\": \"address\",\"type\": \"string\"},               {\"name\": \"idcard\",\"type\": \"string\"},               {\"name\": \"phone\",\"type\": \"string\"},               {\"name\": \"code\",\"type\": \"int\"},               {\"name\": \"create_time\",\"type\": \"timestamp\"},               {\"name\": \"area_code\",\"type\": \"string\"},               {\"name\": \"score\",\"type\": \"double\"}               ]", "idColumn":"[               {                 \"name\": \"id\",                 \"type\": \"int\"               }             ]", "bulkAction":"1", "timeout":"", "pathPrefix":"", "id":"esWriter-e6249782-834a-40fb-baf4-cb79d33a6f85"}}
+ ],
+  "linkDataArray": [ {"from":"414bb5e5-6ad9-4d3f-a9b6-97cc86eb96fe", "to":"e6249782-834a-40fb-baf4-cb79d33a6f85"} ]}</designerJson>
+    </jobFlowConfigs>
+    <jobFlowConfigs>
+        <id>mysqlstream_mysqlstreamwriter_chekcpoint</id>
+        <description>基于mysql binlog抽取至mysql库，并启用checkpoint实现断点续传</description>
+        <golbalSetting>{   &#xD;
+    "name":"myjob",&#xD;
+    "isLocal":"true",&#xD;
+     "speed": {&#xD;
+        "channel": 2&#xD;
+      },&#xD;
+      "restore": {&#xD;
+        "isRestore": true,&#xD;
+        "savepointPath": "file:///D:\\conf\\checkpoint",&#xD;
+        "savepointInterval": 30000,&#xD;
+        "restoreColumnName": "id",&#xD;
+        "restoreColumnType": "int"&#xD;
+    }&#xD;
+}</golbalSetting>
+        <status>true</status>
+        <createTime>2022-01-18 20:40:58</createTime>
+        <designerJson>{ "class": "go.GraphLinksModel",
+  "modelData": {"position":"-5 -5"},
+  "nodeDataArray": [ 
+{"key":"64419e7b-cffe-47d8-bd1c-4584141bad80", "text":"Mysql Stream", "figure":"Circle", "fill":"#4fba4f", "nodeType":"step", "pluginType":"reader", "size":"100 100", "loc":"260 200", "parameter":{"stepName":"Mysql Stream", "type":"reader", "pluginName":"mysqlStreamReader", "hostname":"10.254.10.31", "port":"3306", "schema":"duceap_job_demo", "table":"student", "username":"root", "password":"dragon@1qaz!QAZ", "id":"mysqlStreamReader-64419e7b-cffe-47d8-bd1c-4584141bad80"}},
+{"key":"7dad5ef9-6066-46d7-8c96-ca17f8ce0974", "text":"Mysql Writer", "figure":"Circle", "fill":"#CE0620", "nodeType":"step", "pluginType":"writer", "size":"100 100", "loc":"520 200", "parameter":{"stepName":"Mysql Writer", "type":"writer", "pluginName":"mysqlStreamWriter", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "table":"student1", "column":"", "fullColumn":"", "writeMode":"STREAM", "updateKey":"", "insertSqlMode":"", "preSql":"[\"delete from student1 \"]", "postSql":"", "batchSize":"1", "id":"mysqlStreamWriter-7dad5ef9-6066-46d7-8c96-ca17f8ce0974"}}
+ ],
+  "linkDataArray": [ {"from":"64419e7b-cffe-47d8-bd1c-4584141bad80", "to":"7dad5ef9-6066-46d7-8c96-ca17f8ce0974"} ]}</designerJson>
+    </jobFlowConfigs>
+    <jobFlowConfigs>
+        <id>mysql_aggcount_es</id>
+        <description>mysql基于count计数窗口聚合统计(包含AVG、sum、count、max、min、stats)抽取至es</description>
+        <golbalSetting></golbalSetting>
+        <status>true</status>
+        <createTime>2022-01-18 20:43:32</createTime>
+        <designerJson>{ "class": "go.GraphLinksModel",
+  "modelData": {"position":"-5 -5"},
+  "nodeDataArray": [ 
+{"key":"a243eb00-3af6-4eaf-82ae-da0e6d328244", "text":"Mysql Reader", "figure":"Circle", "fill":"#4fba4f", "nodeType":"step", "pluginType":"reader", "size":"100 100", "loc":"190 160", "parameter":{"stepName":"Mysql Reader", "type":"reader", "pluginName":"mysqlReader", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "table":"student", "column":"[               {\"name\": \"id\",\"type\": \"int\"},               {\"name\": \"name\",\"type\": \"varchar\"},               {\"name\": \"sex\",\"type\": \"int\"},               {\"name\": \"age\",\"type\": \"int\"},               {\"name\": \"address\",\"type\": \"varchar\"},               {\"name\": \"idcard\",\"type\": \"varchar\"},               {\"name\": \"phone\",\"type\": \"varchar\"},               {\"name\": \"code\",\"type\": \"int\"},               {\"name\": \"create_time\",\"type\": \"datetime\"},               {\"name\": \"area_code\",\"type\": \"varchar\"} ,{\"name\": \"score\",\"type\": \"double\"}             ]", "where":"", "orderByColumn":"", "customSql":"", "splitKey":"", "fetchSize":"", "queryTimeOut":"", "increColumn":"", "startLocation":"", "useMaxFunc":"", "polling":"", "pollingInterval":"", "requestAccumulatorInterval":"", "id":"mysqlReader-a243eb00-3af6-4eaf-82ae-da0e6d328244"}},
+{"key":"d958f71c-772d-40c0-979e-7a325b7abe4b", "text":"ES Writer", "figure":"Circle", "fill":"#CE0620", "nodeType":"step", "pluginType":"writer", "size":"100 100", "loc":"650 160", "parameter":{"stepName":"ES Writer", "type":"writer", "pluginName":"esWriter", "address":"bigdata33:9200", "username":"", "password":"", "index":"student1_agg", "indexType":"_doc", "column":"[               {\"name\": \"idcard\",\"type\": \"string\"},               {\"name\": \"aggBy\",\"type\": \"string\"},               {\"name\": \"max\",\"type\": \"double\"},               {\"name\": \"min\",\"type\": \"double\"},               {\"name\": \"avg\",\"type\": \"double\"},               {\"name\": \"count\",\"type\": \"long\"},               {\"name\": \"sum\",\"type\": \"double\"},               {\"name\": \"dumpTime\",\"type\": \"timestamp\"}             ]", "idColumn":"", "bulkAction":"1", "timeout":"", "pathPrefix":"", "id":"esWriter-d958f71c-772d-40c0-979e-7a325b7abe4b"}},
+{"key":"2578594c-eac8-4344-b5e9-ca5ddf4f4df2", "text":"Count累计窗口聚合计算（AVG、SUM、COUNT、MAX、MIN）", "remark":"", "nodeType":"step", "pluginType":"agg", "loc":"420 160", "parameter":{"stepName":"Count累计窗口聚合计算（AVG、SUM、COUNT、MAX、MIN）", "type":"agg", "pluginName":"countWindowAgg", "keyBy":"[\"idcard\"]", "agg":"{\"age\": [\"max\"],\"score\": [\"stats\"]}", "windowSize":"5", "id":"countWindowAgg-2578594c-eac8-4344-b5e9-ca5ddf4f4df2"}}
+ ],
+  "linkDataArray": [ 
+{"from":"a243eb00-3af6-4eaf-82ae-da0e6d328244", "to":"2578594c-eac8-4344-b5e9-ca5ddf4f4df2"},
+{"from":"2578594c-eac8-4344-b5e9-ca5ddf4f4df2", "to":"d958f71c-772d-40c0-979e-7a325b7abe4b"}
+ ]}</designerJson>
+    </jobFlowConfigs>
+    <jobFlowConfigs>
+        <id>mysql_aggsliding_es</id>
+        <description>mysql基于滑动窗口聚合统计(包含AVG、sum、count、max、min、stats)抽取至es</description>
+        <golbalSetting></golbalSetting>
+        <status>true</status>
+        <createTime>2022-01-18 20:43:54</createTime>
+        <designerJson>{ "class": "go.GraphLinksModel",
+  "modelData": {"position":"-5 -5"},
+  "nodeDataArray": [ 
+{"key":"52f91c40-25db-4a29-9a48-09ce9cac1caa", "text":"Mysql Reader", "figure":"Circle", "fill":"#4fba4f", "nodeType":"step", "pluginType":"reader", "size":"100 100", "loc":"220 130", "parameter":{"stepName":"Mysql Reader", "type":"reader", "pluginName":"mysqlReader", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "table":"student", "column":"[               {\"name\": \"id\",\"type\": \"int\"},               {\"name\": \"name\",\"type\": \"varchar\"},               {\"name\": \"sex\",\"type\": \"int\"},               {\"name\": \"age\",\"type\": \"int\"},               {\"name\": \"address\",\"type\": \"varchar\"},               {\"name\": \"idcard\",\"type\": \"varchar\"},               {\"name\": \"phone\",\"type\": \"varchar\"},               {\"name\": \"code\",\"type\": \"int\"},               {\"name\": \"create_time\",\"type\": \"datetime\"},               {\"name\": \"area_code\",\"type\": \"varchar\"} ,{\"name\": \"score\",\"type\": \"double\"}             ]", "where":"", "orderByColumn":"", "customSql":"", "splitKey":"", "fetchSize":"", "queryTimeOut":"", "increColumn":"", "startLocation":"", "useMaxFunc":"", "polling":"", "pollingInterval":"", "requestAccumulatorInterval":"", "id":"mysqlReader-52f91c40-25db-4a29-9a48-09ce9cac1caa"}},
+{"key":"f8940278-bbb1-4fb3-ab08-3dc5c96dec33", "text":"ES Writer", "figure":"Circle", "fill":"#CE0620", "nodeType":"step", "pluginType":"writer", "size":"100 100", "loc":"580 130", "parameter":{"stepName":"ES Writer", "type":"writer", "pluginName":"esWriter", "address":"bigdata33:9200", "username":"", "password":"", "index":"student1_agg", "indexType":"_doc", "column":"[               {\"name\": \"idcard\",\"type\": \"string\"},               {\"name\": \"aggBy\",\"type\": \"string\"},               {\"name\": \"max\",\"type\": \"double\"},               {\"name\": \"min\",\"type\": \"double\"},               {\"name\": \"avg\",\"type\": \"double\"},               {\"name\": \"count\",\"type\": \"long\"},               {\"name\": \"sum\",\"type\": \"double\"},               {\"name\": \"dumpTime\",\"type\": \"timestamp\"},               {\"name\": \"beginTime\",\"type\": \"timestamp\"},               {\"name\": \"endTime\",\"type\": \"timestamp\"}             ]", "idColumn":"", "bulkAction":"1", "timeout":"", "pathPrefix":"", "id":"esWriter-f8940278-bbb1-4fb3-ab08-3dc5c96dec33"}},
+{"key":"6af02dce-b198-451d-b994-5f8f049a4696", "text":"滑动窗口聚合计算（AVG、SUM、COUNT、MAX、MIN）", "remark":"", "nodeType":"step", "pluginType":"agg", "loc":"380 130", "parameter":{"stepName":"滑动窗口聚合计算（AVG、SUM、COUNT、MAX、MIN）", "type":"agg", "pluginName":"slidingWindowAgg", "keyBy":"[\"idcard\"]", "agg":"{\"age\": [\"max\"],\"score\": [\"stats\"]}", "timeSize":"5", "slideSize":"2", "timeUnit":"SECONDS", "timeType":"process", "eventTimeColumn":"", "outOfOrderness":"", "id":"slidingWindowAgg-6af02dce-b198-451d-b994-5f8f049a4696"}}
+ ],
+  "linkDataArray": [ 
+{"from":"52f91c40-25db-4a29-9a48-09ce9cac1caa", "to":"6af02dce-b198-451d-b994-5f8f049a4696"},
+{"from":"6af02dce-b198-451d-b994-5f8f049a4696", "to":"f8940278-bbb1-4fb3-ab08-3dc5c96dec33"}
+ ]}</designerJson>
+    </jobFlowConfigs>
+    <jobFlowConfigs>
+        <id>mysql_aggtumbling_es</id>
+        <description>mysql基于滚动窗口聚合统计(包含AVG、sum、count、max、min、stats)抽取至es</description>
+        <golbalSetting></golbalSetting>
+        <status>true</status>
+        <createTime>2022-01-18 20:46:06</createTime>
+        <designerJson>{ "class": "go.GraphLinksModel",
+  "modelData": {"position":"-5 -5"},
+  "nodeDataArray": [ 
+{"key":"722a48a1-0c1a-4cd9-83e2-bb80404fd6f6", "text":"Mysql Reader", "figure":"Circle", "fill":"#4fba4f", "nodeType":"step", "pluginType":"reader", "size":"100 100", "loc":"120 120", "parameter":{"stepName":"Mysql Reader", "type":"reader", "pluginName":"mysqlReader", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "table":"student", "column":"[               {\"name\": \"id\",\"type\": \"int\"},               {\"name\": \"name\",\"type\": \"varchar\"},               {\"name\": \"sex\",\"type\": \"int\"},               {\"name\": \"age\",\"type\": \"int\"},               {\"name\": \"address\",\"type\": \"varchar\"},               {\"name\": \"idcard\",\"type\": \"varchar\"},               {\"name\": \"phone\",\"type\": \"varchar\"},               {\"name\": \"code\",\"type\": \"int\"},               {\"name\": \"create_time\",\"type\": \"datetime\"},               {\"name\": \"area_code\",\"type\": \"varchar\"} ,{\"name\": \"score\",\"type\": \"double\"}             ]", "where":"", "orderByColumn":"", "customSql":"", "splitKey":"", "fetchSize":"", "queryTimeOut":"", "increColumn":"", "startLocation":"", "useMaxFunc":"", "polling":"", "pollingInterval":"", "requestAccumulatorInterval":"", "id":"mysqlReader-722a48a1-0c1a-4cd9-83e2-bb80404fd6f6"}},
+{"key":"81399564-a9ba-4d5f-9cbc-f9ce4c01ec57", "text":"ES Writer", "figure":"Circle", "fill":"#CE0620", "nodeType":"step", "pluginType":"writer", "size":"100 100", "loc":"540 120", "parameter":{"stepName":"ES Writer", "type":"writer", "pluginName":"esWriter", "address":"bigdata33:9200", "username":"", "password":"", "index":"student1_agg", "indexType":"_doc", "column":"[               {\"name\": \"idcard\",\"type\": \"string\"},               {\"name\": \"aggBy\",\"type\": \"string\"},               {\"name\": \"max\",\"type\": \"double\"},               {\"name\": \"min\",\"type\": \"double\"},               {\"name\": \"avg\",\"type\": \"double\"},               {\"name\": \"count\",\"type\": \"long\"},               {\"name\": \"sum\",\"type\": \"double\"},               {\"name\": \"dumpTime\",\"type\": \"timestamp\"},               {\"name\": \"beginTime\",\"type\": \"timestamp\"},               {\"name\": \"endTime\",\"type\": \"timestamp\"}             ]", "idColumn":"", "bulkAction":"1", "timeout":"", "pathPrefix":"", "id":"esWriter-81399564-a9ba-4d5f-9cbc-f9ce4c01ec57"}},
+{"key":"5f2eae1d-4d43-4e8b-89ff-75a5c6836021", "text":"滚动窗口聚合计算（AVG、SUM、COUNT、MAX、MIN）", "remark":"", "nodeType":"step", "pluginType":"agg", "loc":"320 120", "parameter":{"stepName":"滚动窗口聚合计算（AVG、SUM、COUNT、MAX、MIN）", "type":"agg", "pluginName":"tumblingWindowAgg", "keyBy":"[\"idcard\"]", "agg":"{\"age\": [\"max\"],\"score\": [\"stats\"]}", "timeSize":"5", "timeUnit":"SECONDS", "timeType":"event", "eventTimeColumn":"create_time", "outOfOrderness":"3", "id":"tumblingWindowAgg-5f2eae1d-4d43-4e8b-89ff-75a5c6836021"}}
+ ],
+  "linkDataArray": [ 
+{"from":"722a48a1-0c1a-4cd9-83e2-bb80404fd6f6", "to":"5f2eae1d-4d43-4e8b-89ff-75a5c6836021"},
+{"from":"5f2eae1d-4d43-4e8b-89ff-75a5c6836021", "to":"81399564-a9ba-4d5f-9cbc-f9ce4c01ec57"}
+ ]}</designerJson>
+    </jobFlowConfigs>
+    <jobFlowConfigs>
+        <id>es_filter_es</id>
+        <description>es过滤转换抽取至es</description>
+        <golbalSetting></golbalSetting>
+        <status>true</status>
+        <createTime>2022-01-18 20:47:14</createTime>
+        <designerJson>{ "class": "go.GraphLinksModel",
+  "modelData": {"position":"-5 -5"},
+  "nodeDataArray": [ 
+{"key":"839c8b00-d641-47d3-92f4-7492e4fcea38", "text":"ES Reader", "figure":"Circle", "fill":"#4fba4f", "nodeType":"step", "pluginType":"reader", "size":"100 100", "loc":"230 120", "parameter":{"stepName":"ES Reader", "type":"reader", "pluginName":"esReader", "address":"bigdata33:9200", "username":"", "password":"", "index":"student1", "indexType":"_doc", "column":" [               {\"name\": \"id\",\"type\": \"int\"},               {\"name\": \"name\",\"type\": \"string\"},               {\"name\": \"sex\",\"type\": \"int\"},               {\"name\": \"age\",\"type\": \"int\"},               {\"name\": \"address\",\"type\": \"string\"},               {\"name\": \"idcard\",\"type\": \"string\"},               {\"name\": \"phone\",\"type\": \"string\"},               {\"name\": \"code\",\"type\": \"int\"},               {\"name\": \"create_time\",\"type\": \"timestamp\"},               {\"name\": \"area_code\",\"type\": \"string\"},               {\"name\": \"score\",\"type\": \"double\"}   ]", "batchSize":"1", "timeout":"", "pathPrefix":"", "query":"", "id":"esReader-839c8b00-d641-47d3-92f4-7492e4fcea38"}},
+{"key":"321fd525-d46f-4df2-b20f-39b128497dda", "text":"ES Writer", "figure":"Circle", "fill":"#CE0620", "nodeType":"step", "pluginType":"writer", "size":"100 100", "loc":"610 120", "parameter":{"stepName":"ES Writer", "type":"writer", "pluginName":"esWriter", "address":"bigdata33:9200", "username":"", "password":"", "index":"student2", "indexType":"_doc", "column":" [               {\"name\": \"id\",\"type\": \"int\"},               {\"name\": \"name\",\"type\": \"string\"},               {\"name\": \"sex\",\"type\": \"int\"},               {\"name\": \"age\",\"type\": \"int\"},               {\"name\": \"address\",\"type\": \"string\"},               {\"name\": \"idcard\",\"type\": \"string\"},               {\"name\": \"phone\",\"type\": \"string\"},               {\"name\": \"code\",\"type\": \"int\"},               {\"name\": \"create_time\",\"type\": \"timestamp\"},               {\"name\": \"area_code\",\"type\": \"string\"},               {\"name\": \"score\",\"type\": \"double\"}  ]", "idColumn":"[{\"name\": \"id\",\"type\": \"int\"}]", "bulkAction":"1", "timeout":"", "pathPrefix":"", "id":"esWriter-321fd525-d46f-4df2-b20f-39b128497dda"}},
+{"key":"289c923b-a2ce-4b50-b0de-f5bb551e251e", "text":"脚本转换（过滤分数大于550）", "remark":"", "nodeType":"step", "pluginType":"processor", "pluginName":"scriptTransformer", "loc":"400 120", "parameter":{"stepName":"脚本转换（过滤分数大于550）", "type":"processor", "pluginName":"scriptFilter", "language":"fel", "expression":"row.getField('score')&gt;=550", "id":"scriptFilter-289c923b-a2ce-4b50-b0de-f5bb551e251e"}}
+ ],
+  "linkDataArray": [ 
+{"from":"839c8b00-d641-47d3-92f4-7492e4fcea38", "to":"289c923b-a2ce-4b50-b0de-f5bb551e251e"},
+{"from":"289c923b-a2ce-4b50-b0de-f5bb551e251e", "to":"321fd525-d46f-4df2-b20f-39b128497dda"}
+ ]}</designerJson>
+    </jobFlowConfigs>
+    <jobFlowConfigs>
+        <id>oracle_incrpoll_filter_oracle</id>
+        <description>oracle增量轮询+过滤转换抽取至oracle</description>
+        <golbalSetting>{   &#xD;
+    "name":"myjob",&#xD;
+     "speed": {&#xD;
+        "channel": 2&#xD;
+      }&#xD;
+}</golbalSetting>
+        <status>true</status>
+        <createTime>2022-01-18 20:47:37</createTime>
+        <designerJson>{ "class": "go.GraphLinksModel",
+  "modelData": {"position":"-5 -5"},
+  "nodeDataArray": [ 
+{"key":"733036ee-e98d-4808-840f-325aa192f6b7", "text":"Oracle Reader", "figure":"Circle", "fill":"#4fba4f", "nodeType":"step", "pluginType":"reader", "size":"100 100", "loc":"160 140", "parameter":{"stepName":"Oracle Reader", "type":"reader", "pluginName":"oracleReader", "jdbcUrl":"jdbc:oracle:thin:@192.168.0.216:1521:orcl", "username":"duceap_job", "password":"dragon", "table":"student", "column":"[               {\"name\": \"ID\",\"type\": \"number\"},               {\"name\": \"NAME\",\"type\": \"varchar2\"},               {\"name\": \"SEX\",\"type\": \"number\"},               {\"name\": \"AGE\",\"type\": \"number\"},               {\"name\": \"ADDRESS\",\"type\": \"varchar2\"},               {\"name\": \"IDCARD\",\"type\": \"varchar2\"},               {\"name\": \"PHONE\",\"type\": \"varchar2\"},               {\"name\": \"CODE\",\"type\": \"number\"},               {\"name\": \"CREATE_TIME\",\"type\": \"DATE\"},               {\"name\": \"AREA_CODE\",\"type\": \"varchar2\"},               {\"name\": \"SCORE\",\"type\": \"number\"}             ]", "where":"", "orderByColumn":"", "customSql":"", "splitKey":"ID", "fetchSize":"100", "queryTimeOut":"", "increColumn":"ID", "startLocation":"", "useMaxFunc":"", "polling":"true", "pollingInterval":"10", "requestAccumulatorInterval":"2", "id":"oracleReader-733036ee-e98d-4808-840f-325aa192f6b7"}},
+{"key":"f4fba8ad-3ad1-4bf3-a959-224adbec8be5", "text":"Oracle Writer", "figure":"Circle", "fill":"#CE0620", "nodeType":"step", "pluginType":"writer", "size":"100 100", "loc":"630 140", "parameter":{"stepName":"Oracle Writer", "type":"writer", "pluginName":"oracleWriter", "jdbcUrl":"jdbc:oracle:thin:@192.168.0.216:1521:orcl", "username":"duceap_job", "password":"dragon", "table":"student1", "column":"[\r\n                \"ID\",\r\n                \"NAME\",\r\n                \"SEX\",\r\n                \"AGE\",\r\n                \"ADDRESS\",\r\n                \"IDCARD\",\r\n                \"PHONE\",\r\n                \"CODE\",\r\n                \"CREATE_TIME\",\r\n                \"AREA_CODE\",\r\n               \"SCORE\"\r\n              ]", "fullColumn":"", "writeMode":"INSERT", "updateKey":"", "insertSqlMode":"", "preSql":"[\"delete from student1\"]", "postSql":"", "batchSize":"", "id":"oracleWriter-f4fba8ad-3ad1-4bf3-a959-224adbec8be5"}},
+{"key":"433d56f9-3657-4865-b6fe-328d7bcc4a63", "text":"脚本转换（过滤分数大于500）", "remark":"", "nodeType":"step", "pluginType":"processor", "pluginName":"scriptTransformer", "loc":"380 140", "parameter":{"stepName":"脚本转换（过滤分数大于500）", "type":"processor", "pluginName":"scriptTransformer", "language":"aviator", "expression":"row.getField('SCORE')&gt;=500", "id":"scriptTransformer-433d56f9-3657-4865-b6fe-328d7bcc4a63"}}
+ ],
+  "linkDataArray": [ 
+{"from":"733036ee-e98d-4808-840f-325aa192f6b7", "to":"433d56f9-3657-4865-b6fe-328d7bcc4a63"},
+{"from":"433d56f9-3657-4865-b6fe-328d7bcc4a63", "to":"f4fba8ad-3ad1-4bf3-a959-224adbec8be5"}
+ ]}</designerJson>
+    </jobFlowConfigs>
+    <jobFlowConfigs>
+        <id>postgresql_incrpoll_filter_postgresql</id>
+        <description>postgresql增量轮询过滤抽取至postgresql</description>
+        <golbalSetting></golbalSetting>
+        <status>false</status>
+        <createTime>2022-01-18 20:48:18</createTime>
+    </jobFlowConfigs>
+    <jobFlowConfigs>
+        <id>mysql_scripttrans_mysql</id>
+        <description>mysql抽取至mysql，并分别结果fel、groovy、bsh、javascript转换</description>
+        <golbalSetting>{   &#xD;
+    "name":"myjob",&#xD;
+     "speed": {&#xD;
+        "channel":10&#xD;
+      }&#xD;
+}</golbalSetting>
+        <status>true</status>
+        <createTime>2022-02-07 10:11:40</createTime>
+        <designerJson>{ "class": "go.GraphLinksModel",
+  "modelData": {"position":"-5 -5"},
+  "nodeDataArray": [ 
+{"key":"22e4e2a0-67e2-4f1e-b269-bffc515d2edc", "text":"Mysql Reader", "figure":"Circle", "fill":"#4fba4f", "nodeType":"step", "pluginType":"reader", "size":"100 100", "loc":"150 150", "parameter":{"stepName":"Mysql Reader", "type":"reader", "pluginName":"mysqlReader", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "table":"student_1w", "column":"[               {\"name\": \"id\",\"type\": \"int\"},               {\"name\": \"name\",\"type\": \"varchar\"},               {\"name\": \"sex\",\"type\": \"int\"},               {\"name\": \"age\",\"type\": \"int\"},               {\"name\": \"address\",\"type\": \"varchar\"},               {\"name\": \"idcard\",\"type\": \"varchar\"},               {\"name\": \"phone\",\"type\": \"varchar\"},               {\"name\": \"code\",\"type\": \"int\"},               {\"name\": \"create_time\",\"type\": \"datetime\"},               {\"name\": \"area_code\",\"type\": \"varchar\"} ,  {\"name\": \"score\",\"type\": \"double\"}              ]", "where":"", "orderByColumn":"", "customSql":"", "splitKey":"id", "fetchSize":"300", "queryTimeOut":"", "increColumn":"", "startLocation":"", "useMaxFunc":"", "polling":"", "pollingInterval":"", "requestAccumulatorInterval":"", "id":"mysqlReader-22e4e2a0-67e2-4f1e-b269-bffc515d2edc"}},
+{"key":"8b1d654a-e65f-4338-9365-627bbc98ad7a", "text":"Mysql Writer", "figure":"Circle", "fill":"#CE0620", "nodeType":"step", "pluginType":"writer", "size":"100 100", "loc":"970 280", "parameter":{"stepName":"Mysql Writer", "type":"writer", "pluginName":"mysqlWriter", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "table":"student1", "column":"[\r\n                \"id\",\r\n                \"name\",\r\n                \"sex\",\r\n                \"age\",\r\n                \"address\",\r\n                \"idcard\",\r\n                \"phone\",\r\n                \"code\",\r\n                \"create_time\",\r\n                \"area_code\",\r\n                \"score\",\r\n                   \"sex_value\"\r\n              ]", "fullColumn":"", "writeMode":"INSERT", "updateKey":"", "insertSqlMode":"", "preSql":"[\"delete from student1\"]", "postSql":"", "batchSize":"500", "id":"mysqlWriter-8b1d654a-e65f-4338-9365-627bbc98ad7a"}},
+{"key":"2833e344-47ed-49e1-852d-c7e03eac9c5a", "text":"bsh脚本转换（分数+1）", "remark":"", "nodeType":"step", "pluginType":"processor", "pluginName":"scriptTransformer", "loc":"320 150", "parameter":{"stepName":"bsh脚本转换（分数+1）", "type":"processor", "pluginName":"scriptTransformer", "language":"bsh", "expression":"row.setField(\"score\",row.getField(\"score\")+1);", "id":"scriptTransformer-2833e344-47ed-49e1-852d-c7e03eac9c5a"}},
+{"key":"2833e344-47ed-49e1-852d-c7e03eac9c5a4", "text":"fel脚本截取4位区划", "remark":"", "nodeType":"step", "pluginType":"processor", "pluginName":"scriptTransformer", "loc":"740 150", "parameter":{"stepName":"fel脚本截取4位区划", "type":"processor", "pluginName":"scriptTransformer", "language":"fel", "expression":" row.setField(\"area_code\",row.getField(\"area_code\").substring(0,4))", "id":"scriptTransformer-2833e344-47ed-49e1-852d-c7e03eac9c5a4"}},
+{"key":"2833e344-47ed-49e1-852d-c7e03eac9c5a2", "text":"JavaScript脚本设置性别默认值", "remark":"", "nodeType":"step", "pluginType":"processor", "pluginName":"scriptTransformer", "loc":"540 150", "parameter":{"stepName":"JavaScript脚本设置性别默认值", "type":"processor", "pluginName":"scriptTransformer", "language":"javascript", "expression":" if(row.getField(\"sex\") == null){row.setField(\"sex\",0) ;}", "id":"scriptTransformer-2833e344-47ed-49e1-852d-c7e03eac9c5a2"}},
+{"key":"2833e344-47ed-49e1-852d-c7e03eac9c5a3", "text":"Groovy转换表码", "remark":"", "nodeType":"step", "pluginType":"processor", "pluginName":"scriptTransformer", "loc":"950 150", "parameter":{"stepName":"Groovy转换表码", "type":"processor", "pluginName":"scriptTransformer", "language":"groovy", "expression":"int sex = row.getField('sex'); if(sex==0){row.setField(\"sex_value\", \"男\");}else{row.setField(\"sex_value\", \"女\");} ", "id":"scriptTransformer-2833e344-47ed-49e1-852d-c7e03eac9c5a3"}}
+ ],
+  "linkDataArray": [ 
+{"from":"22e4e2a0-67e2-4f1e-b269-bffc515d2edc", "to":"2833e344-47ed-49e1-852d-c7e03eac9c5a"},
+{"from":"2833e344-47ed-49e1-852d-c7e03eac9c5a4", "to":"2833e344-47ed-49e1-852d-c7e03eac9c5a3"},
+{"from":"2833e344-47ed-49e1-852d-c7e03eac9c5a", "to":"2833e344-47ed-49e1-852d-c7e03eac9c5a2"},
+{"from":"2833e344-47ed-49e1-852d-c7e03eac9c5a2", "to":"2833e344-47ed-49e1-852d-c7e03eac9c5a4"},
+{"from":"2833e344-47ed-49e1-852d-c7e03eac9c5a3", "to":"8b1d654a-e65f-4338-9365-627bbc98ad7a"}
+ ]}</designerJson>
+    </jobFlowConfigs>
+    <jobFlowConfigs>
+        <id>mysql_scriptfilter_mysql</id>
+        <description>mysql抽取至mysql，并分别结果fel、groovy、bsh、javascript脚本过滤</description>
+        <golbalSetting>{   &#xD;
+    "name":"myjob",&#xD;
+     "speed": {&#xD;
+        "channel":2&#xD;
+      }&#xD;
+}</golbalSetting>
+        <status>true</status>
+        <createTime>2022-02-08 08:39:37</createTime>
+        <designerJson>{ "class": "go.GraphLinksModel",
+  "modelData": {"position":"-5 -5"},
+  "nodeDataArray": [ 
+{"key":"29850caa-62f7-4758-bfca-8dacd588ac68", "text":"Mysql Reader", "figure":"Circle", "fill":"#4fba4f", "nodeType":"step", "pluginType":"reader", "size":"100 100", "loc":"90 120", "parameter":{"stepName":"Mysql Reader", "type":"reader", "pluginName":"mysqlReader", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "table":"student", "column":"[               {\"name\": \"id\",\"type\": \"int\"},               {\"name\": \"name\",\"type\": \"varchar\"},               {\"name\": \"sex\",\"type\": \"int\"},               {\"name\": \"age\",\"type\": \"int\"},               {\"name\": \"address\",\"type\": \"varchar\"},               {\"name\": \"idcard\",\"type\": \"varchar\"},               {\"name\": \"phone\",\"type\": \"varchar\"},               {\"name\": \"code\",\"type\": \"int\"},               {\"name\": \"create_time\",\"type\": \"datetime\"},               {\"name\": \"area_code\",\"type\": \"varchar\"} ,  {\"name\": \"score\",\"type\": \"double\"}              ]", "where":"", "orderByColumn":"", "customSql":"", "splitKey":"id", "fetchSize":"", "queryTimeOut":"", "increColumn":"", "startLocation":"", "useMaxFunc":"", "polling":"", "pollingInterval":"", "requestAccumulatorInterval":"", "id":"mysqlReader-29850caa-62f7-4758-bfca-8dacd588ac68"}},
+{"key":"06edb7d1-4b5b-41fc-b32d-2fa468a9aeb1", "text":"bsh脚本转换（过滤分数大于500）", "remark":"", "nodeType":"step", "pluginType":"processor", "pluginName":"scriptTransformer", "loc":"260 120", "parameter":{"stepName":"bsh脚本转换（过滤分数大于500）", "type":"processor", "pluginName":"scriptFilter", "language":"bsh", "expression":"row.getField(\"score\")&gt;=500", "id":"scriptFilter-06edb7d1-4b5b-41fc-b32d-2fa468a9aeb1"}},
+{"key":"06edb7d1-4b5b-41fc-b32d-2fa468a9aeb12", "text":"JavaScript脚本过滤（性别为男）", "remark":"", "nodeType":"step", "pluginType":"processor", "pluginName":"scriptTransformer", "loc":"470 120", "parameter":{"stepName":"JavaScript脚本过滤（性别为男）", "type":"processor", "pluginName":"scriptFilter", "language":"javascript", "expression":"row.getField(\"sex\")==0", "id":"scriptFilter-06edb7d1-4b5b-41fc-b32d-2fa468a9aeb12"}},
+{"key":"06edb7d1-4b5b-41fc-b32d-2fa468a9aeb13", "text":"fel脚本过滤（过滤区划是3502）", "remark":"", "nodeType":"step", "pluginType":"processor", "pluginName":"scriptTransformer", "loc":"680 120", "parameter":{"stepName":"fel脚本过滤（过滤区划是3502）", "type":"processor", "pluginName":"scriptFilter", "language":"fel", "expression":"row.getField(\"area_code\").startsWith(\"3502\")", "id":"scriptFilter-06edb7d1-4b5b-41fc-b32d-2fa468a9aeb13"}},
+{"key":"06edb7d1-4b5b-41fc-b32d-2fa468a9aeb14", "text":"Groovy过滤身份证不为空", "remark":"", "nodeType":"step", "pluginType":"processor", "pluginName":"scriptTransformer", "loc":"880 120", "parameter":{"stepName":"Groovy过滤身份证不为空", "type":"processor", "pluginName":"scriptFilter", "language":"groovy", "expression":"row.getField(\"idcard\") != null", "id":"scriptFilter-06edb7d1-4b5b-41fc-b32d-2fa468a9aeb14"}},
+{"key":"6d760aa1-fcf1-418c-b78d-4ea4ecc46495", "text":"Mysql Writer", "figure":"Circle", "fill":"#CE0620", "nodeType":"step", "pluginType":"writer", "size":"100 100", "loc":"880 260", "parameter":{"stepName":"Mysql Writer", "type":"writer", "pluginName":"mysqlWriter", "jdbcUrl":"jdbc:mysql://10.254.10.31:3306/duceap_job_demo?useunicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;serverTimezone=Asia/Shanghai", "username":"duceap", "password":"123", "table":"student1", "column":"[\r\n                \"id\",\r\n                \"name\",\r\n                \"sex\",\r\n                \"age\",\r\n                \"address\",\r\n                \"idcard\",\r\n                \"phone\",\r\n                \"code\",\r\n                \"create_time\",\r\n                \"area_code\",\r\n                \"score\",\r\n                   \"sex_value\"\r\n              ]", "fullColumn":"", "writeMode":"INSERT", "updateKey":"", "insertSqlMode":"", "preSql":"[\"delete from student1\"]", "postSql":"", "batchSize":"", "id":"mysqlWriter-6d760aa1-fcf1-418c-b78d-4ea4ecc46495"}}
+ ],
+  "linkDataArray": [ 
+{"from":"29850caa-62f7-4758-bfca-8dacd588ac68", "to":"06edb7d1-4b5b-41fc-b32d-2fa468a9aeb1"},
+{"from":"06edb7d1-4b5b-41fc-b32d-2fa468a9aeb1", "to":"06edb7d1-4b5b-41fc-b32d-2fa468a9aeb12"},
+{"from":"06edb7d1-4b5b-41fc-b32d-2fa468a9aeb12", "to":"06edb7d1-4b5b-41fc-b32d-2fa468a9aeb13"},
+{"from":"06edb7d1-4b5b-41fc-b32d-2fa468a9aeb13", "to":"06edb7d1-4b5b-41fc-b32d-2fa468a9aeb14"},
+{"from":"06edb7d1-4b5b-41fc-b32d-2fa468a9aeb14", "to":"6d760aa1-fcf1-418c-b78d-4ea4ecc46495"}
+ ]}</designerJson>
+    </jobFlowConfigs>
+</jobFlowConfigs>

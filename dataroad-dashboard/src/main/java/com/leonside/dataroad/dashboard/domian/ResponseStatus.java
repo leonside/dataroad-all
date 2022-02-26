@@ -46,4 +46,8 @@ public class ResponseStatus<T>  {
     public static ResponseStatus error(String mesage){
         return new ResponseStatus(1, mesage);
     }
+
+    public static ResponseStatus error(int code, String mesage){
+        return new ResponseStatus(code, mesage);
+    }
 }

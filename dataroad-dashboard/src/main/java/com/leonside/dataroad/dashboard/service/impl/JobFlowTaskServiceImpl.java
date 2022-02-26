@@ -63,6 +63,7 @@ public class JobFlowTaskServiceImpl implements JobFlowTaskService {
                 .setDataroadProperties(dataroadProperties)
                 .setSavepointPath(jobRequestParam.getSavepointPath())
                 .setParallelism(jobRequestParam.getParallelism())
+                .setConfProp(jobRequestParam.getConfProp())
                 .build();
 
         log.debug("ready to submit Job, parameter:" + newJobParam);
@@ -97,5 +98,17 @@ public class JobFlowTaskServiceImpl implements JobFlowTaskService {
     public JobJarsReponse listDataroadJar() {
         JobJarsReponse jobJarsReponse = restTemplate.getForObject(dataroadProperties.getJobJarListURL(), JobJarsReponse.class);
         return jobJarsReponse;
+    }
+
+    @Override
+    public void checkDataroadJar() {
+        //校验是否本地jar包存在
+       dataroadProperties.getDataroadDistMainJar();
+
+        //校验是否已经上传至服务器
+        JobJarsReponse jobJarsReponse = listDataroadJar();
+        JobJarsReponse.FileJarInfo firstJarNotNull = jobJarsReponse.findFirstJarNotNull();
+
+
     }
 }

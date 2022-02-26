@@ -1,18 +1,19 @@
 package com.leonside.dataroad.plugin.mysqlstream.config;
 
 import com.leonside.dataroad.common.config.ConfigKey;
+import com.leonside.dataroad.common.enums.FieldType;
 
 /**
  * @author leon
  */
 public enum MysqlStreamReaderConfigKey implements ConfigKey {
 
-    hostname("hostname","IP地址",true,"", "IP地址"),
-    port("port","端口",true,"", "端口"),
-    schema("schema","schema",true,"", "库"),
-    table("table","表名",true,"", "表名"),
-    username("username","用户名",true,"", "用户名"),
-    password("password","密码",true,"", "密码"),
+    hostname("hostname","IP地址",true,"", "IP地址",FieldType.STRING),
+    port("port","端口",true,"", "端口",FieldType.STRING),
+    schema("schema","schema",true,"", "库",FieldType.STRING),
+    table("table","表名",true,"", "表名",FieldType.STRING),
+    username("username","用户名",true,"", "用户名", FieldType.STRING),
+    password("password","密码",true,"", "密码",FieldType.STRING),
 
     ;
 
@@ -21,13 +22,14 @@ public enum MysqlStreamReaderConfigKey implements ConfigKey {
     private String desc;
     private String defaultValue;
     private boolean required;
-
-    MysqlStreamReaderConfigKey(String name, String cnName,boolean required, String defaultValue, String desc) {
+    public FieldType fieldType;
+    MysqlStreamReaderConfigKey(String name, String cnName,boolean required, String defaultValue, String desc, FieldType fieldType) {
         this.name = name;
         this.cnName = cnName;
         this.defaultValue =defaultValue;
         this.desc = desc;
         this.required = required;
+        this.fieldType = fieldType;
     }
     @Override
     public boolean isRequired() {
@@ -50,6 +52,20 @@ public enum MysqlStreamReaderConfigKey implements ConfigKey {
     public void setName(String name) {
         this.name = name;
     }
+
+    public void setCnName(String cnName) {
+        this.cnName = cnName;
+    }
+
+    @Override
+    public FieldType getFieldType() {
+        return fieldType;
+    }
+
+    public void setFieldType(FieldType fieldType) {
+        this.fieldType = fieldType;
+    }
+
     @Override
     public String getDesc() {
         return desc;

@@ -15,4 +15,6 @@ public interface JobFlowTaskService {
     JobUploadReponse uploadDataroadJar() throws IOException;
 
     JobJarsReponse listDataroadJar();
+
+    void checkDataroadJar();
 }

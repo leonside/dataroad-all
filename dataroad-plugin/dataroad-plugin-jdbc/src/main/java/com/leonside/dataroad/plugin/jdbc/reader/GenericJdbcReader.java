@@ -95,7 +95,7 @@ public abstract class GenericJdbcReader extends BaseItemReader implements  ItemR
         super.doInitialize(executeContext,config);
         this.jobSetting = executeContext.getJobSetting();
         this.restoreConfig = jobSetting.getRestore();
-        jdbcReaderConfig = (JdbcReaderConfig)config;
+        jdbcReaderConfig = config;
 
         List<MetaColumn> metaColumns = MetaColumn.getMetaColumns(ParameterUtils.getArrayList(config.getParameter(), JdbcReaderConfigKey.KEY_COLUMN));
         jdbcReaderConfig.setMetaColumns(metaColumns);

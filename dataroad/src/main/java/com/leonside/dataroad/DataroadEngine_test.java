@@ -6,6 +6,8 @@ import com.leonside.dataroad.common.config.Options;
 import com.leonside.dataroad.config.job.JsonJobCreator;
 import com.leonside.dataroad.config.job.JsonJobSchemaParser;
 import com.leonside.dataroad.core.Job;
+import org.apache.commons.lang.StringUtils;
+import org.apache.flink.api.java.utils.ParameterTool;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +21,11 @@ public class DataroadEngine_test {
 
     public static void main(String[] args) throws Exception {
 
+        ParameterTool parameters = ParameterTool.fromArgs(args);
+
+        Options options = Options.of(parameters.toMap());
+
+
 //        List<Job> jobs = jsonJobCreator.createJobByPath("classpath:/mysql_splitpk_lookuplru_es.json");
 //        List<Job> jobs = jsonJobCreator.createJobByPath("classpath:/mysql_aggtumbling_es.json");
 //        List<Job> jobs = jsonJobCreator.createJobByPath("classpath:/mysql_decider_mysql.json");
@@ -27,7 +34,7 @@ public class DataroadEngine_test {
 //        List<Job> jobs = jsonJobCreator.createJobByPath("classpath:/mysql_incrpolling_writer_restore_fromcheckpoint.json");
 //        List<Job> jobs = jsonJobCreator.createJobByPath("classpath:/mysql_splitpk_filter_mysql.json");
 
-        String homePath = "filesystem:/C:\\Users\\Administrator\\.dataroad-dashboard\\schema\\";
+        String homePath = "file:/C:\\Users\\Administrator\\.dataroad-dashboard\\schema\\";
 //        List<Job> jobs = jsonJobCreator.createJobByPath(homePath + "mysql_mysql.json");
 //        List<Job> jobs = jsonJobCreator.createJobByPath(homePath + "mysql_splitpk_filter_mysql.json");
 //        List<Job> jobs = jsonJobCreator.createJobByPath(homePath + "mysql_incrpolling_mysql.json");
@@ -53,9 +60,8 @@ public class DataroadEngine_test {
 //      options.setConf(homePath + "mysql_scriptfilter_mysql.json");
 
 
-        Map<String,String> map = new HashMap<>();
-        map.put("conf", conf);
-        JobCreator jsonJobCreator = new JsonJobCreator(new JsonJobSchemaParser(), Options.of(map));
+        options.setConf(conf);
+        JobCreator jsonJobCreator = new JsonJobCreator(new JsonJobSchemaParser(), options);
         List<Job> jobs = jsonJobCreator.createJob();
 
         jobs.forEach(job ->{

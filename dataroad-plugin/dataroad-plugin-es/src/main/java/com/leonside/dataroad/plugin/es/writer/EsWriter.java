@@ -43,7 +43,7 @@ public class EsWriter extends BaseItemWriter implements ItemWriter<FlinkExecuteC
 
         clientConfig = new HashMap<>();
         clientConfig.put(EsWriterConfigKey.KEY_TIMEOUT.getName(), esWriterConfig.getTimeout());
-        clientConfig.put(EsWriterConfigKey.KEY_PATH_PREFIX.getName(), esWriterConfig.getPathPrefix());
+//        clientConfig.put(EsWriterConfigKey.KEY_PATH_PREFIX.getName(), esWriterConfig.getPathPrefix());
 
         List columns = ParameterUtils.getArrayList(esWriterConfig.getParameter(), EsWriterConfigKey.KEY_COLUMN);
         if(CollectionUtils.isNotEmpty(columns)) {

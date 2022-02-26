@@ -1,5 +1,7 @@
 package com.leonside.dataroad.common.config;
 
+import com.leonside.dataroad.common.enums.FieldType;
+
 /**
  * @author leon
  */
@@ -33,4 +35,10 @@ public interface ConfigKey {
      * @return
      */
      String getDefaultValue();
+
+    /**
+     * 字段类型，主要用于前端展示
+     * @return
+     */
+    FieldType getFieldType();
 }

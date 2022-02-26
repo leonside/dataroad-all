@@ -16,7 +16,7 @@ public class Options {
 
     public static final String PLUGIN_DIR_NAME = "plugins";
     /**
-     * 流程配置文件路径，支持classpath:、filesystem:、http:几种资源类型
+     * 流程配置文件路径，支持classpath:、file:、http:几种资源类型
      */
     private String conf;
     /**
@@ -60,7 +60,12 @@ public class Options {
 
         String confProp = parameters.get("confProp");
         if(StringUtils.isNotEmpty(confProp)){
-            options.setConfProp(JsonUtil.getInstance().readJson(confProp, HashMap.class));
+            Map<String,Object> confMap = JsonUtil.getInstance().readJson(confProp, HashMap.class);
+            Map<String,String> convertedMap = new HashMap<>();
+            confMap.entrySet().stream().forEach(entry->{
+                convertedMap.put(entry.getKey(), entry.getValue().toString());
+            });
+            options.setConfProp(convertedMap);
         }
 
         return options;

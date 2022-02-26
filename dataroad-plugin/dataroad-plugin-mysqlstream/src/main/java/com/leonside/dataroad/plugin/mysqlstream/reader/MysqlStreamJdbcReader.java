@@ -49,7 +49,6 @@ public class MysqlStreamJdbcReader extends ComponentNameSupport implements Compo
                 .build();
 
         SingleOutputStreamOperator<Row> singleOutputStreamOperator = executeContext.getEnvironment().addSource(build, TypeInformation.of(Row.class));
-
         return singleOutputStreamOperator;
     }
 

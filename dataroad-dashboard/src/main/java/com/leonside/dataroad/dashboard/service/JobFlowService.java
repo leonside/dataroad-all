@@ -27,4 +27,6 @@ public interface JobFlowService {
     void updateJobFlow(JobFlowConfig jobFlowConfig) throws Exception;
 
     void updateBaseJobFlow(JobFlowConfig jobFlowConfig) throws Exception;
+
+    void initSampleConfig() throws Exception;
 }

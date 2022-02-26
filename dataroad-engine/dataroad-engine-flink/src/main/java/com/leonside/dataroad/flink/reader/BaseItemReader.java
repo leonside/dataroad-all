@@ -30,6 +30,7 @@ import org.apache.flink.api.common.io.InputFormat;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.typeutils.TypeExtractor;
 import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.types.Row;
 import org.apache.flink.util.Preconditions;
@@ -73,7 +74,6 @@ public abstract class BaseItemReader extends ComponentNameSupport {
         this.srcCols = srcCols;
     }
 
-//    @Override
     public void doInitialize(FlinkExecuteContext executeContext, BaseConfig baseConfig) {
         this.env = executeContext.getEnvironment();
         this.numPartitions = Math.max(executeContext.getJobSetting().getSpeed().getChannel(),
@@ -114,9 +114,9 @@ public abstract class BaseItemReader extends ComponentNameSupport {
 
         TypeInformation typeInfo = typeInformation != null ? typeInformation : TypeExtractor.getInputFormatTypes(inputFormat);
         GenericInputFormatSourceFunction function = new GenericInputFormatSourceFunction(inputFormat, typeInfo);
-        return env.addSource(function, sourceName, typeInfo);
+        DataStreamSource dataStreamSource = env.addSource(function, sourceName, typeInfo);
+        int readerChannel = executeContext.getJobSetting().getSpeed().getReaderChannel();
+        return (readerChannel > 0) ? dataStreamSource.setParallelism(readerChannel) : dataStreamSource;
     }
-
-
 
 }

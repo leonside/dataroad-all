@@ -5,6 +5,7 @@ import com.leonside.dataroad.common.config.Options;
 import com.leonside.dataroad.common.context.ComponentHolder;
 import com.leonside.dataroad.common.context.ExecuteContext;
 import com.leonside.dataroad.common.context.JobSetting;
+import com.leonside.dataroad.common.context.SpeedConfig;
 import com.leonside.dataroad.common.exception.JobFlowException;
 import com.leonside.dataroad.common.spi.JobExecutionListener;
 import com.leonside.dataroad.core.Job;
@@ -68,9 +69,13 @@ public class FlinkJobProvider implements JobEngineProvider<FlinkExecuteContext> 
 
     private void buildGlobalSetting(FlinkExecuteContext executeContext, Options options) {
 
-        //设置配置中的全局设置
-        if(executeContext.getJobSetting().getSpeed().getChannel() > 0){
+        //设置配置中的全局设置，其中GlobalSetting优先级最高，其次是confProp配置，都没有配置情况下设置默认值为1
+        if(executeContext.getJobSetting().getSpeed().getChannel() > 0 ){
             executeContext.getEnvironment().setParallelism(executeContext.getJobSetting().getSpeed().getChannel());
+        }else{
+            if(options.getConfProp() == null || !options.getConfProp().containsKey(FlinkExecuteContext.CONFIGURATION_KEY_PARALLELISM)){
+                executeContext.getEnvironment().setParallelism(SpeedConfig.CHANNEL_DEFAULT);
+            }
         }
 
         //设置jobName
@@ -106,6 +111,7 @@ public class FlinkJobProvider implements JobEngineProvider<FlinkExecuteContext> 
 
     private StreamExecutionEnvironment buildStreamExecutionEnvironment(ExecuteContext executeContext) {
         Map<String, String> confProp = executeContext.getOptions().getConfProp();
+        //获取运行参数confProp传递的flink参数（Client级别），其优先级低于配置配置文件的参数配置（env级别）
         Configuration configuration = MapUtils.isNotEmpty(confProp) ? Configuration.fromMap(confProp) : new Configuration();
 
         StreamExecutionEnvironment environment =

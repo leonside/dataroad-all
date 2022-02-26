@@ -76,7 +76,6 @@ public class ComponentController {
             response.reset();
             response.setHeader("Cache-Control", "private");
             response.setHeader("Pragma", "private");
-//            response.setContentType(contentType + ";charset=utf-8");
             String filePath = dataroadProperties.getDataroadPluginPath() + File.separator + componentType + File.separator + jarFileName;
             response.setHeader("Content-disposition", "attachment; filename=" + jarFileName +"");
             os.write(FileUtils.readFileToByteArray(new File(filePath)));

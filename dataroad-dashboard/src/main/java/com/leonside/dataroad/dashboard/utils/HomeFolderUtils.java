@@ -42,7 +42,7 @@ public final class HomeFolderUtils {
         }
     }
     
-    private static String getHomeFolder() {
+    public static String getHomeFolder() {
         return String.format("%s%s%s%s", USER_HOME, FILE_SEPARATOR, CONSOLE_ROOT_FOLDER, FILE_SEPARATOR);
     }
 

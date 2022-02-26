@@ -59,7 +59,7 @@ public class DateUtil {
             standardDatetimeFormatter.setTimeZone(timeZone);
             formatterMap.put(STANDARD_DATETIME_FORMAT,standardDatetimeFormatter);
 
-            SimpleDateFormat unStandardDatetimeFormatter = new SimpleDateFormat("yyyyMMddHHmmss");
+                    SimpleDateFormat unStandardDatetimeFormatter = new SimpleDateFormat("yyyyMMddHHmmss");
             unStandardDatetimeFormatter.setTimeZone(timeZone);
             formatterMap.put(UN_STANDARD_DATETIME_FORMAT,unStandardDatetimeFormatter);
 
@@ -223,8 +223,13 @@ public class DateUtil {
         throw new RuntimeException("can't parse date");
     }
 
+
     public static String dateToString(Date date) {
         return datetimeFormatter.get().get(DATE_FORMAT).format(date);
+    }
+
+    public static String dateToStoreDateTimeString(Date date) {
+        return datetimeFormatter.get().get(UN_STANDARD_DATETIME_FORMAT).format(date);
     }
 
     public static String dateToDateTimeString(Date date) {

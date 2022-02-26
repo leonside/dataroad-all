@@ -7,9 +7,12 @@ import com.leonside.dataroad.dashboard.domian.JobFlowConfig;
 import com.leonside.dataroad.dashboard.domian.ResponseStatus;
 import com.leonside.dataroad.dashboard.service.JobFlowService;
 import com.leonside.dataroad.dashboard.utils.PageUtils;
+import com.leonside.dataroad.dashboard.utils.ZipUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ListUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -19,8 +22,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author leon
@@ -94,6 +102,8 @@ public class JobFlowController {
     public ResponseEntity<ResponseStatus> updateJobFlowBaseConfig(@RequestBody JobFlowConfig jobFlowConfig) {
 
         try {
+            jobFlowConfig.checkGlobalSetting();
+
             jobFlowService.updateBaseJobFlow(jobFlowConfig);
         } catch (Exception e) {
             log.error("ioException",e);
@@ -110,6 +120,9 @@ public class JobFlowController {
             if(jobFlowService.containJobFlow(jobFlowConfig.getId())){
                 return new ResponseEntity("存在重复的流程ID", HttpStatus.INTERNAL_SERVER_ERROR);
             }
+
+            jobFlowConfig.checkGlobalSetting();
+
             jobFlowConfig.setCreateTime(DateUtil.dateToDateTimeString(new Date()));
             jobFlowService.saveJobFlow(jobFlowConfig);
         } catch (Exception e) {
@@ -138,11 +151,15 @@ public class JobFlowController {
     }
 
     @GetMapping("/api/jobflowconfig")
-    public ResponseStatus<List<JobFlowConfig>> jobflowConfig(@RequestParam("page")int page, @RequestParam("limit")int limit, HttpServletRequest request) {
+    public ResponseStatus<List<JobFlowConfig>> jobflowConfig(@RequestParam("page")int page, @RequestParam("isComplete")boolean isComplete, @RequestParam("limit")int limit, HttpServletRequest request) {
 
         List<JobFlowConfig> jobFlowConfigs = new ArrayList<>();
         try {
-            jobFlowConfigs.addAll(jobFlowService.loadJobFlowConfig());
+            if(isComplete){
+                jobFlowConfigs.addAll(jobFlowService.loadJobFlowConfig().stream().filter(jobFlowConfig -> jobFlowConfig.isStatus()).collect(Collectors.toList()));
+            }else{
+                jobFlowConfigs.addAll(jobFlowService.loadJobFlowConfig());
+            }
             Collections.reverse(jobFlowConfigs);
             List<JobFlowConfig> subList = PageUtils.subList(jobFlowConfigs, page, limit);
             return ResponseStatus.success("加载完成", jobFlowConfigs.size(), subList);
@@ -183,12 +200,31 @@ public class JobFlowController {
     }
 
     @GetMapping("/api/jobflowjson/download")
-    public List<String> loadJobFlowJsons(@RequestParam("ids") String[] ids) {
+    public void loadJobFlowJsons(@RequestParam("ids") String[] ids, HttpServletResponse response) throws IOException {
 
-        List<String> jobFlowJsons = jobFlowService.loadJobFlowJsons(ids);
+        List<String> fileNames = Arrays.stream(ids).map(id -> id + ".json").collect(Collectors.toList());
 
-        //todo
-        return null;
+        String donwloadName = "dataroad-"+ DateUtil.dateToStoreDateTimeString(new Date()) + ".zip";
+        File zip = ZipUtils.zip(fileNames.toArray(new String[0]), donwloadName);
+
+        OutputStream os = response.getOutputStream();
+        try {
+            response.reset();
+            response.setHeader("Cache-Control", "private");
+            response.setHeader("Pragma", "private");
+            response.setContentType("application/x-download;charset=utf-8");
+            response.setHeader("Content-disposition", "attachment; filename="+donwloadName);
+            os.write(FileUtils.readFileToByteArray(zip));
+            os.flush();
+
+        } finally {
+            if (os != null) {
+                os.flush();
+                os.close();
+            }
+        }
+
+        zip.delete();
     }
 
 }

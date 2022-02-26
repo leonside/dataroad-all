@@ -33,8 +33,16 @@ public class DataroadProperties {
 
     private String dataroadDist;
 
+    private boolean sampleEnabled = false;
+
     public File getDataroadDistMainJar(){
-        File[] files = new File(dataroadDist).listFiles();
+
+        File dataroadDistFile = new File(dataroadDist);
+        if(!dataroadDistFile.exists()){
+            throw new JobConfigException("dataroad dist is not exsist:" + dataroadDist);
+        }
+
+        File[] files = dataroadDistFile.listFiles();
 
         Optional<File> dataroadFile = Arrays.stream(files).filter(file -> {
             return file.getName().startsWith("dataroad") && file.getName().endsWith(".jar");

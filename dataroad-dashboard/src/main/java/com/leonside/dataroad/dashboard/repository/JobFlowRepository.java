@@ -4,7 +4,10 @@ import com.leonside.dataroad.dashboard.domian.JobFlowConfig;
 import org.springframework.stereotype.Repository;
 
 import javax.xml.bind.JAXBException;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 /**
@@ -26,4 +29,6 @@ public interface JobFlowRepository {
     void updateJobFlow(JobFlowConfig jobFlowConfig) throws Exception;
 
     void updateJobFlowBase(JobFlowConfig jobFlowConfig) throws Exception;
+
+    void init(InputStream sampleConfig) throws Exception;
 }

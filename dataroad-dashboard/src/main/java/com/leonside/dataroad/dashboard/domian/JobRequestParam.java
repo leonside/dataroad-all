@@ -29,5 +29,6 @@ public class JobRequestParam {
     private int parallelism;
     private String allowNonRestoredState;
     private String savepointPath;
+    private String confProp;
 
 }

@@ -13,7 +13,9 @@ import java.io.Serializable;
 public class SpeedConfig implements Serializable {
 
     private long bytes = Long.MAX_VALUE;
-    private int channel = 1;
+
+    public static final int CHANNEL_DEFAULT = 1;
+    private int channel = -1;
     private int readerChannel = -1;
     private int writerChannel = -1;
 

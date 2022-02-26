@@ -1,6 +1,8 @@
 package com.leonside.dataroad.dashboard.domian;
 
+import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.TSFBuilder;
 import com.google.common.collect.Lists;
 import com.leonside.dataroad.DataroadEngine;
 import com.leonside.dataroad.common.config.Options;
@@ -44,10 +46,10 @@ public class JobSubmitParam {
 
         private String jobId;
         private String jobFlowJson;
-//        private String conf;
 //        private String extLibPath[];
         private int parallelism = 0;
         private String savepointPath;
+        private String confProp;
         private DataroadProperties dataroadProperties;
 
 
@@ -77,19 +79,24 @@ public class JobSubmitParam {
             return this;
         }
 
+        public JobSubmitParamBuilder setConfProp(String confProp) {
+            this.confProp = confProp;
+            return this;
+        }
+
         public JobSubmitParam build() throws JsonProcessingException {
             JobSubmitParam jobSubmitParam = new JobSubmitParam();
             jobSubmitParam.setEntryClass(DataroadEngine.class.getName());
 
             //创建 confProp
-            Map<String,Object> confProp = new HashMap<>();
-            if(StringUtils.isNotEmpty(savepointPath)){
-                confProp.put(SAVEPOINTS_DIR_KEY, savepointPath);
-            }
-            if(parallelism > 0){
-                confProp.put(PARALLELISM_KEY, parallelism);
-                jobSubmitParam.setParallelism(parallelism);
-            }
+            Map<String,Object> confPropMap = StringUtils.isNotEmpty(confProp) ? JsonUtil.getInstance().readJson(confProp, HashMap.class) : null;
+//            if(StringUtils.isNotEmpty(savepointPath)){
+//                confProp.put(SAVEPOINTS_DIR_KEY, savepointPath);
+//            }
+//            if(parallelism > 0){
+//                confProp.put(PARALLELISM_KEY, parallelism);
+//                jobSubmitParam.setParallelism(parallelism);
+//            }
 
 
             //创建conf
@@ -113,13 +120,15 @@ public class JobSubmitParam {
             if(StringUtils.isNotEmpty(dependOnJarsURL)){
                 sb.append(" -extLibPath " + dependOnJarsURL);
             }
-            if(MapUtils.isNotEmpty(confProp)){
-                sb.append(" -confProp " + JsonUtil.getInstance().writeJson(confProp));
+            if(MapUtils.isNotEmpty(confPropMap)){
+                sb.append(" -confProp " + JsonUtil.getInstance().writeJson(confPropMap));
             }
 
             jobSubmitParam.setProgramArgs(sb.toString());
 
             return jobSubmitParam;
         }
+
+
     }
 }

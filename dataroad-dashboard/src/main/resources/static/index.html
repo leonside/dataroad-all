@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Dataroad dashboard</title>
+    <link rel="stylesheet" href="js/layui/css/layui.css">
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo layui-hide-xs layui-bg-black">Dataroad控制台</div>
+        <!-- 头部区域（可配合layui 已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left">
+            <!-- 移动端显示 -->
+            <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-header-event="menuLeft">
+                <i class="layui-icon layui-icon-spread-left"></i>
+            </li>
+
+            <li class="layui-nav-item layui-hide-xs"><a href="index.html">首页</a></li>
+            <li class="layui-nav-item layui-hide-xs"><a href="designer.html">流程设计</a></li>
+        </ul>
+        <!--<ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item layui-hide layui-show-md-inline-block">
+                <dl class="layui-nav-child">
+                    <dd><a href="">Your Profile</a></dd>
+                    <dd><a href="">Settings</a></dd>
+                    <dd><a href="">Sign out</a></dd>
+                </dl>
+            </li>
+        </ul>-->
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">设计管理</a>
+                    <dl class="layui-nav-child">
+                        <dd class="layui-this"><a href="index.html">流程设计</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;">运行管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="jobsubmitList.html">流程运行</a></dd>
+                        <dd><a href="jobscheduleList.html">定时调度</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+
+        <div style="padding: 15px;">
+            <div class="layui-btn-group demoTable">
+                <button class="layui-btn" data-type="getDownloadFileNames">下载流程JSON</button>
+                <button class="layui-btn" data-type="showCreateNewConfig" >新建流程</button>
+            </div>
+
+            <table class="layui-table" lay-data="{url:  'api/jobflowconfig?isComplete=false', page:true, id:'id'}"  id="jobflowTable" lay-filter="jobflowTable">
+                <thead>
+                <tr>
+                    <th lay-data="{type:'checkbox', fixed: 'left'}"></th>
+                    <th lay-data="{field:'id'}">流程标识</th>
+                    <th lay-data="{field:'description'}">流程描述</th>
+                    <th lay-data="{field:'status',sort: true,templet:function(data){
+                        if(data.status){
+                            return '已设计';
+                        }else{
+                            return '未设计';
+                        }
+                    }}">流程状态</th>
+                    <th lay-data="{field:'createTime',sort: true}">创建时间</th>
+                    <th lay-data="{fixed: 'right',align:'center', toolbar: '#barJobflow'}"></th>
+                </tr>
+                </thead>
+            </table>
+
+            <script type="text/html" id="barJobflow">
+                <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                <a class="layui-btn layui-btn-xs" lay-event="editFlow">设计流程</a>
+                <!--<a class="layui-btn layui-btn-xs" lay-event="showJson">查看流程JSON</a>-->
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+            </script>
+        </div>
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+    </div>
+</div>
+
+
+<div style="display: none" id="createConfigContent">
+    <form class="layui-form" action="" id="createConfigContentForm" style="width:90%;">
+
+        <div style="padding: 15px;">
+            <div class="layui-form-item">
+                <label class="layui-form-label">流程标识<span style="color: red">*</span></label>
+                <div class="layui-input-block" >
+                    <input  type="text" name="id" value="" required  lay-verify="required"  placeholder="流程的唯一标识" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux"></div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">流程描述<span style="color: red">*</span></label>
+                <div class="layui-input-block">
+                    <textarea name="description" value="" required lay-verify="required" placeholder="流程描述" class="layui-textarea"></textarea>
+                </div>
+                <div class="layui-form-mid layui-word-aux"></div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">全局配置</label>
+                <div class="layui-input-block">
+                    <textarea name="golbalSetting" value="" placeholder='全局配置，例如:{"name":"myjob","isLocal":"true","restore":{..},"speed":{..}}' class="layui-textarea"></textarea>
+                </div>
+                <div class="layui-form-mid layui-word-aux"></div>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button id="editFormBtn" class="layui-btn"  lay-submit="" lay-filter="createConfigform">保存</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                <!--<button id="closeFormBtn" class="layui-btn layui-btn-primary" onclick="doCloseForm()">关闭</button>-->
+            </div>
+        </div>
+    </form>
+
+</div>
+<script src="js/layui/layui.js"></script>
+<script src="js/flow-config.js"></script>
+<script src="js/jquery/jquery.min.js"></script>
+<script>
+    window.url = "";
+    var  flowConfig= new FlowConfig();
+    //JS
+    // layui.use(['element', 'layer', 'util'], function(){
+    //     var element = layui.element
+    //         ,layer = layui.layer
+    //         ,util = layui.util
+    //         ,$ = layui.$;
+    //     //头部事件
+    //
+    // });
+
+    layui.use('table', function(){
+        var table = layui.table;
+        //监听表格复选框选择
+        table.on('checkbox(demo)', function(obj){
+            console.log(obj)
+        });
+        //监听工具条
+        table.on('tool(jobflowTable)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'editFlow'){
+                layer.msg('ID：'+ data.id + ' 的查看操作');
+                window.open("designer.html?id=" + data.id)
+            } else if(obj.event === 'del'){
+                layer.confirm('确定删除？', function(index){
+                    flowConfig.deleteConfig(data);
+                    obj.del();
+                    // table.reload('jobflowTable');
+                    layer.close(index);
+                });
+            } else if(obj.event === 'edit'){
+                // layer.alert('编辑行：<br>'+ JSON.stringify(data))
+                flowConfig.showCreateNewConfig(data);
+            }
+        });
+
+        var $ = layui.$, active = {
+            showCreateNewConfig: function(){
+                flowConfig.showCreateNewConfig();
+            },
+            getDownloadFileNames: function(){ //获取选中数据
+                var checkStatus = table.checkStatus('id')
+                    ,data = checkStatus.data;
+                if(data.length == 0){
+                    layer.alert("请选择流程ID");
+                }else{
+                    var ids = [];
+                    data.forEach(function (item) {
+                        ids.push(item.id);
+                    });
+                    var url = window.url + "api/jobflowjson/download?ids=" + ids.join(",");
+                    window.open(url);
+                    // layer.alert(JSON.stringify(url));
+                }
+            }
+            // ,getCheckLength: function(){ //获取选中数目
+            //     var checkStatus = table.checkStatus('idTest')
+            //         ,data = checkStatus.data;
+            //     layer.msg('选中了：'+ data.length + ' 个');
+            // }
+            // ,isAll: function(){ //验证是否全选
+            //     var checkStatus = table.checkStatus('idTest');
+            //     layer.msg(checkStatus.isAll ? '全选': '未全选')
+            // }
+        };
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+
+    // var showCreateNewConfig = function () {
+    //     if(!flowConfig) return;
+    //     flowConfig.showCreateNewConfig();
+    // };
+</script>
+</body>
+</html>

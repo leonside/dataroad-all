@@ -78,7 +78,13 @@ public abstract class GenericJdbcWriter extends BaseItemWriter implements ItemWr
                 .setRestoreConfig(restoreConfig)
                 .setInsertSqlMode(insertSqlMode);
 
-        createOutput(items, builder.finish());
+        int writerChannel = executeContext.getJobSetting().getSpeed().getWriterChannel();
+        if(writerChannel > 0){
+            createOutput(items, builder.finish()).setParallelism(writerChannel);
+        }else{
+            createOutput(items, builder.finish());
+        }
+
     }
 
     @Override

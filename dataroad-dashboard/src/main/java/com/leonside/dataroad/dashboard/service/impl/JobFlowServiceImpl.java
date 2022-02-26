@@ -1,5 +1,7 @@
 package com.leonside.dataroad.dashboard.service.impl;
 
+import com.leonside.dataroad.core.Job;
+import com.leonside.dataroad.core.flow.JobFlow;
 import com.leonside.dataroad.dashboard.converter.JobFlowConverter;
 import com.leonside.dataroad.dashboard.domian.JobFlowConfig;
 import com.leonside.dataroad.dashboard.repository.JobFlowRepository;
@@ -9,7 +11,11 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -60,6 +66,13 @@ public class JobFlowServiceImpl implements JobFlowService {
         }
 
         jobFlowRepository.updateJobFlowBase(jobFlowConfig);
+    }
+
+    @Override
+    public void initSampleConfig() throws Exception {
+//        String file = JobFlowServiceImpl.class.getResource("sampledata/jobflowConfig.xml") + "sampledata/jobflowConfig.xml";
+        InputStream resourceAsStream = JobFlowServiceImpl.class.getResourceAsStream("/sampledata/jobflowConfig.xml");
+        jobFlowRepository.init(resourceAsStream);
     }
 
     @Override

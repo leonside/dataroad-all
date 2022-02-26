@@ -7,6 +7,7 @@ import com.leonside.dataroad.dashboard.converter.JobFlowConverter;
 import com.leonside.dataroad.dashboard.domian.JobFlowConfig;
 import com.leonside.dataroad.dashboard.domian.JobFlowConfigs;
 import com.leonside.dataroad.dashboard.utils.HomeFolderUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.FileUtils;
@@ -17,9 +18,8 @@ import org.springframework.stereotype.Repository;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +29,7 @@ import java.util.Map;
  * @author leon
  */
 @Repository
+@Slf4j
 public class XmlFileJobFlowRepository implements JobFlowRepository {
 
 
@@ -37,6 +38,8 @@ public class XmlFileJobFlowRepository implements JobFlowRepository {
     private Map<String, JobFlowConfig> jobFlowConfigMap = new HashMap<>();
 
     private final File file;
+    //是否首次启动
+    private boolean hasInited = false;
 
     private JAXBContext jaxbContext;
 
@@ -44,10 +47,17 @@ public class XmlFileJobFlowRepository implements JobFlowRepository {
 
     public XmlFileJobFlowRepository(){
         file = new File(HomeFolderUtils.getFilePathInHomeFolder(HomeFolderUtils.STORE_FILE_NAME));
+
+        log.info("Obtain the dataroad home path：" + HomeFolderUtils.getHomeFolder());
+
         HomeFolderUtils.createHomeFolderIfNotExisted();
+        if(file.exists()){
+            hasInited = true;
+        }
         try {
+
             jaxbContext = JAXBContext.newInstance(JobFlowConfigs.class);
-        } catch (final JAXBException ex) {
+        } catch (final JAXBException  ex) {
             throw new JobFlowException(ex.getMessage());
         }
     }
@@ -94,6 +104,37 @@ public class XmlFileJobFlowRepository implements JobFlowRepository {
     }
 
     @Override
+    public void init(InputStream sampleConfigStream) throws Exception {
+
+        if(hasInited ){
+           return;
+        }
+
+        log.info("Start and initialize the sample data for the first time");
+
+        JAXBContext jaxbContextSample = JAXBContext.newInstance(JobFlowConfigs.class);
+        JobFlowConfigs sampleConfigs = (JobFlowConfigs) jaxbContextSample.createUnmarshaller().unmarshal(sampleConfigStream);
+
+        if(CollectionUtils.isNotEmpty(sampleConfigs.getJobFlowConfigs())){
+            createOrWriterXmlFile(file, sampleConfigs);
+            sampleConfigs.getJobFlowConfigs().stream().forEach(jobFlowConfig -> {
+                try {
+                    //更新json值
+                    if(StringUtils.isNotEmpty(jobFlowConfig.getDesignerJson())){
+                        String jobFlowJson = new JobFlowConverter(jobFlowConfig.getDesignerJson(),jobFlowConfig.getGolbalSetting() ).convert();
+                        createOrWriterSchemaFile(getSchemaFile(jobFlowConfig.getId()), jobFlowJson);
+                    }
+                } catch (IOException e) {
+                    log.info("Failed to initialize sample data, JSON:" + jobFlowConfig.getDesignerJson(),e );
+                }
+            });
+        }
+        hasInited = true;
+        log.info("Initialization of sample data is complete..");
+    }
+
+
+    @Override
     public void save(JobFlowConfig jobFlowConfig) throws Exception {
 
         List<JobFlowConfig> jobFlowConfigs = loadAll();
@@ -137,7 +178,7 @@ public class XmlFileJobFlowRepository implements JobFlowRepository {
             schemaFile.createNewFile();
         }
 
-        FileUtils.write(schemaFile, jsonUtil.prettyJson(jsonUtil.readJson(writeJson, JSONObject.class)));
+        FileUtils.write(schemaFile, jsonUtil.prettyJson(jsonUtil.readJson(writeJson, JSONObject.class)), StandardCharsets.UTF_8);
     }
 
     private void deleteFile(File file) throws IOException {
@@ -162,20 +203,25 @@ public class XmlFileJobFlowRepository implements JobFlowRepository {
     @Override
     public List<JobFlowConfig> loadAll() throws  Exception {
 
-        if(CollectionUtils.isEmpty(jobFlowConfigs.getJobFlowConfigs()) && file.exists() ){
-            jobFlowConfigs = (JobFlowConfigs) jaxbContext.createUnmarshaller().unmarshal(file);
-            jobFlowConfigs.getJobFlowConfigs().stream().forEach(item->{
-                try {
-                    File schemaFile = getSchemaFile(item.getId());
-                    if(schemaFile.exists()){
-                        String jobflowJson = IOUtils.toString(new FileInputStream(schemaFile), Charsets.UTF_8);
-                        item.setJobflowJson(jobflowJson);
+        if(CollectionUtils.isEmpty(jobFlowConfigs.getJobFlowConfigs()) ){
+            if(file.exists()){
+                jobFlowConfigs = (JobFlowConfigs) jaxbContext.createUnmarshaller().unmarshal(file);
+                jobFlowConfigs.getJobFlowConfigs().stream().forEach(item->{
+                    try {
+                        File schemaFile = getSchemaFile(item.getId());
+                        if(schemaFile.exists()){
+                            String jobflowJson = IOUtils.toString(new FileInputStream(schemaFile), Charsets.UTF_8);
+                            item.setJobflowJson(jobflowJson);
+                        }
+                    } catch (IOException e) {
+                        throw new JobFlowException("read jobflow json config exception ["+ item.getId()+"]");
                     }
-                } catch (IOException e) {
-                    throw new JobFlowException("read jobflow json config exception ["+ item.getId()+"]");
-                }
-                jobFlowConfigMap.put(item.getId(),item);
-            });
+                    jobFlowConfigMap.put(item.getId(),item);
+                });
+            }else{
+                jobFlowConfigs.setJobFlowConfigs(new ArrayList<>());
+            }
+
         }
 
         return jobFlowConfigs.getJobFlowConfigs();

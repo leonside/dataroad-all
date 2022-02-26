@@ -66,7 +66,7 @@ public class EsReader extends BaseItemReader implements ItemReader<FlinkExecuteC
 
         clientConfig = new HashMap<>();
         clientConfig.put(EsReaderConfigKey.KEY_TIMEOUT.getName(), esReaderConfig.getTimeout());
-        clientConfig.put(EsReaderConfigKey.KEY_PATH_PREFIX.getName(), esReaderConfig.getPathPrefix());
+//        clientConfig.put(EsReaderConfigKey.KEY_PATH_PREFIX.getName(), esReaderConfig.getPathPrefix());
 
         List columns = ParameterUtils.getArrayList(config.getParameter(), EsReaderConfigKey.KEY_COLUMN);
         if(columns != null && columns.size() > 0) {

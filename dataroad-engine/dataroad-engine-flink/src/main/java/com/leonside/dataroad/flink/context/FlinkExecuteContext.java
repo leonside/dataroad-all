@@ -13,6 +13,8 @@ import java.util.List;
  */
 public class FlinkExecuteContext extends ExecuteContext {
 
+    public static final String CONFIGURATION_KEY_PARALLELISM = "parallelism.default";
+
     private transient StreamExecutionEnvironment environment;
 
     private transient StreamTableEnvironment streamTableEnvironment;

@@ -1,7 +1,9 @@
 package com.leonside.dataroad.common.context;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.leonside.dataroad.common.config.Validation;
 import lombok.Data;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
 
@@ -10,7 +12,7 @@ import java.io.Serializable;
  */
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class RestoreConfig implements Serializable {
+public class RestoreConfig implements Serializable, Validation {
 
     /**
      * 是否启用Checkpointing
@@ -54,4 +56,23 @@ public class RestoreConfig implements Serializable {
     public void setIsStream(boolean stream) {
         isStream = stream;
     }
+
+
+    @Override
+    public boolean validate(){
+        if (isRestore )  {
+            if(StringUtils.isEmpty(savepointPath)){
+                throw new IllegalArgumentException("If Restore is true, the savepoint Path parameter must be configured");
+            }
+
+            if(StringUtils.isEmpty(restoreColumnName)){
+                throw new IllegalArgumentException("If Restore is true, the restoreColumnName parameter must be configured");
+            }
+            if(StringUtils.isEmpty(restoreColumnType)){
+                throw new IllegalArgumentException("If Restore is true, the restoreColumnType parameter must be configured");
+            }
+        }
+        return true;
+    }
+
 }

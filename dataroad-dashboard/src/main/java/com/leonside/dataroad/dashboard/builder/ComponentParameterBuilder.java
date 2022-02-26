@@ -2,6 +2,7 @@ package com.leonside.dataroad.dashboard.builder;
 
 import com.leonside.dataroad.common.config.BaseConfig;
 import com.leonside.dataroad.common.config.ConfigKey;
+import com.leonside.dataroad.common.enums.FieldType;
 import com.leonside.dataroad.common.utils.ConfigBeanUtils;
 import com.leonside.dataroad.common.utils.EnumUtils;
 import com.leonside.dataroad.dashboard.domian.ComponentParameter;
@@ -40,22 +41,23 @@ public class ComponentParameterBuilder {
             componentParameter.setDesc(item.getDesc());
             componentParameter.setRequired(item.isRequired());
             componentParameter.setDefaultValue(item.getDefaultValue());
+            componentParameter.setFieldType(item.getFieldType().name());
 
             Optional<Field> matchField = ConfigBeanUtils.getField(configClass, item.getName());
 
             if (matchField.isPresent()) {
                 if (matchField.get().getType().isEnum()) {
-                    componentParameter.setFieldType("enum");
+                    componentParameter.setFieldType(FieldType.ENUM.name());
                     String[] enumNameArray = EnumUtils.getEnumNameArray((Class<? extends Enum>) matchField.get().getType());
                     componentParameter.setFieldEnumList(enumNameArray);
-                } else {
-                    if(Map.class.isAssignableFrom(matchField.get().getType())
-                            || List.class.isAssignableFrom(matchField.get().getType())
-                            || String[].class.isAssignableFrom(matchField.get().getType())){
-                        componentParameter.setFieldType("object");
-                    }else{
-                        componentParameter.setFieldType(matchField.get().getType().getSimpleName());
-                    }
+//                } else {
+//                    if(Map.class.isAssignableFrom(matchField.get().getType())
+//                            || List.class.isAssignableFrom(matchField.get().getType())
+//                            || String[].class.isAssignableFrom(matchField.get().getType())){
+//                        componentParameter.setFieldType("object");
+//                    }else{
+//                        componentParameter.setFieldType(matchField.get().getType().getSimpleName());
+//                    }
                 }
             }
             return componentParameter;
