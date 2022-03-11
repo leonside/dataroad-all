@@ -61,7 +61,9 @@ public class FlinkJobProvider implements JobEngineProvider<FlinkExecuteContext> 
                 environment.enableCheckpointing();
             }
             environment.getCheckpointConfig().enableExternalizedCheckpoints(CheckpointConfig.ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION);
-            environment.setStateBackend(new FsStateBackend(jobSetting.getRestore().getSavepointPath()));
+            if(StringUtils.isNotEmpty(jobSetting.getRestore().getSavepointPath())){
+                environment.setStateBackend(new FsStateBackend(jobSetting.getRestore().getSavepointPath()));
+            }
         }
 
         return buildFlinkExecuteContext(executeContext, environment, options);

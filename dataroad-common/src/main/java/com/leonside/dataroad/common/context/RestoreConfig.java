@@ -61,9 +61,9 @@ public class RestoreConfig implements Serializable, Validation {
     @Override
     public boolean validate(){
         if (isRestore )  {
-            if(StringUtils.isEmpty(savepointPath)){
-                throw new IllegalArgumentException("If Restore is true, the savepoint Path parameter must be configured");
-            }
+//            if(StringUtils.isEmpty(savepointPath)){
+//                throw new IllegalArgumentException("If Restore is true, the savepoint Path parameter must be configured");
+//            }
 
             if(StringUtils.isEmpty(restoreColumnName)){
                 throw new IllegalArgumentException("If Restore is true, the restoreColumnName parameter must be configured");

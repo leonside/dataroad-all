@@ -19,6 +19,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -32,7 +34,7 @@ public class JobSubmitParam {
 
     private String entryClass;
     private String programArgs;
-    private int parallelism = -2;
+//    private int parallelism = -2;
     private String allowNonRestoredState;
     private String savepointPath;
 
@@ -47,12 +49,16 @@ public class JobSubmitParam {
         private String jobId;
         private String jobFlowJson;
 //        private String extLibPath[];
-        private int parallelism = 0;
+        private Integer parallelism ;
         private String savepointPath;
+        private String allowNonRestoredState;
         private String confProp;
         private DataroadProperties dataroadProperties;
 
-
+        public JobSubmitParamBuilder setAllowNonRestoredState(String allowNonRestoredState) {
+            this.allowNonRestoredState = allowNonRestoredState;
+            return this;
+        }
 
         public JobSubmitParamBuilder setJobId(String jobId) {
             this.jobId = jobId;
@@ -64,7 +70,7 @@ public class JobSubmitParam {
             return this;
         }
 
-        public JobSubmitParamBuilder setParallelism(int parallelism) {
+        public JobSubmitParamBuilder setParallelism(Integer parallelism) {
             this.parallelism = parallelism;
             return this;
         }
@@ -84,19 +90,19 @@ public class JobSubmitParam {
             return this;
         }
 
-        public JobSubmitParam build() throws JsonProcessingException {
+        public JobSubmitParam build() throws JsonProcessingException, UnsupportedEncodingException {
             JobSubmitParam jobSubmitParam = new JobSubmitParam();
             jobSubmitParam.setEntryClass(DataroadEngine.class.getName());
 
             //创建 confProp
-            Map<String,Object> confPropMap = StringUtils.isNotEmpty(confProp) ? JsonUtil.getInstance().readJson(confProp, HashMap.class) : null;
+            Map<String,Object> confPropMap = StringUtils.isNotEmpty(confProp) ? JsonUtil.getInstance().readJson(confProp, HashMap.class) : new HashMap<>();
 //            if(StringUtils.isNotEmpty(savepointPath)){
 //                confProp.put(SAVEPOINTS_DIR_KEY, savepointPath);
 //            }
-//            if(parallelism > 0){
-//                confProp.put(PARALLELISM_KEY, parallelism);
+            if(parallelism != null){
+                confPropMap.put(PARALLELISM_KEY, parallelism);
 //                jobSubmitParam.setParallelism(parallelism);
-//            }
+            }
 
 
             //创建conf
@@ -121,10 +127,12 @@ public class JobSubmitParam {
                 sb.append(" -extLibPath " + dependOnJarsURL);
             }
             if(MapUtils.isNotEmpty(confPropMap)){
-                sb.append(" -confProp " + JsonUtil.getInstance().writeJson(confPropMap));
+                sb.append(" -confProp " + URLEncoder.encode(JsonUtil.getInstance().writeJson(confPropMap),"UTF-8"));
             }
 
             jobSubmitParam.setProgramArgs(sb.toString());
+            jobSubmitParam.setSavepointPath(this.savepointPath);
+            jobSubmitParam.setAllowNonRestoredState(this.allowNonRestoredState);
 
             return jobSubmitParam;
         }

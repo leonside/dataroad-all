@@ -48,36 +48,36 @@
 
         <!-- 引入插件 -->
 
-        <dependency>
-            <groupId>io.github.leonside</groupId>
-            <artifactId>dataroad-plugin-mysql</artifactId>
-            <version>${project.version}</version>
-            <!--<scope>provided</scope>-->
-            <optional>true</optional>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>io.github.leonside</groupId>-->
+<!--            <artifactId>dataroad-plugin-mysql</artifactId>-->
+<!--            <version>${project.version}</version>-->
+<!--            &lt;!&ndash;<scope>provided</scope>&ndash;&gt;-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>io.github.leonside</groupId>
-            <artifactId>dataroad-plugin-oracle</artifactId>
-            <version>${project.version}</version>
-            <!--<scope>provided</scope>-->
-            <optional>true</optional>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>io.github.leonside</groupId>-->
+<!--            <artifactId>dataroad-plugin-oracle</artifactId>-->
+<!--            <version>${project.version}</version>-->
+<!--            &lt;!&ndash;<scope>provided</scope>&ndash;&gt;-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>io.github.leonside</groupId>
-            <artifactId>dataroad-plugin-mysqlstream</artifactId>
-            <version>${project.version}</version>
-            <!--<scope>provided</scope>-->
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>io.github.leonside</groupId>
-            <artifactId>dataroad-plugin-es</artifactId>
-            <version>${project.version}</version>
-            <!--<scope>provided</scope>-->
-            <optional>true</optional>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>io.github.leonside</groupId>-->
+<!--            <artifactId>dataroad-plugin-mysqlstream</artifactId>-->
+<!--            <version>${project.version}</version>-->
+<!--            &lt;!&ndash;<scope>provided</scope>&ndash;&gt;-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>io.github.leonside</groupId>-->
+<!--            <artifactId>dataroad-plugin-es</artifactId>-->
+<!--            <version>${project.version}</version>-->
+<!--            &lt;!&ndash;<scope>provided</scope>&ndash;&gt;-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
 
     </dependencies>
 

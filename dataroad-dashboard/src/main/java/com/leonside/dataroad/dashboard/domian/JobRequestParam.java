@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 public class JobRequestParam {
 
     private String jobId;
-    private int parallelism;
+    private Integer parallelism;
     private String allowNonRestoredState;
     private String savepointPath;
     private String confProp;

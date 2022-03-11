@@ -5,6 +5,9 @@ import lombok.Data;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +28,7 @@ public class Options {
     private String pluginRootDir;
 
     /**
-     * 扩展lib路径，支持filesystem:、http:几种资源类型。当通过dashboard提交任务时应用，非必填
+     * 扩展lib路径，支持file:、http:几种资源类型。当通过dashboard提交任务时应用，非必填
      */
     private String[] extLibPath;
     /**
@@ -44,7 +47,7 @@ public class Options {
         return pluginRootDir.endsWith(File.separator) ? pluginRootDir + PLUGIN_DIR_NAME : pluginRootDir + File.separator + PLUGIN_DIR_NAME;
     }
 
-    public static Options of(Map<String, String> parameters) {
+    public static Options of(Map<String, String> parameters) throws UnsupportedEncodingException {
 
         Options options = new Options();
 
@@ -60,7 +63,8 @@ public class Options {
 
         String confProp = parameters.get("confProp");
         if(StringUtils.isNotEmpty(confProp)){
-            Map<String,Object> confMap = JsonUtil.getInstance().readJson(confProp, HashMap.class);
+            String decodeConfProp = URLDecoder.decode(confProp, "UTF-8");
+            Map<String,Object> confMap = JsonUtil.getInstance().readJson(decodeConfProp, HashMap.class);
             Map<String,String> convertedMap = new HashMap<>();
             confMap.entrySet().stream().forEach(entry->{
                 convertedMap.put(entry.getKey(), entry.getValue().toString());
@@ -69,5 +73,10 @@ public class Options {
         }
 
         return options;
+    }
+
+    public static void main(String[] args) throws UnsupportedEncodingException {
+        String encode = URLEncoder.encode("{\"parallelism.default\":2}", "UTF-8");
+        System.out.println(encode);
     }
 }

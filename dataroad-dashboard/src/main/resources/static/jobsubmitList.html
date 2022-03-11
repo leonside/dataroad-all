@@ -99,7 +99,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">Parallelism</label>
                 <div class="layui-input-block">
-                    <input  type="text" name="parallelism" value=""  placeholder="并行度" autocomplete="off" class="layui-input">
+                    <input  type="text" name="parallelism" value=""  placeholder="并行度"   autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-form-mid layui-word-aux"></div>
             </div>
@@ -162,13 +162,14 @@
                             form.on('submit(submitContentForm)', function(data){
                                 var loading = layer.msg('正在提交并运行中...', {icon: 16, shade: 0.3, time:0});
                                 var params = $(data.form).serialize();
+                                debugger;
                                 $.ajax({
                                     url: window.url + "api/jobflowtask/submit"  ,
                                     type: 'post',
                                     data: params,
                                     success:function(data){
                                         layer.close(loading);
-                                        layer.msg("提交成功" );
+                                        layer.msg(data.msg );
                                     },
                                     error:function(data){
                                         layer.close(loading);

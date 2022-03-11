@@ -79,15 +79,19 @@ public class JobFlowTaskController {
 
         try {
             taskService.submitJobFlow(jobRequestParam);
+
         } catch (JobException e) {
             log.error("submit job exception", e);
             return ResponseStatus.error(e.getMessage());
         } catch (JsonProcessingException e) {
             log.error("submit job exception", e);
             return ResponseStatus.error("Job解析异常");
+        } catch (Exception e) {
+            log.error("submit job exception", e);
+            return ResponseStatus.error("任务提交异常");
         }
 
-        return ResponseStatus.success();
+        return ResponseStatus.success("提交成功");
     }
 
     @PostMapping("/api/jobflowtask/{id}/schedule")

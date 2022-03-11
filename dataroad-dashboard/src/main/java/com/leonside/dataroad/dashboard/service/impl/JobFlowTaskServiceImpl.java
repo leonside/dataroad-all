@@ -28,10 +28,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import javax.ws.rs.core.MultivaluedMap;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
@@ -49,7 +46,7 @@ public class JobFlowTaskServiceImpl implements JobFlowTaskService {
     @Autowired
     private DataroadProperties dataroadProperties;
     @Override
-    public JobSubmitReponse submitJobFlow(JobRequestParam jobRequestParam) throws JsonProcessingException {
+    public JobSubmitReponse submitJobFlow(JobRequestParam jobRequestParam) throws JsonProcessingException, UnsupportedEncodingException {
 
         //获取JarID, 未上传则提示上传jar
         JobJarsReponse jobJarsReponse = listDataroadJar();
@@ -62,15 +59,16 @@ public class JobFlowTaskServiceImpl implements JobFlowTaskService {
                 .setJobFlowJson(jobFlowJson)
                 .setDataroadProperties(dataroadProperties)
                 .setSavepointPath(jobRequestParam.getSavepointPath())
+                .setAllowNonRestoredState(jobRequestParam.getAllowNonRestoredState())
                 .setParallelism(jobRequestParam.getParallelism())
                 .setConfProp(jobRequestParam.getConfProp())
                 .build();
 
-        log.debug("ready to submit Job, parameter:" + newJobParam);
+        log.info("ready to submit Job, parameter:" + newJobParam);
         //提交Job
         JobSubmitReponse response = restTemplate.postForObject(dataroadProperties.getJobSubmitURL(dataroadJar.getId()), newJobParam, JobSubmitReponse.class);
 
-        log.debug("Submit Job completed:" + response.toString());
+        log.info("Submit Job completed:" + response.toString());
 
         return response;
     }
