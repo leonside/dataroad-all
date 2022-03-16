@@ -14,36 +14,55 @@
 ### 特性
 
 - 支持数据抽取、加载、过滤、转换、聚合计算、数据补全等功能
+
 - 支持流程编排，支持基于条件数据分流、合并
+
+- 采用轻量易用的JSON语言进行流程定义描述，同时也提供DSL语句来编排设计流程
+
+- 支持基于窗口聚合计算，包含max、min、avg、count、sum、stats等几种聚合函数，其中窗口类型包含时间窗口（滚动窗口、滑动窗口）、计数窗口，时间窗口可以Event Time、Ingestion Time、Processing Time作为事件时间。
+
+- 支持基于维表进行数据补全，维表可支持关系库（如Mysql）、静态数据等方式
+
+- 支持Groovy、Bsh、Fel、JavaScript几种脚本引擎，实现数据的过滤、转换功能
+
 - 支持并发读写数据，可以大幅度提升读写性能
+
 - 关系数据库支持全量、增量轮询方式抽取数据，同时Mysql库支持基于Binlog方式同步数据
+
 - 支持失败恢复功能，可以从失败的数据位置恢复任务，提升性能
-- 支持Groovy、Bsh、Fel...几种脚本引擎，实现数据的过滤、转换功能
-- 支持max、min\stat等几种聚合计算
-- 支持数据补全、mysql、lookup
-- 支持通过清晰、简便的JSON语言描述定义流程-----同时也提供DSL语句来编排设计流程
-- 支持通过命令行方式运行流程------
 
-- 提供Dashboard控制台，实现流程创建、可视化的在线流程设计、流程运行、流程调度等全生命周期管理
-- 支持通过Docker方式快速部署Dashboard,快速部署
-- 扩展性：基于SPI插件方式、Reader、Writer、过滤器、转换器   
-- 支持插件Jar包隔离，按需动态加载
+- 提供Dashboard控制台，实现流程创建、可视化的流程编排设计、流程运行、流程调度等全生命周期管理。其中Dashboard支持采用Docker方式快速部署
+
+- 支持多种运行模式，包含命令行运行方式、Dashboard控制台运行流程
+
+- 扩展性：组件以SPI插件方式进行开发，包含了Reader、Writer、过滤器、转换器等组件
+
+- 支持插件Jar包隔离，按需动态加载相应的插件Jar包
+
+  目前已支持如下数据库：
+
+| Database Type |                   Reader                   |                   Writer                   |
+| :-----------: | :----------------------------------------: | :----------------------------------------: |
+|     MySQL     | [doc](docs/offline/reader/mysqlreader.md)  | [doc](docs/offline/writer/mysqlwriter.md)  |
+|    Oracle     | [doc](docs/offline/reader/oraclereader.md) | [doc](docs/offline/writer/oraclewriter.md) |
+|  PostgreSQL   | [doc](docs/offline/reader/oraclereader.md) | [doc](docs/offline/reader/oraclereader.md) |
+| ElasticSearch | [doc](docs/offline/reader/oraclereader.md) | [doc](docs/offline/reader/oraclereader.md) |
+| Mysql Stream  | [doc](docs/offline/reader/oraclereader.md) | [doc](docs/offline/reader/oraclereader.md) |
+
+​     目前已支持其他插件：
+
+|  插件名  | 文档 |
+| :------: | :--: |
+| 流程编排 | doc  |
+| SQL转换  | doc  |
+| 脚本转换 | doc  |
+| 脚本过滤 | doc  |
+|   聚合   | doc  |
+| 维表补全 | doc  |
 
 
 
-- 服务注册：通过对注册上来的服务进行校验，如通过对host、服务名称等信息校验，来保障接入服务的合法性、合规性、安全性。
-- 服务发现：支持对服务元数据信息（如host、版本信息、自定义标签等）条件过滤，实现如黑白名单、基于版本、标签等服务发现过滤等功能。
-- 服务路由：支持对服务元数据信息（如host、版本信息、自定义标签等）条件规则路由；同时支持基于请求参数（如：Header、Request参数）的条件匹配,来实现动态参数路由，并支持SpEL表达式。
-- 灰度发布：基于服务路由的功能特性，可实现服务的灰度发布场景，例如可通过服务版本、自定义标签的规则切换，或是匹配请求参数等方式来实现灰度发布。
-- 分组隔离：支持通过分组信息的配置，来实现服务分组隔离。
-- 服务权重路由：支持服务权重路由，支持全局权重条件配置及接口级别的细粒度权重条件配置，通过权重调整支持蓝绿发布等场景。
-- 支持动态配置发布：支持RESTful API、配置中心动态推送等方式实现动态配置发布，默认情况下动态配置优先级高于本地配置，可以作为实现灰度发布能力基础。
-- 支持多配置中心：支持主流的配置中心，如Nacos、Apollo，同时考虑更多配置中心接入的扩展性。
-- 支持多注册中心：支持主流的注册中心，如Nacos、eureka、consul等。
-- 扩展性：框架提供简单易用、完善的扩展机制，开发者可通过扩展接口来快速订制业务逻辑，如自定义条件规则实现、扩展服务注册过滤器、扩展服务路由过滤器等。
-- 无代码入侵：开发者只需引入此框架，并做少量规则配置即可享受此框架带来的功能，无代码入侵，零代码。
-
-![](https://raw.githubusercontent.com/leonside/springleaf-cloud-smart-discovery/master/doc/image/%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84%E5%9B%BE.png)
+![](D:\myblog\dataroad-all\doc\images\整体架构图-整体架构图.png)
 
 
 
@@ -51,13 +70,95 @@
 
 ### 代码下载
 
+ 使用git工具把项目clone到本地 (**如果只想通过Dashboard快速体验下Dataroad功能，可跳过此章节**)
+
+```
+git clone https://github.com/leonside/dataroad-all.git
+cd dataroad-all
+```
+
+
+
 ### 源码编译
+
+进入dataroad-all目录下，执行如下命令(**如果只想通过Dashboard快速体验下Dataroad功能，可跳过此章节**)：
+
+```
+mvn clean package -DskipTests
+```
+
+其中dataroad插件存在在工程的同级目录dataroad-dist下。
 
 ### 环境准备
 
 #### Flink安装
 
+详见Flink相关文档，示例中采用Flink standlone安装模式。
+
 #### 初始化示例工程脚本
+
+初始化本示例的SQL语句（另外Dashboard中附带了大量的示例流程）:
+
+```
+DROP TABLE IF EXISTS `student`;
+CREATE TABLE `student` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) DEFAULT NULL,
+  `sex` smallint(6) DEFAULT NULL,
+  `age` int(11) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `idcard` varchar(18) DEFAULT NULL,
+  `phone` varchar(50) DEFAULT NULL,
+  `code` int(11) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `area_code` varchar(20) DEFAULT NULL,
+  `score` double(255,0) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
+INSERT INTO `student` VALUES ('1', '张三', '1', '18', '福建省', '11111111111111111', '13877777777', '1001', '2021-11-17 15:43:46', '350000', '500');
+INSERT INTO `student` VALUES ('2', '李四', '0', '20', '厦门市', '11111111111111111', '13877777777', '1002', '2021-11-17 15:44:20', '350200', '480');
+INSERT INTO `student` VALUES ('3', '王五', '0', '22', '厦门市', '11111111111111111', '13877777771', '1003', '2021-11-17 15:44:51', '350200', '500');
+INSERT INTO `student` VALUES ('4', '王五2', '1', '22', '厦门市', '11111111111111111', '13877777771', '1004', '2021-11-17 15:44:51', '3502', '501');
+INSERT INTO `student` VALUES ('5', '王五3', '0', '17', '漳州市', '11111111111111111', '13877777771', '1004', '2021-11-17 15:44:51', '3504', '602');
+INSERT INTO `student` VALUES ('6', '王五', '1', '23', '厦门集美', '11111111111111111', '13877777771', '1005', '2022-01-26 08:54:46', '3504', '501');
+INSERT INTO `student` VALUES ('7', '王六', '0', '23', '漳州', '11111111111111111', '13877777771', '1005', '2021-12-03 17:23:03', '3504', '501');
+INSERT INTO `student` VALUES ('8', '王五', '0', '23', '厦门集美', '11111111111111111', '13877777771', '1005', '2022-01-26 08:54:46', '3501', '351');
+INSERT INTO `student` VALUES ('9', '王五', '0', '23', '厦门集美', '11111111111111111', '13877777771', '1005', '2022-01-26 08:54:46', '3501', '501');
+INSERT INTO `student` VALUES ('10', '王五', '0', '23', '厦门集美', '11111111111111111', '13877777771', '1005', '2022-01-26 08:54:46', '3501', '551');
+
+DROP TABLE IF EXISTS `student1`;
+CREATE TABLE `student1` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `name` varchar(50) DEFAULT NULL,
+  `sex` smallint(6) DEFAULT NULL,
+  `age` int(11) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `idcard` varchar(18) DEFAULT NULL,
+  `phone` varchar(50) DEFAULT NULL,
+  `code` int(11) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `area_code` varchar(20) DEFAULT NULL,
+  `score` double(255,0) DEFAULT NULL,
+  `sex_value` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `student2`;
+CREATE TABLE `student2` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `name` varchar(50) DEFAULT NULL,
+  `sex` smallint(6) DEFAULT NULL,
+  `age` int(11) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `idcard` varchar(18) DEFAULT NULL,
+  `phone` varchar(50) DEFAULT NULL,
+  `code` int(11) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `area_code` varchar(20) DEFAULT NULL,
+  `score` double(255,0) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+```
 
 
 
@@ -67,61 +168,101 @@
 
 ##### 采用Docker方式运行Dashboard
 
+执行如下命令运行dashboard
+
+```java
+docker run -d -p 8089:8089 -e WEB_UI=http://10.254.10.32:8081 -e DATAROAD_DIST=/opt/dataroad-dist/ -e HOST_ADDRESS=192.168.10.9 -e SAMPLE_ENABLED=true dataroad-dashboard:0.5 
+```
+
+其中环境变量说明如下：
+
+|   环境变量    |       默认值        |                      说明                      |
+| :-----------: | :-----------------: | :--------------------------------------------: |
+|    WEB_UI     |         无          |               Flink的Web UI地址                |
+| DATAROAD_DIST | /opt/dataroad-dist/ |             dataroad插件根路径地址             |
+| HOST_ADDRESS  |     机器IP地址      | 如无法正确获取对外访问地址，可通过此参数配置IP |
+| SAMPLE_ENABLE |         doc         |         是否初始化案例数据，默认false          |
+
 ##### 通过源码编译方式运行Dashboard Jar
+
+执行如下命令运行Dashboard，可通过设置系统属性方式指定变量：
+
+```java
+java -Dweb-ui=http://10.254.10.32:8081 -Ddataroad.sample-enabled=true -Ddataroad.dataroad-dist=/opt/dataroad-dist/ -Dhost-address=192.168.10.9 -jar dataroad-dashboard-0.5.jar
+```
+
+
 
 #### 流程设计
 
+通过Dashboard创建并设计流程，本示例实现将学生信息源表按区划抽取至不同的目标表中，中间经过数据过滤：
+
+![](D:\myblog\dataroad-all\doc\images\dashboard-designer.png)
+
+其中可通过“查看JSON流程”查看设计的流程JSON，如图：
+
+![](D:\myblog\dataroad-all\doc\images\dashboard-json.png)
+
 #### 任务提交
+
+进入Dashboard的流程运行菜单，选中已设计好的流程进行任务提交：
+
+![](D:\myblog\dataroad-all\doc\images\dashboard-commit.png)
+
+其中：提交流程可设置Flink相关参数，其中更多参数可通过confProp进行设置，例如：{\"parallelism.default\":2}
 
 #### 查看任务
 
+进入Flink Web UI，查看任务的运行情况。
+
 ### 通过命令行方式运行任务
 
-#### 1：通过编译工程，获取到dataroad-dist，部署包及插件
+#### 源码编译并获取部署包
 
-#### 	2、上传dataroad-dist至服务器
+​	详见如上代码下载、源码编译章节，获取dataroad-dist部署包及插件
 
-#### 	2、设计流程JSON（示例贴出，也可以从服务器获取）
+#### 	上传服务器
 
-#### 	3、运行flink run --- 配置说明
+​	将打包获取到的dataroad-dist插件包上传至部署Flink的服务器
 
-#### 	4、查看任务运行情况--Flink
+#### 	流程设计
+
+​	设计流程JSON，此处可通过Dashboard可视化流程设计器来设计流程（见上），并获取JSON流程配置（Dashboard已内置了一些流程JSON案例，可直接获取）。也可以
+
+自行设计流程，其中简要的流程JSON结构如下：
+
+![](D:\myblog\dataroad-all\doc\images\designer-json.png)
+
+#### 	任务提交
+
+通过flink运行任务，运行脚本如下：
+
+```java
+flink run dataroad-dashboard-0.5.jar -conf file:/tmp/mysql_customsql_decider_union_mysql.json -pluginRootDir /tmp/dataroad-dist -jobName myjob - confProp {\"parallelism.default\":1}
+```
+
+其中参数如下：
+
+|   环境变量    | 是否必填 |                             说明                             |
+| :-----------: | :------: | :----------------------------------------------------------: |
+|     conf      |    是    | 流程JSON文件路径，支持file、http几种资源类型，如：-conf http://ip:port/api/jobflowjson/mysql_scriptfilter_mysql 直接引用Dashboard的设计流程 |
+| pluginRootDir |    是    |         dataroad插件根路径地址，如/tmp/dataroad-dist         |
+|  confProp否   |    否    |    Flink参数，采用Json格式，如{\"parallelism.default\":1}    |
+|    jobName    |    否    |                           任务名称                           |
 
 
 
+#### 	查看任务
 
+进入Flink Web UI，查看任务的运行情况。
 
 ## Dashboard操作指南
 
-### 创建流程
-
-### 流程设计
-
-组件
-
-编辑
-
-保存
-
-查看JSON
-
-### 流程运行
-
-### 下载流程JSON
-
-
-
-
+请查看[Dashboard操作指南]
 
 ## 流程设计说明
 
-插件说明
-JSON结构
-DSL API使用说明
-
-
-
-
+请查看[流程设计说明]
 
 ## 插件通用配置
 
@@ -148,251 +289,6 @@ slidingWindowAgg
 
 mysql-lookup
 direct-lookup
-
-
-
-
-
-### Github示例工程
-
-​     如果希望最快的速度了解Smart Discovery的功能，您可以直接下载[Github上的示例工程](https://github.com/leonside/springleaf-cloud-smart-discovery/tree/master/springleaf-cloud-smart-discovery-samples)并运行，结合配置规则来快速了解Smart Discovery。
-
-
-
-### 开发第一个入门例子
-
-> 下面的例子采用Nacos为注册中心，通过基于Smart Discovery实现基于Version版本路由的业务场景，例如：服务消费方只能调用相同版本的服务提供方
-
-#### 步骤1：运行注册中心（Nacos）
-
-参加[Nacos官方文档](https://nacos.io/zh-cn/docs/deployment.html)说明
-
-#### 步骤2：开发服务提供方
-
-> 为了更好模拟基于版本路由的效果，分别启动2个服务提供方，并依次设置版本号v1、v2，端口分别是28081、28082。如下只展现v1版本号的服务提供方示例代码。
->
-> 此步骤和正常的SpringCloud开发无差异，对于熟悉SpringCloud开发者可快速浏览此章节。
-
-##### 步骤2.1：引入Maven依赖
-
-> 本示例采用nacos为注册中心，只需额外引入如下POM
-
- ```
-<dependency>
-   <groupId>io.github.leonside</groupId>
-   <artifactId>springleaf-cloud-smart-discovery-nacos</artifactId>
-</dependency>
- ```
-注:目前RELEASE分支下的版本均已发布至中央仓库（例如：1.0.0）
-
-
-
-##### 步骤2.3：SpringCloud简单示例编写
-
-- 编写SpringBoot  Main函数及Controller
-
-  > 此处只需添加@EnableSmartDiscoveryClient注解，其他只需参照SpringCloud的示例开发即可
-
-  ```
-  @SpringBootApplication
-  @EnableDiscoveryClient
-  @EnableSmartDiscoveryClient
-  public class DemoApplicationB1 {
-  
-      public static void main(String[] args) {
-      	//设置spring profile active,主要用于模拟启动多个服务提供方
-  		System.setProperty("spring.profiles.active", "b1");
-          //System.setProperty("spring.profiles.active", "b2");
-  
-          SpringApplication.run(DemoApplicationB1.class, args);
-      }
-  
-      @RestController
-      public class ServerBController {
-  
-          @RequestMapping(path = "/demo-b/echo", method = RequestMethod.GET)
-          public String echo(@RequestParam("input") String input){
-              System.out.println("serverB say: " + input);
-              return "serverB say: " + input;
-          }
-      }
-  }
-  ```
-
-  **注：为模拟多个服务提供方，此处通过设置设置spring profile active，其中DemoApplicationB1对应的Spring配置文件名为application-b1.yml**
-
-
-
-- 编写application-b1.yml配置文件
-
-> 同样，此处配置只需按照SpringCloud说明正常开放即可
-
-```
-server:
-  port: 28080
-spring:
-  application:
-    name: demo-b
-  cloud:
-    nacos:
-      discovery:
-        server-addr: localhost:8848
-        metadata:   #配置更多的服务元数据，smart discovery基于此元数据进行路由（此示例中基于version路由）
-          version: 1.0
- #         region: dev
- #         tag: tag1
-```
-
-
-
-- 启动DemoApplicationB1服务提供方
-
-运行DemoApplicationB1  main函数，出现如下提示说明启动成功
-
-```
-2021-10-05 16:35:12.663  INFO 24632 --- [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 20 endpoint(s) beneath base path '/actuator'
-2021-10-05 16:35:12.857  INFO 24632 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 28080 (http) with context path ''
-2021-10-05 16:35:12.976  INFO 24632 --- [           main] o.s.c.a.n.registry.NacosServiceRegistry  : nacos registry, demo-b 192.168.75.1:28080 register finished
-2021-10-05 16:35:12.979  INFO 24632 --- [           main] c.s.c.d.controller.DemoApplicationB1     : Started DemoApplicationB1 in 10.461 seconds (JVM running for 12.625)
-2021-10-05 16:35:14.052  INFO 24632 --- [n(2)-10.11.1.14] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2021-10-05 16:35:14.052  INFO 24632 --- [n(2)-10.11.1.14] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2021-10-05 16:35:14.084  INFO 24632 --- [n(2)-10.11.1.14] o.s.web.servlet.DispatcherServlet        : Completed initialization in 32 ms
-```
-
-同上，继续开发服务DemoApplicationB1 、application-b2.yml，并设置版本号为v2（略）。
-
-
-
-#### 步骤3：开发服务消费方
-
-> 区别于服务提供方，此处增加了SmartDiscovery的服务发现规则配置（基于版本号服务发现），其他代码开发和正常的SpringCloud开发无差异。
-
-##### 步骤3.1：引入Maven依赖
-
-> 同上，只需额外引入如下POM
-
- ```
-<dependency>
-   <groupId>io.github.leonside</groupId>
-   <artifactId>springleaf-cloud-smart-discovery-nacos</artifactId>
-</dependency>
- ```
-
-
-##### 步骤3.2：SpringCloud简单示例编写
-
-- 编写SpringBoot  Main函数及Controller
-
-  >只需添加@EnableSmartDiscoveryClient注解，其他按照SpringCloud的正常的开发示例，开发服务消费方。
-  >
-  >为简单起见，此处采用RestTemplate方式调用，当然也可以采用Feign方式调用。
-
-```
-@SpringBootApplication
-@EnableDiscoveryClient
-@EnableFeignClients
-@EnableSmartDiscoveryClient
-public class DemoApplicationA1 {
-
-    public static void main(String[] args) {
-        SpringApplication.run(DemoApplicationA1.class, args);
-    }
-
-    @Bean
-    @LoadBalanced
-    public RestTemplate restTemplate(){
-        return new RestTemplate();
-    }
-
-    @RestController
-    @RequestMapping("demo-a")
-    public class ServerAController {
-
-        @Autowired
-        private RestTemplate restTemplate;
-
-        @RequestMapping(path = "/router/rule1", method = RequestMethod.GET)
-        public String rule1(@RequestParam("input") String input){
-
-            System.out.println("server a say: " + input);
-            String echo = restTemplate.getForObject("http://demo-b/demo-b/echo?input=" + input, String.class);
-            return "serverA say: " + echo;
-        }
-    }
-}
-```
-
-
-
-##### 步骤3.3：SmartDiscovery服务发现规则配置
-
-- 配置服务发现条件规则
-
-  > 本示例采用本地JSON配置文件的方式，在resources目录下新建discovery-rule-discovery.json规则配置文件，配置如下：
-
-  ```yaml
-  [
-    {
-      "serviceId": "demo-a",
-      "force": true,
-      "priority": 0,
-      "conditions": " => version = $version", 
-      "enabled": true
-    }
-  ]
-  ```
-
-  其中conditions规则含义：服务提供方的版本号等于服务消费方的版本号，具体规则说明见条件规则详解章节。
-
-
-
-- 配置Spring application.yml配置
-
-```yaml
-server:
-  port: 18080
-spring:
-  application:
-    name: demo-a
-  cloud:
-    nacos:
-      discovery:
-        server-addr: localhost:8848
-        metadata:   #配置更多的服务元数据，smart discovery基于此元数据进行路由（此示例中基于version路由）
-          version: 1.0
- #         region: dev
- #         tag: tag1
-springleaf:
-  smart:
-    discovery:
-      router:
-        config:
-          file:
-            file: classpath:discovery-rule-discovery.json  #采用file配置方式，并指定配置文件路径，更多参见规则配置说明章节
-            
-logging:
-  level:
-    com:
-      springleaf: debug   #为方便验证结果，打印smart discovery日志
-```
-
-另外，得益于Spring的 spring-configuration-metadata 功能，针对框架相关的参数配置在idea开发环境下都可以通过诱导提示,包含参数说明、是否必填、示例等信息，如下：
-
-![](.\image\配置诱导提示.png)
-
-##### 步骤3.4：运行并验证结果
-
-> 运行DemoApplicationA1主函数，并调用http://localhost:18080/demo-a/router/rule1?input=123
->
-> 查看服务消费方的控制台的输出日志：
-
-```
-2021-10-05 17:23:33.364 DEBUG 32608 --- [erListUpdater-0] f.s.LoadBalanceServerListConditionFilter : [Discovery filtering] List of Servers for demo-a obtained from Discovery client: [192.168.75.1:28080] ,The service before filtering is :[192.168.75.1:28081, 192.168.75.1:28080]
-```
-
-同时查看服务提供方的控制台日志，查看具体是哪个提供方被调用。
-
-经过多次调用，发现始终都是调用版本号是v2的demo-b服务提供方(即端口号是28081)，由此可见，smart discovery帮助我们实现了服务消费方只能调用相同版本的服务提供方的业务场景。
 
 
 
