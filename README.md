@@ -41,7 +41,7 @@
 
   目前已支持如下数据库：
 
-| Database Type<img width=200/> |                 Reader      <img width=200/>               |                  Writer          <img width=200/>          |
+|<img width=100/> Database Type<img width=100/> |   <img width=100/> Reader   <img width=100/>    |  <img width=100/> Writer        <img width=100/>          |
 | :-----------: | :----------------------------------------: | :----------------------------------------: |
 |     MySQL     | [doc](docs/offline/reader/mysqlreader.md)  | [doc](docs/offline/writer/mysqlwriter.md)  |
 |    Oracle     | [doc](docs/offline/reader/oraclereader.md) | [doc](docs/offline/writer/oraclewriter.md) |
