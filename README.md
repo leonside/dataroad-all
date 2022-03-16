@@ -41,7 +41,7 @@
 
   目前已支持如下数据库：
 
-| Database Type |                   Reader                   |                   Writer                   |
+| Database Type<img width=200/> |                 Reader      <img width=200/>               |                  Writer          <img width=200/>          |
 | :-----------: | :----------------------------------------: | :----------------------------------------: |
 |     MySQL     | [doc](docs/offline/reader/mysqlreader.md)  | [doc](docs/offline/writer/mysqlwriter.md)  |
 |    Oracle     | [doc](docs/offline/reader/oraclereader.md) | [doc](docs/offline/writer/oraclewriter.md) |
@@ -51,7 +51,7 @@
 
 ​     目前已支持其他插件：
 
-|  插件名  | 文档 |
+|  插件名 <img width=200/>  | 文档 <img width=200/> |
 | :------: | :--: |
 | 流程编排 | doc  |
 | SQL转换  | doc  |
