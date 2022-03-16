@@ -51,7 +51,7 @@
 
 ​     目前已支持其他插件：
 
-|  插件名 <img width=200/>  | 文档 <img width=200/> |
+| <img width=100/>  插件名<img width=100/>  | <img width=100/> 文档 <img width=100/>  |
 | :------: | :--: |
 | 流程编排 | doc  |
 | SQL转换  | doc  |
