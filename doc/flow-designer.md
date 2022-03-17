@@ -18,7 +18,7 @@ Dataroad各个组件采用SPI插件方式进行开发，其中已支持reader、
 ## 配置文件
 一个完整的Job任务脚本配置包含 content， setting两个部分。content用于配置任务的输入源、输出源、补全、转换、聚合、分流合并等，其中包含reader、writer、processor、lookup、agg、deciderOn、union，其中当存在分支流程时，通过dependencies来指定上个节点名。
 而setting则配置任务整体的环境设定，其中包含jobName、restore、speed等。 具体如下所示：
-```json
+```java
 {
 	"job" : {
 	  "content" :[{
