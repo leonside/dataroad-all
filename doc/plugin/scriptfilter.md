@@ -1,4 +1,4 @@
-## Script Filter脚本转换
+## Script Filter脚本过滤
 
 ### 一、插件名称
 类型：**processor**<br/>

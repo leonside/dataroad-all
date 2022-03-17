@@ -1,8 +1,8 @@
-## Script Filter脚本转换
+## Script Transformer脚本转换
 
 ### 一、插件名称
 类型：**processor**<br/>
-名称：**scriptFilter**
+名称：**scriptTransformer**
 ### 二、参数说明<br />
 
 - **language**
@@ -13,11 +13,11 @@
 
 
 - **expression**
-    - 描述：脚本语言表达，并返回boolean值。
+    - 描述：脚本语言表达，无需返回值。
     - 注意：
-        - 表达式需返回Boolean值！
-        - 可通过"row"变量获取到Row行记录集，例如判断性别为1的记录，表达式如：row.getField('sex')==1。其中sex对应配置的数据库column列名。
-        - 支持 && || !（与或非）等操作，具体的表达式语法可参见各个脚本语言的编写规则。
+        - 可通过"row"变量获取到Row行记录集，例如判断如果性别为空则设置默认值为0： if(row.getField("sex") == null){row.setField("sex",0) ;}。其中sex对应配置的数据库column列名。
+        - 脚本转换，通过表达式修改row值，无需返回值！
+        - 具体的表达式语法可参见各个脚本语言的编写规则。
     - 必选：是
     - 字段类型：String
     - 默认值：无
@@ -30,7 +30,7 @@
   "type": "processor",                      
   "pluginName": "scriptFilter",            
   "parameter": {                          
-        "expression": "row.getField('sex')==1 && row.getField("name")==\"zhangsan\" " ,
+        "expression": "int sex = row.getField('sex'); if(sex==0){row.setField("sex_value", "男");}else{row.setField("sex_value", "女");}  " ,
         "language": "groovy" 
   }
 }
@@ -44,7 +44,7 @@
   "type": "processor",
   "pluginName": "scriptFilter",
   "parameter": {
-    "expression": "row.getField('sex')==1 && !(row.getField("name")==\"zhangsan\") ",
+    "expression": "row.setField("area_code",row.getField("area_code").substring(0,4)) ",
     "language": "fel"
   }
 }
@@ -57,7 +57,7 @@
   "type": "processor",                      
   "pluginName": "scriptFilter",            
   "parameter": {                          
-        "expression": "row.getField('sex')==1 && row.getField("name")==\"zhangsan\" " ,
+        "expression": " if(row.getField("sex") == null){row.setField("sex",0) ;} " ,
         "language": "javascript" 
   }
 }
@@ -69,7 +69,7 @@
   "type": "processor",                      
   "pluginName": "scriptFilter",            
   "parameter": {                          
-        "expression": "row.getField('sex')==1 && row.getField("name").equals(\"zhangsan\") " ,
+        "expression": "row.setField("score",row.getField("score")+1); " ,
         "language": "bsh" 
   }
 }
