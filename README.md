@@ -45,7 +45,7 @@
 |                  processor|  转换       |  [sql转换过滤](doc/plugin/sqltrans.md)<br/> [script转换](doc/plugin/scripttrans.md) <br/> [script过滤](doc/plugin/scriptfilter.md)  |
 |                lookup     | 维表补全     |  [mysql](doc/plugin/lookup-mysql.md) <br/>  [静态数据](doc/plugin/lookup-direct.md)   |
 |                 agg       | 聚合计算     |  [计数窗口聚合](doc/plugin/agg-countWindowAgg.md)  <br/>[滑动窗口聚合](doc/plugin/agg-slidingWindowAgg.md)  <br/>[滚动窗口聚合](doc/plugin/agg-tumblingWindowAgg.md)  <br/>    |
-|                 deciderOn | 分流        |  [分流](doc/plugin/flow-forkjoin.md)   |
+|                 deciderOn | 分流        |  [并行分支](doc/plugin/flow-forkjoin.md) <br/> [条件分支（包容分支）](doc/plugin/flow-forkjoin.md) <br/> [排他分支](doc/plugin/flow-forkjoin.md)   |
 |                 union     | 合并        |  [合并](doc/plugin/flow-forkjoin.md)   |
 
 

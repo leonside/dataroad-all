@@ -104,34 +104,39 @@
   "job": {
     "content": [
       {
-        "reader": {
-          "name": "streamreader",
-          "parameter": {
+        "mysqlReader1" : {
+          "type" : "reader",
+          "pluginName" : "mysqlReader",
+          "parameter" : {
+            "jdbcUrl" : "jdbc:mysql://0.0.0.1:3306/database?useSSL=false",
+            "username" : "username",
+            "password" : "password",
+            "table" : "student",
             "column": [
               {
                 "name": "id",
                 "type": "id"
               },
               {
-                "name": "user_id",
-                "type": "int"
+                "name": "name",
+                "type": "varchar"
               },
               {
-                "name": "name",
-                "type": "string"
+                "name": "sex",
+                "type": "int"
               }
-            ],
-            "sliceRecordCount": ["100"]
+            ]
           }
         },
-        "writer": {
-          "name": "eswriter",
+        "myesWriter": {
+          "type" : "writer",
+          "pluginName" : "esWriter",
           "parameter": {
             "address": "localhost:9200",
             "username": "elastic",
             "password": "abc123",
             "index": "tudou",
-            "type": "doc",
+            "indexType": "_doc",
             "bulkAction": 100,
             "timeout": 100,
             "idColumn": [
@@ -146,12 +151,12 @@
                 "type": "integer"
               },
               {
-                "name": "user_id",
-                "type": "integer"
-              },
-              {
                 "name": "name",
                 "type": "string"
+              },
+              {
+                "name": "sex",
+                "type": "int"
               }
             ]
           }
@@ -159,19 +164,14 @@
       }
     ],
     "setting": {
+      "name": "myJob",
+      "speed": {
+        "channel": 1
+      },
       "restore": {
-        "maxRowNumForCheckpoint": 0,
         "isRestore": false,
         "restoreColumnName": "",
         "restoreColumnIndex": 0
-      },
-      "errorLimit": {
-        "record": 0,
-        "percentage": 0
-      },
-      "speed": {
-        "bytes": 1048576,
-        "channel": 1
       }
     }
   }

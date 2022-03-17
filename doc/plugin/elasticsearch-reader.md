@@ -101,7 +101,7 @@
   "job": {
     "content": [
       {
-        "mysqlReader1": {
+        "esReader1": {
           "type" : "reader",
           "pluginName" : "esReader",
           "parameter": {
@@ -120,11 +120,11 @@
                 "name": "id",
                 "type": "integer"
               },{
-                "name": "user_id",
-                "type": "integer"
-              },{
                 "name": "name",
                 "type": "string"
+              },{
+                "name": "sex",
+                "type": "integer"
               }
             ]
           }
