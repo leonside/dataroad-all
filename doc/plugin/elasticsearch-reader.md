@@ -1,7 +1,8 @@
 ## ElasticSearch Reader
 
 ### 一、插件名称
-名称：**esreader**
+类型：**reader**<br/>
+名称：**esReader**
 ### 二、支持的数据源版本
 **Elasticsearch 6.X**
 ### 三、参数说明<br />
@@ -62,11 +63,11 @@
 
 
 
-- **type**
-    - 描述：要查询的类型，支持String和String[]两种类型
+- **indexType**
+    - 描述：要查询的索引类型，默认_doc
     - 必选：是
-    - 字段类型：可以为String或者String[]
-    - 默认值：无
+    - 字段类型：String
+    - 默认值：_doc
 
 
 
@@ -97,57 +98,52 @@
 ### 四、配置示例
 ```json
 {
-  "job" : {
-    "content" : [ {
-      "reader": {
-        "name": "esreader",
-        "parameter": {
-          "address": "localhost:9200",
-          "query": {
-            "match_all": {}
-          },
-          "index": "tudou",
-          "type": "doc",
-          "batchSize": 1000,
-          "username": "elastic",
-          "password": "abc123",
-          "timeout": 10,
-          "column": [
-            {
-              "name": "id",
-              "type": "integer"
-            },{
-              "name": "user_id",
-              "type": "integer"
-            },{
-              "name": "name",
-              "type": "string"
-            }
-          ]
-        }
-      },
-      "writer": {
-        "name": "streamwriter",
-        "parameter": {
-          "print": true
+  "job": {
+    "content": [
+      {
+        "mysqlReader1": {
+          "type" : "reader",
+          "pluginName" : "esReader",
+          "parameter": {
+            "address": "localhost:9200",
+            "query": {
+              "match_all": {}
+            },
+            "index": "tudou",
+            "indexType": "_doc",
+            "batchSize": 1000,
+            "username": "elastic",
+            "password": "abc123",
+            "timeout": 10,
+            "column": [
+              {
+                "name": "id",
+                "type": "integer"
+              },{
+                "name": "user_id",
+                "type": "integer"
+              },{
+                "name": "name",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "printwriter2" : {                  ---自定义插件名，此处定义写插件
+          "type" : "writer",
+          "pluginName" : "printWriter"
         }
       }
-    }
     ],
-    "setting" : {
-      "restore" : {
-        "maxRowNumForCheckpoint" : 0,
-        "isRestore" : false,
-        "restoreColumnName" : "",
-        "restoreColumnIndex" : 0
+    "setting": {
+      "name": "myJob",
+      "speed": {
+        "channel": 1
       },
-      "errorLimit" : {
-        "record" : 0,
-        "percentage" : 0
-      },
-      "speed" : {
-        "bytes" : 1048576,
-        "channel" : 1
+      "restore": {
+        "isRestore": false,
+        "restoreColumnName": "",
+        "restoreColumnIndex": 0
       }
     }
   }

@@ -1,12 +1,10 @@
 # ElasticSearch Writer
 
-<a name="c6v6n"></a>
 ## 一、插件名称
-名称：**eswriter**<br />
-<a name="jVb3v"></a>
+类型：**writer**<br/>
+名称：**esWriter**
 ## 二、支持的数据源版本
 **Elasticsearch 6.X**<br />
-<a name="2lzA4"></a>
 ## 三、参数说明<br />
 
 - **address**
@@ -42,7 +40,7 @@
       <br />
 
 
-- **type**
+- **indexType**
     - 描述：Elasticsearch 索引类型
     - 必选：是
     - 字段类型：String
@@ -60,34 +58,26 @@
 ```
 
 - 必选：是
-- 字段类型：List
+- 字段类型：Array
 - 默认值：无
 
 
 
 - **idColumn**
     - 描述：用于构造文档id的若干个列，每列形式如下
-
-普通列
+    
 ```
-{
-  "index": 0,  // 前面column属性中列的序号，从0开始
-  "type": "string" 列的类型，默认为string
-}
-```
-常数列
-```
-{
-  "value": "ffff", // 常数值
-  "type": "string" // 常数列的类型，默认为string
-}
+[{
+  "name": "id",  // column列名
+  "type": "int" 列的类型，默认为string
+}]
 ```
 
 - 必选：否
 - 注意：
     - 如果不指定idColumn属性，则会随机产生文档id
     - 如果指定的字段值存在重复或者指定了常数，按照es的逻辑，同样值的doc只会保留一份
-    - 字段类型：List
+    - 字段类型：Array
 - 默认值：无
   <br />
 
@@ -108,7 +98,6 @@
       <br />
 
 
-<a name="1LBc2"></a>
 ## 四、配置示例
 ```json
 {
