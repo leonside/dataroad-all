@@ -8,9 +8,6 @@
 ​	开发者只需引入此框架，并做少量规则配置即可享受此框架带来的功能，无代码入侵；另外开发者也可以基于框架提供的扩展机制实现自定义的业务逻辑。
 
 
-
-
-
 ### 特性
 
 - 支持数据抽取、加载、过滤、转换、聚合计算、数据补全等功能
@@ -41,28 +38,27 @@
 
   目前已支持如下数据库：
 
-|<img width=100/> Database Type<img width=100/> |   <img width=100/> Reader   <img width=100/>    |  <img width=100/> Writer        <img width=100/>          |
-| :-----------: | :----------------------------------------: | :----------------------------------------: |
-|     MySQL     | [doc](docs/offline/reader/mysqlreader.md)  | [doc](docs/offline/writer/mysqlwriter.md)  |
-|    Oracle     | [doc](docs/offline/reader/oraclereader.md) | [doc](docs/offline/writer/oraclewriter.md) |
-|  PostgreSQL   | [doc](docs/offline/reader/oraclereader.md) | [doc](docs/offline/reader/oraclereader.md) |
-| ElasticSearch | [doc](docs/offline/reader/oraclereader.md) | [doc](docs/offline/reader/oraclereader.md) |
-| Mysql Stream  | [doc](docs/offline/reader/oraclereader.md) | [doc](docs/offline/reader/oraclereader.md) |
+| <img width=60/> Database Type<img width=60/> |  <img width=60/> Reader   <img width=60/>  | <img width=60/> Writer        <img width=60/> |
+| :------------------------------------------: | :----------------------------------------: | :-------------------------------------------: |
+|                    MySQL                     |         [doc](doc/plugin/mysql-reader.md)         |          [doc](doc/plugin/mysql-writer.md)           |
+|                    Oracle                    | [doc](doc/plugin/oracle-reader.md) |  [doc](doc/plugin/oracle-writer.md)   |
+|                  PostgreSQL                  | [doc](doc/plugin/postgresql-reader.md) |  [doc](doc/plugin/postgresql-writer.md)   |
+|                ElasticSearch                 | [doc](doc/plugin/elasticsearch-reader.md) |  [doc](doc/plugin/elasticsearch-writer.md)   |
+|                 Mysql Stream                 | [doc](doc/plugin/mysql-stream.md) |  [doc](doc/plugin/mysql-stream.md)   |
 
 ​     目前已支持其他插件：
 
 | <img width=100/>  插件名<img width=100/>  | <img width=100/> 文档 <img width=100/>  |
 | :------: | :--: |
-| 流程编排 | doc  |
-| SQL转换  | doc  |
-| 脚本转换 | doc  |
-| 脚本过滤 | doc  |
-|   聚合   | doc  |
-| 维表补全 | doc  |
+| 分流、合并 | [doc](doc/plugin/flow-forkjoin.md)  |
+| SQL转换  | [doc](doc/plugin/sqltrans.md)  |
+| 脚本转换 | [doc](doc/plugin/scripttrans.md)  |
+| 脚本过滤 | [doc](doc/plugin/scripttrans.md)  |
+|   聚合   | [doc](doc/plugin/agg.md)  |
+| 维表补全 | [doc](doc/plugin/lookup.md)  |
 
 
-
-![](D:\myblog\dataroad-all\doc\images\整体架构图-整体架构图.png)
+![](doc\images\整体架构图-整体架构图.png)
 
 
 
@@ -72,7 +68,7 @@
 
  使用git工具把项目clone到本地 (**如果只想通过Dashboard快速体验下Dataroad功能，可跳过此章节**)
 
-```
+```shell
 git clone https://github.com/leonside/dataroad-all.git
 cd dataroad-all
 ```
@@ -83,7 +79,7 @@ cd dataroad-all
 
 进入dataroad-all目录下，执行如下命令(**如果只想通过Dashboard快速体验下Dataroad功能，可跳过此章节**)：
 
-```
+```shell
 mvn clean package -DskipTests
 ```
 
@@ -99,7 +95,7 @@ mvn clean package -DskipTests
 
 初始化本示例的SQL语句（另外Dashboard中附带了大量的示例流程）:
 
-```
+```sql
 DROP TABLE IF EXISTS `student`;
 CREATE TABLE `student` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -187,7 +183,7 @@ docker run -d -p 8089:8089 -e WEB_UI=http://10.254.10.32:8081 -e DATAROAD_DIST=/
 
 执行如下命令运行Dashboard，可通过设置系统属性方式指定变量：
 
-```java
+```shell
 java -Dweb-ui=http://10.254.10.32:8081 -Ddataroad.sample-enabled=true -Ddataroad.dataroad-dist=/opt/dataroad-dist/ -Dhost-address=192.168.10.9 -jar dataroad-dashboard-0.5.jar
 ```
 
@@ -195,25 +191,25 @@ java -Dweb-ui=http://10.254.10.32:8081 -Ddataroad.sample-enabled=true -Ddataroad
 
 #### 流程设计
 
-通过Dashboard创建并设计流程，本示例实现将学生信息源表按区划抽取至不同的目标表中，中间经过数据过滤：
+通过Dashboard创建并设计流程，本示例实现将学生信息student源表按区划分别抽取至student1、student2目标表中，中间经过数据过滤：
 
-![](D:\myblog\dataroad-all\doc\images\dashboard-designer.png)
+![](doc\images\dashboard-designer.png)
 
 其中可通过“查看JSON流程”查看设计的流程JSON，如图：
 
-![](D:\myblog\dataroad-all\doc\images\dashboard-json.png)
+![](doc\images\dashboard-json.png)
 
 #### 任务提交
 
 进入Dashboard的流程运行菜单，选中已设计好的流程进行任务提交：
 
-![](D:\myblog\dataroad-all\doc\images\dashboard-commit.png)
+![](doc\images\dashboard-commit.png)
 
 其中：提交流程可设置Flink相关参数，其中更多参数可通过confProp进行设置，例如：{\"parallelism.default\":2}
 
 #### 查看任务
 
-进入Flink Web UI，查看任务的运行情况。
+进入Flink Web UI，查看任务的运行情况。并查看目标表中的数据抽取情况。
 
 ### 通过命令行方式运行任务
 
@@ -227,17 +223,17 @@ java -Dweb-ui=http://10.254.10.32:8081 -Ddataroad.sample-enabled=true -Ddataroad
 
 #### 	流程设计
 
-​	设计流程JSON，此处可通过Dashboard可视化流程设计器来设计流程（见上），并获取JSON流程配置（Dashboard已内置了一些流程JSON案例，可直接获取）。也可以
+​	设计流程JSON，此处可通过Dashboard可视化流程设计器来设计流程（见上），并获取JSON流程配置（Dashboard已内置了一些流程JSON案例，可直接获取）。也可以自行设计流程，如下简要的说明流程JSON结构：
 
-自行设计流程，其中简要的流程JSON结构如下：
+![](doc\images\designer-json.png)
 
-![](D:\myblog\dataroad-all\doc\images\designer-json.png)
+注意：如上图，流程JSON通过dependencies属性指定上个节点的ID，从而将各个节点串联起来，实现流程分流、合并等场景。如果顺序流程（即不存在分支、合并的场景）可不需要配置dependencies,默认按顺序获取上个节点。
 
 #### 	任务提交
 
 通过flink运行任务，运行脚本如下：
 
-```java
+```shell
 flink run dataroad-dashboard-0.5.jar -conf file:/tmp/mysql_customsql_decider_union_mysql.json -pluginRootDir /tmp/dataroad-dist -jobName myjob - confProp {\"parallelism.default\":1}
 ```
 
@@ -254,41 +250,15 @@ flink run dataroad-dashboard-0.5.jar -conf file:/tmp/mysql_customsql_decider_uni
 
 #### 	查看任务
 
-进入Flink Web UI，查看任务的运行情况。
+进入Flink Web UI，查看任务的运行情况。并查看目标表中的数据抽取情况。
 
 ## Dashboard操作指南
 
-请查看[Dashboard操作指南]
+请查看[[Dashboard操作指南](doc/dashboard-guide.md)]
 
 ## 流程设计说明
 
-请查看[流程设计说明]
-
-## 插件通用配置
-
-mysql-reader
-mysql-writer
-
-mysql-stream-reader
-mysql-stream-writer
-oracle-reader
-
-oracle-writer
-postgresql-reader  ---验证下
-postgresql-writer
-elasticsearch-reader
-elasticsearch-writer
-
-scriptFilter
-scriptTransformer
-sqlTransformer
-
-countWindowAgg
-tumblingWindowAgg
-slidingWindowAgg
-
-mysql-lookup
-direct-lookup
+请查看[[流程设计说明](doc/flow-designer.md)]
 
 
 
