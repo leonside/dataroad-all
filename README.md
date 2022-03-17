@@ -48,6 +48,7 @@
 |                 deciderOn | 分流        |  [并行分支](doc/plugin/flow-forkjoin.md) <br/> [条件分支（包容分支）](doc/plugin/flow-forkjoin.md) <br/> [排他分支](doc/plugin/flow-forkjoin.md)   |
 |                 union     | 合并        |  [合并](doc/plugin/flow-forkjoin.md)   |
 
+### 整体架构
 
 ![](doc/images/整体架构图-整体架构图.png)
 
@@ -218,7 +219,7 @@ java -Dweb-ui=http://10.254.10.32:8081 -Ddataroad.sample-enabled=true -Ddataroad
 
 ![](doc/images/designer-json.png)
 
-注意：如上图，流程JSON通过dependencies属性指定上个节点的ID，从而将各个节点串联起来，实现流程分流、合并等场景。如果顺序流程（即不存在分支、合并的场景）可不需要配置dependencies,默认按顺序获取上个节点。
+具体可参见[流程设计章节](doc/flow-designer.md)
 
 #### 	任务提交
 

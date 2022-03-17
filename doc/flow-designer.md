@@ -75,7 +75,8 @@ Dataroad各个组件采用SPI插件方式进行开发，其中已支持reader、
 	}
 }
 ```
-其中转换流程设计图展现如下:
+其中转换流程设计图展现如下:<br/>
+
 ![](/doc/images/flow-designer-flow.png)
 
 | 名称 |  | 说明 | 是否必填 |
@@ -95,7 +96,7 @@ Dataroad各个组件采用SPI插件方式进行开发，其中已支持reader、
 #### reader
 reader用于配置数据的输入源，即数据从何而来。具体配置如下所示：
 
-```json
+```java
 {
   "mysqlreader1" : {              ---自定义插件名，此处定义读插件
     "type" : "reader",            ---插件类型
@@ -117,7 +118,7 @@ reader用于配置数据的输入源，即数据从何而来。具体配置如�
 #### writer
 writer用于配置数据的输出源，即数据写往何处。具体配置如下所示：
 
-```json
+```java
 {
   "mysqlwriter2" : {                  ---自定义插件名，此处定义写插件
     "type" : "reader",                ---插件类型
@@ -137,7 +138,7 @@ writer用于配置数据的输出源，即数据写往何处。具体配置如�
 #### processor
 processor用于配置数据的过滤转换，包含SQL转换、脚本转换、脚本过滤。具体配置如下所示：
 
-```json
+```java
 {
   "myprocessor1" : {                     ---自定义插件名
     "type" : "processor",                ---插件类型为processor
@@ -157,7 +158,7 @@ processor用于配置数据的过滤转换，包含SQL转换、脚本转换、�
 #### agg
 agg用于配置聚合函数，包含max、min、avg、count、sum、stats等几种聚合函数，其中窗口类型包含时间窗口（滚动窗口、滑动窗口）、计数窗口，时间窗口可以Event Time、Ingestion Time、Processing Time作为事件时间。具体配置如下所示：
 
-```json
+```java
 {
   "myagg" : {                          ---自定义插件名，此处定义写插件
     "type" : "agg",                   ---插件类型
@@ -177,7 +178,7 @@ agg用于配置聚合函数，包含max、min、avg、count、sum、stats等几�
 #### lookup
 agg用于配置聚合函数，包含max、min、avg、count、sum、stats等几种聚合函数，其中窗口类型包含时间窗口（滚动窗口、滑动窗口）、计数窗口，时间窗口可以Event Time、Ingestion Time、Processing Time作为事件时间。具体配置如下所示：
 
-```json
+```java
 {
   "myagg" : {                          ---自定义插件名，此处定义写插件
     "type" : "agg",                   ---插件类型
@@ -196,7 +197,7 @@ agg用于配置聚合函数，包含max、min、avg、count、sum、stats等几�
 
 #### deciderOn分流合并
 deciderOn用于存在分流合并的场景，目前提供并行分支、条件分支、排他分支实现分流合并，其中支持的条件脚本语言包括Groovy、Bsh、JavaScript、Fel。具体配置如下所示：
-```json
+```java
 {
   "myagg" : {                                   ---自定义插件名，此处定义写插件
     "type" : "agg",                             ---插件类型
@@ -221,7 +222,7 @@ deciderOn用于存在分流合并的场景，目前提供并行分支、条件�
 #### restore
 restore用于配置任务断点续传功能。具体配置如下所示：
 
-```json
+```java
 {
 "restore" : {
   "isRestore" : false,
@@ -241,7 +242,7 @@ restore用于配置任务断点续传功能。具体配置如下所示：
 #### speed
 speed用于配置任务并发数。具体配置如下所示：
 
-```json
+```java
 {
 "speed" : {
   "channel": 1
