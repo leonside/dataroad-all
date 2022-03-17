@@ -36,26 +36,17 @@
 
 - 支持插件Jar包隔离，按需动态加载相应的插件Jar包
 
-  目前已支持如下数据库：
+  目前已支持的插件如下：
 
-| <img width=60/> Database Type<img width=60/> |  <img width=60/> Reader   <img width=60/>  | <img width=60/> Writer        <img width=60/> |
+| <img width=60/> 插件类型<img width=60/> |  <img width=60/> 插件类型说明   <img width=60/>  | <img width=60/> 插件名称        <img width=60/> |
 | :------------------------------------------: | :----------------------------------------: | :-------------------------------------------: |
-|                    MySQL                     |         [doc](doc/plugin/mysql-reader.md)         |          [doc](doc/plugin/mysql-writer.md)           |
-|                    Oracle                    | [doc](doc/plugin/oracle-reader.md) |  [doc](doc/plugin/oracle-writer.md)   |
-|                  PostgreSQL                  | [doc](doc/plugin/postgresql-reader.md) |  [doc](doc/plugin/postgresql-writer.md)   |
-|                ElasticSearch                 | [doc](doc/plugin/elasticsearch-reader.md) |  [doc](doc/plugin/elasticsearch-writer.md)   |
-|                 Mysql Stream                 | [doc](doc/plugin/mysql-stream.md) |  [doc](doc/plugin/mysql-stream.md)   |
-
-​     目前已支持其他插件：
-
-| <img width=100/>  插件名<img width=100/>  | <img width=100/> 文档 <img width=100/>  |
-| :------: | :--: |
-| 分流、合并 | [doc](doc/plugin/flow-forkjoin.md)  |
-| SQL转换  | [doc](doc/plugin/sqltrans.md)  |
-| 脚本转换 | [doc](doc/plugin/scripttrans.md)  |
-| 脚本过滤 | [doc](doc/plugin/scripttrans.md)  |
-|   聚合   | [doc](doc/plugin/agg.md)  |
-| 维表补全 | [doc](doc/plugin/lookup.md)  |
+|                    reader |  读        |  [mysql](doc/plugin/mysql-reader.md) <br/> [mysql stream](doc/plugin/mysql-stream.md)<br/> [oracle](doc/plugin/oracle-reader.md)<br/> [postgresql](doc/plugin/postgresql-reader.md)<br/>  [elasticsearch](doc/plugin/elasticsearch-reader.md)<br/>             |
+|                    writer |  写        | [mysql](doc/plugin/mysql-writer.md) <br/> [mysql stream](doc/plugin/mysql-stream.md)<br/> [oracle](doc/plugin/oracle-writer.md)<br/> [postgresql](doc/plugin/postgresql-writer.md)<br/>  [elasticsearch](doc/plugin/elasticsearch-writer.md)<br/>  |
+|                  processor|  转换       |  [sql转换过滤](doc/plugin/sqltrans.md)<br/> [script转换](doc/plugin/scripttrans.md) <br/> [script过滤](doc/plugin/scriptfilter.md)  |
+|                lookup     | 维表补全     |  [mysql](doc/plugin/lookup-mysql.md) <br/>  [静态数据](doc/plugin/lookup-direct.md)   |
+|                 agg       | 聚合计算     |  [计数窗口聚合](doc/plugin/agg-countWindowAgg.md)  <br/>[滑动窗口聚合](doc/plugin/agg-slidingWindowAgg.md)  <br/>[滚动窗口聚合](doc/plugin/agg-tumblingWindowAgg.md)  <br/>    |
+|                 deciderOn | 分流        |  [分流](doc/plugin/flow-forkjoin.md)   |
+|                 union     | 合并        |  [合并](doc/plugin/flow-forkjoin.md)   |
 
 
 ![](doc/images/整体架构图-整体架构图.png)

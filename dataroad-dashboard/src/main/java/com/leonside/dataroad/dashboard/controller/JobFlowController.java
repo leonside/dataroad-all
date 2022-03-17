@@ -184,7 +184,9 @@ public class JobFlowController {
         String designerJson = jsonData.getDesignerJson();
         JobFlowConfig jobFlowConfig = jobFlowService.loadJobFlowConfig(jsonData.getId());
 
-        JobFlowConverter jobFlowConverter = new JobFlowConverter(designerJson, jobFlowConfig.getGolbalSetting());
+        JobFlowConverter jobFlowConverter = jobFlowConfig == null ?
+                new JobFlowConverter(designerJson,null)
+                : new JobFlowConverter(designerJson, jobFlowConfig.getGolbalSetting());
 
         String jobFlowJson = jobFlowConverter.convert();
 
