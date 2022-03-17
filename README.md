@@ -58,7 +58,7 @@
 | 维表补全 | [doc](doc/plugin/lookup.md)  |
 
 
-![](doc\images\整体架构图-整体架构图.png)
+![](doc/images/整体架构图-整体架构图.png)
 
 
 
@@ -193,17 +193,17 @@ java -Dweb-ui=http://10.254.10.32:8081 -Ddataroad.sample-enabled=true -Ddataroad
 
 通过Dashboard创建并设计流程，本示例实现将学生信息student源表按区划分别抽取至student1、student2目标表中，中间经过数据过滤：
 
-![](doc\images\dashboard-designer.png)
+![](doc/images/dashboard-designer.png)
 
 其中可通过“查看JSON流程”查看设计的流程JSON，如图：
 
-![](doc\images\dashboard-json.png)
+![](doc/images/dashboard-json.png)
 
 #### 任务提交
 
 进入Dashboard的流程运行菜单，选中已设计好的流程进行任务提交：
 
-![](doc\images\dashboard-commit.png)
+![](doc/images/dashboard-commit.png)
 
 其中：提交流程可设置Flink相关参数，其中更多参数可通过confProp进行设置，例如：{\"parallelism.default\":2}
 
@@ -225,7 +225,7 @@ java -Dweb-ui=http://10.254.10.32:8081 -Ddataroad.sample-enabled=true -Ddataroad
 
 ​	设计流程JSON，此处可通过Dashboard可视化流程设计器来设计流程（见上），并获取JSON流程配置（Dashboard已内置了一些流程JSON案例，可直接获取）。也可以自行设计流程，如下简要的说明流程JSON结构：
 
-![](doc\images\designer-json.png)
+![](doc/images/designer-json.png)
 
 注意：如上图，流程JSON通过dependencies属性指定上个节点的ID，从而将各个节点串联起来，实现流程分流、合并等场景。如果顺序流程（即不存在分支、合并的场景）可不需要配置dependencies,默认按顺序获取上个节点。
 
