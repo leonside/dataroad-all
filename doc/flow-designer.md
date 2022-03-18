@@ -222,22 +222,35 @@ deciderOn用于存在分流合并的场景，目前提供并行分支、条件�
 #### restore
 restore用于配置任务断点续传功能。具体配置如下所示：
 
+- 不启用断点续传功能
 ```java
 {
 "restore" : {
-  "isRestore" : false,
-  "restoreColumnName" : "",
-  "restoreColumnIndex" : 0
+  "isRestore" : false
 }
 }
 ```
+
+- 启用断点续传功能
+```java
+{
+"restore" : {
+  "isRestore" : true,
+  "restoreColumnName" : "id",
+  "restoreColumnType" : "int",
+  "savepointPath" : "/tmp/checkpoint",
+  "savepointInterval" : 30000
+}
+}
+```
+
 | 名称 | 说明 | 是否必填 | 默认值 | 参数类型 |
 | --- | --- | --- | --- | --- |
 | isRestore | 是否开启断点续传 | 否 | false | Boolean |
 | restoreColumnName | 断点续传字段名称 | 开启断点续传后必填 | 无 | String |
 | restoreColumnIndex | 断点续传字段索引ID | 开启断点续传后必填 | -1 | int |
-
-
+| savepointPath | savepoint存储位置 | 否 | false | string |
+| savepointInterval | savepoint存储间隔时间 | 否 | false | int |
 
 #### speed
 speed用于配置任务并发数。具体配置如下所示：

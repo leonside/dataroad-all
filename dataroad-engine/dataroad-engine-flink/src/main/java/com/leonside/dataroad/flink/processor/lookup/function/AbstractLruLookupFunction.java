@@ -46,7 +46,9 @@ public abstract class AbstractLruLookupFunction extends RichAsyncFunction<Row, R
 
         if(baseLookupConfig.getCacheType().equals(BaseLookupConfig.CacheType.lru.name())){
             CacheBuilder<Object, Object> cacheBuilder = CacheBuilder.newBuilder();
-            cacheBuilder.maximumSize(baseLookupConfig.getCacheMaxrows());
+            if(baseLookupConfig.getCacheMaxrows() != -1){
+                cacheBuilder.maximumSize(baseLookupConfig.getCacheMaxrows());
+            }
             cacheBuilder.expireAfterAccess(baseLookupConfig.getCacheTtl(), TimeUnit.MILLISECONDS);
             cache = cacheBuilder.build();
         }else{

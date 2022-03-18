@@ -211,9 +211,7 @@
         "channel": 1
       },
       "restore": {
-        "isRestore": false,
-        "restoreColumnName": "",
-        "restoreColumnIndex": 0
+        "isRestore": false
       }
     }
   }
@@ -308,9 +306,7 @@
         "channel": 1
       },
       "restore": {
-        "isRestore": false,
-        "restoreColumnName": "",
-        "restoreColumnIndex": 0
+        "isRestore": false
       }
     }
   }
@@ -428,9 +424,7 @@
         "channel": 2
       },
       "restore": {
-        "isRestore": false,
-        "restoreColumnName": "",
-        "restoreColumnIndex": 0
+        "isRestore": false
       }
     }
   }

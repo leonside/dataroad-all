@@ -19,7 +19,7 @@ public class BaseLookupConfig extends BaseConfig  {
 
     public String[] columns;
 
-    public int cacheMaxrows;
+    public int cacheMaxrows = -1;
     public int cacheTtl;
     /**
      * 包含 all、lru
