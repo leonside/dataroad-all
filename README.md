@@ -255,5 +255,5 @@ flink run dataroad-dashboard-0.5.jar -conf file:/tmp/mysql_customsql_decider_uni
 
 
 ## 写在最后
-Dataroad是通过对工作中遇到的ETL场景进行总结，利用工作之外的业余时间编写的，个人精力有限，难免会有些不完善的地方欢迎指正。另外，Dataroad框架如果对你有帮助的话也请点个赞，这是对我最大的鼓励！
+Dataroad是通过对工作中遇到的ETL场景进行总结，利用工作之外的业余时间编写的，个人精力有限，难免会有些不完善的地方欢迎指正（联系邮箱：408970922@qq.com）。另外，Dataroad框架如果对你有帮助的话也请点个赞，这是对我最大的鼓励！
 
