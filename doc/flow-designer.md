@@ -77,7 +77,7 @@ Dataroad各个组件采用SPI插件方式进行开发，其中已支持reader、
 ```
 其中转换流程设计图展现如下:<br/>
 
-![](/doc/images/flow-designer-flow.png)
+![](http://r938o17k5.hn-bkt.clouddn.com/dataroad-designer-flow.png)
 
 | 名称 |  | 说明 | 是否必填 |
 | --- | --- | --- | --- |

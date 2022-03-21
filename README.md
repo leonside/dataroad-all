@@ -50,7 +50,7 @@ Dataroad是一款基于Flink的分布式离线/实时数据ETL工具，可实现
 
 ### 整体架构
 
-![](doc/images/整体架构图-整体架构图.png)
+![](http://r938o17k5.hn-bkt.clouddn.com/dataroad-arch.png)
 
 
 
@@ -189,17 +189,17 @@ java -Dweb-ui=http://10.254.10.32:8081 -Ddataroad.sample-enabled=true -Ddataroad
 
 通过Dashboard创建并设计流程，本示例实现将学生信息student源表按区划分别抽取至student1、student2目标表中，中间经过数据过滤，流程图如下：
 
-![](doc/images/dashboard-designer.png)
+![](http://r938o17k5.hn-bkt.clouddn.com/dashboard-designer.png)
 
 其中可通过“查看JSON流程”查看设计的流程JSON，如图：
 
-![](doc/images/dashboard-json.png)
+![](http://r938o17k5.hn-bkt.clouddn.com/dashboard-json.png)
 
 #### 步骤4.3：任务提交
 
 进入Dashboard的流程运行菜单，选中已设计好的流程进行任务提交：
 
-![](doc/images/dashboard-commit.png)
+![](http://r938o17k5.hn-bkt.clouddn.com/dashboard-commit.png)
 
 其中：提交流程可设置Flink相关参数，其中更多参数可通过confProp进行设置，例如：{\"parallelism.default\":2}
 
@@ -221,7 +221,7 @@ java -Dweb-ui=http://10.254.10.32:8081 -Ddataroad.sample-enabled=true -Ddataroad
 
 ​	设计流程JSON，此处可通过Dashboard可视化流程设计器来设计流程（见上），并获取JSON流程配置（Dashboard已内置了一些流程JSON案例，可直接获取）。也可以自行设计流程，如下简要的说明流程JSON结构：
 
-![](doc/images/designer-json.png)
+![](http://r938o17k5.hn-bkt.clouddn.com/designer-json.png)
 
 具体可参见[流程设计章节](doc/flow-designer.md)
 
