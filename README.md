@@ -65,8 +65,6 @@ git clone https://github.com/leonside/dataroad-all.git
 cd dataroad-all
 ```
 
-
-
 ### 源码编译
 
 进入dataroad-all目录下，执行如下命令(**如果只想通过Dashboard快速体验下Dataroad功能，可跳过此章节**)：
@@ -76,6 +74,12 @@ mvn clean package -DskipTests
 ```
 
 其中dataroad插件存在在工程的同级目录dataroad-dist下。
+
+注意：对于编译找不到的Jar包，如bsh、oracle等驱动包，在/dataroad-all/jars目录下有这些jar包，可进行手动安装，或者执行install_jars.sh一键安装，安装命令如：
+```bash
+mvn install:install-file -DgroupId=bsh -DartifactId=bsh -Dversion=1.0 -Dpackaging=jar -Dfile=./bsh-1.0.jar
+mvn install:install-file -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0.1.0 -Dpackaging=jar -Dfile=./ojdbc6-11.2.0.1.0.jar
+```
 
 ### 环境准备
 
