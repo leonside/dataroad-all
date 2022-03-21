@@ -160,13 +160,5 @@
 
     </build>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>nexus</id>
-            <name>Team Nexus Repository</name>
-            <url>http://192.168.6.13:8081/nexus/content/groups/public</url>
-            <releases><enabled>true</enabled><updatePolicy>always</updatePolicy></releases>
-            <snapshots><enabled>true</enabled><updatePolicy>always</updatePolicy></snapshots>
-        </pluginRepository>
-    </pluginRepositories>
+
 </project>

@@ -154,26 +154,6 @@
             </plugin>
         </plugins>
     </build>
-    <repositories>
-        <repository>
-            <id>duceap-releases</id>
-            <name>Team Nexus Release Repository</name>
-            <url>http://192.168.6.13:8081/nexus/content/groups/public</url>
-            <releases><enabled>true</enabled><updatePolicy>always</updatePolicy></releases>
-            <snapshots><enabled>true</enabled><updatePolicy>always</updatePolicy></snapshots>
-        </repository>
 
-    </repositories>
-
-    <!-- 设定插件仓库 如有Nexus私服, 取消注释并指向正确的服务器地址.-->
-    <pluginRepositories>
-        <pluginRepository>
-            <id>nexus</id>
-            <name>Team Nexus Repository</name>
-            <url>http://192.168.6.13:8081/nexus/content/groups/public</url>
-            <releases><enabled>true</enabled><updatePolicy>always</updatePolicy></releases>
-            <snapshots><enabled>true</enabled><updatePolicy>always</updatePolicy></snapshots>
-        </pluginRepository>
-    </pluginRepositories>
 
 </project>
