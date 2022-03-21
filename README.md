@@ -56,7 +56,7 @@ Dataroad是一款基于Flink的分布式离线/实时数据ETL工具，可实现
 
 ## 快速入门
 
-### 代码下载
+### 步骤1:代码下载
 
  使用git工具把项目clone到本地 (**如果只想通过Dashboard快速体验下Dataroad功能，可跳过此章节**)
 
@@ -65,7 +65,7 @@ git clone https://github.com/leonside/dataroad-all.git
 cd dataroad-all
 ```
 
-### 源码编译
+### 步骤2：源码编译
 
 进入dataroad-all目录下，执行如下命令(**如果只想通过Dashboard快速体验下Dataroad功能，可跳过此章节**)：
 
@@ -81,13 +81,13 @@ mvn install:install-file -DgroupId=bsh -DartifactId=bsh -Dversion=1.0 -Dpackagin
 mvn install:install-file -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0.1.0 -Dpackaging=jar -Dfile=./ojdbc6-11.2.0.1.0.jar
 ```
 
-### 环境准备
+### 步骤3：环境准备
 
-#### Flink安装
+#### 步骤3.1：Flink安装
 
 详见Flink相关文档，示例中采用Flink standlone安装模式。
 
-#### 初始化示例工程脚本
+#### 步骤3.2：初始化示例工程脚本
 
 初始化本示例的SQL语句（另外Dashboard中附带了大量的示例流程）:
 
@@ -154,9 +154,9 @@ CREATE TABLE `student2` (
 
 
 
-### 通过Dashboard方式运行任务
+### 步骤4：通过Dashboard方式运行任务
 
-#### 部署Dashboard工程
+#### 步骤4.1：部署Dashboard工程
 
 ##### 采用Docker方式运行Dashboard
 
@@ -185,7 +185,7 @@ java -Dweb-ui=http://10.254.10.32:8081 -Ddataroad.sample-enabled=true -Ddataroad
 
 
 
-#### 流程设计
+#### 步骤4.2：流程设计
 
 通过Dashboard创建并设计流程，本示例实现将学生信息student源表按区划分别抽取至student1、student2目标表中，中间经过数据过滤，流程图如下：
 
@@ -195,7 +195,7 @@ java -Dweb-ui=http://10.254.10.32:8081 -Ddataroad.sample-enabled=true -Ddataroad
 
 ![](doc/images/dashboard-json.png)
 
-#### 任务提交
+#### 步骤4.3：任务提交
 
 进入Dashboard的流程运行菜单，选中已设计好的流程进行任务提交：
 
@@ -203,21 +203,21 @@ java -Dweb-ui=http://10.254.10.32:8081 -Ddataroad.sample-enabled=true -Ddataroad
 
 其中：提交流程可设置Flink相关参数，其中更多参数可通过confProp进行设置，例如：{\"parallelism.default\":2}
 
-#### 查看任务
+#### 步骤4.4：查看任务
 
 进入Flink Web UI，查看任务的运行情况。并查看目标表中的数据抽取情况。
 
-### 通过命令行方式运行任务
+### 步骤5：通过命令行方式运行任务
 
-#### 源码编译并获取部署包
+#### 步骤5.1：源码编译并获取部署包
 
 ​	详见如上代码下载、源码编译章节，获取dataroad-dist部署包及插件
 
-#### 	上传服务器
+#### 步骤5.2：上传服务器
 
 ​	将打包获取到的dataroad-dist插件包上传至部署Flink的服务器
 
-#### 	流程设计
+#### 步骤5.3：流程设计
 
 ​	设计流程JSON，此处可通过Dashboard可视化流程设计器来设计流程（见上），并获取JSON流程配置（Dashboard已内置了一些流程JSON案例，可直接获取）。也可以自行设计流程，如下简要的说明流程JSON结构：
 
@@ -225,7 +225,7 @@ java -Dweb-ui=http://10.254.10.32:8081 -Ddataroad.sample-enabled=true -Ddataroad
 
 具体可参见[流程设计章节](doc/flow-designer.md)
 
-#### 	任务提交
+#### 步骤5.4：任务提交
 
 通过flink运行任务，运行脚本如下：
 
@@ -244,7 +244,7 @@ flink run dataroad-dashboard-0.5.jar -conf file:/tmp/mysql_customsql_decider_uni
 
 
 
-#### 	查看任务
+#### 步骤5.5：查看任务
 
 进入Flink Web UI，查看任务的运行情况。并查看目标表中的数据抽取情况。
 
