@@ -16,7 +16,7 @@ public enum JdbcWriterConfigKey implements ConfigKey {
     KEY_TABLE("table","表名",true,"", "表名",FieldType.STRING),
     KEY_COLUMN("column","列名",false,"", "插入列名，例如：[\"id\",\"name\",\"sfzh\"]",FieldType.OBJECT),
     KEY_FULLCOLUMN("fullColumn","完整列名",false,"", "完整列名,非必填",FieldType.STRING),
-    KEY_WRITE_MODE("writeMode","写入模式",false,"", "写入模式，包含INSERT、UPDATE、REPLACE、UPSERT、STREAM",FieldType.STRING),
+    KEY_WRITE_MODE("writeMode","写入模式",true,"", "写入模式，包含INSERT、UPDATE、REPLACE、UPSERT、STREAM",FieldType.STRING),
 
 //    KEY_UPDATEKEY("updateKey","更新键值",false,"", "更新键值"),  todo:删除
 //    KEY_INSERT_SQL_MODE("insertSqlMode","插入模式",false,"", "插入模式,适用于postgresql"),  todo:暂删除

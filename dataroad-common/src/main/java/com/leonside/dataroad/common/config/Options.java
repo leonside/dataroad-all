@@ -5,6 +5,7 @@ import lombok.Data;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -15,7 +16,7 @@ import java.util.Map;
  * @author leon
  */
 @Data
-public class Options {
+public class Options implements Serializable {
 
     public static final String PLUGIN_DIR_NAME = "plugins";
     /**

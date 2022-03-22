@@ -499,7 +499,7 @@
            '     <div class="layui-form-item">\n' +
             '              <label class="layui-form-label">规则条件'+getRequiredSpan(true)+'</label>\n' +
             '              <div class="layui-input-inline" style="width:50%;">\n' +
-            '                  <input  type="text" name="expression" value=""    autocomplete="off" class="layui-input">\n' +
+            '                 <textarea name="expression" value="" lay-verify="required"  placeholder="请输入规则条件" class="layui-textarea"></textarea>\n' +
             '              </div>\n' +
             '          </div>\n' +
             '</div>' ;
@@ -534,7 +534,7 @@
         layer.open({
             type: 1,
             title: "编辑线条",
-            area: ['50%','50%'],
+            area: ['50%','80%'],
             content: $('#editContent'),
             success: function () {
             }
