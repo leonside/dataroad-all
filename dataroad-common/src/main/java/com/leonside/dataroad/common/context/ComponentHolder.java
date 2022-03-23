@@ -2,11 +2,13 @@ package com.leonside.dataroad.common.context;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author leon
  */
 @Data
-public class ComponentHolder {
+public class ComponentHolder implements Serializable {
 
     private String type;
     private String pluginName;
