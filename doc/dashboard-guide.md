@@ -20,7 +20,7 @@
 点击“删除”按钮进行流程删除。
 ### 流程运行
 #### 上传Jar包
-进入流程运行菜单，点击“上传Jar包”将Dashboard主Jar上传至Flink。
+进入流程运行菜单，点击“上传Jar包”将Dashboard主Jar上传至Flink，“提交Job”前需要先做此操作，也可以自行通过Flink WebUI界面上传Jar包。
 ![](http://r938o17k5.hn-bkt.clouddn.com/dashboard-guide-upload.png)
 注：点击上传，将会对Flink WebUI服务器上的Dashboard Jar进行校验，当已存在此Jar将确认是否重复上传。
 #### 提交Job

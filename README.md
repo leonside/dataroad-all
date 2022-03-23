@@ -89,7 +89,7 @@ mvn install:install-file -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2
 
 #### 步骤3.2：初始化示例工程脚本
 
-初始化本示例的SQL语句（另外Dashboard中附带了大量的示例流程）:
+初始化本示例的SQL语句（另外Dashboard中附带了典型的示例流程）:
 
 ```sql
 DROP TABLE IF EXISTS `student`;

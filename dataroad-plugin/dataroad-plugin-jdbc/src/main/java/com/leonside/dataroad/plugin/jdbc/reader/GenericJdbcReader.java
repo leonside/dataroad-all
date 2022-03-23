@@ -72,7 +72,7 @@ public abstract class GenericJdbcReader extends BaseItemReader implements  ItemR
 
         GenericJdbcInputFormat format =  builder.finish();
 
-        if (executeContext.getEnvironment().getParallelism() > 1){
+        if (StringUtils.isEmpty(jdbcReaderConfig.getSplitKey()) && executeContext.getEnvironment().getParallelism() > 1){
             throw new IllegalArgumentException("Must specify the split column when the Parallelism is greater than 1");
         }
 
