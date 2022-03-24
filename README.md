@@ -160,7 +160,7 @@ CREATE TABLE `student2` (
 
 ##### 采用Docker方式运行Dashboard
 
-执行如下命令运行dashboard
+执行如下命令运行dashboard(目前dataroad-dashboard镜像已发布至dockerhub中央仓库上):
 
 ```java
 docker run -d -p 8089:8089 -e WEB_UI=http://10.254.10.32:8081 -e DATAROAD_DIST=/opt/dataroad-dist/ -e HOST_ADDRESS=192.168.10.9 -e SAMPLE_ENABLED=true dataroad-dashboard:0.5 

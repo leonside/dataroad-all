@@ -236,9 +236,9 @@ restore用于配置任务断点续传功能。具体配置如下所示：
 {
 "restore" : {
   "isRestore" : true,
-  "restoreColumnName" : "id",
-  "restoreColumnType" : "int",
-  "savepointPath" : "/tmp/checkpoint",
+  "restoreColumnName" : "RYID",
+  "restoreColumnType" : "varchar2",
+  "savepointPath" : "file:///tmp/checkpoint",
   "savepointInterval" : 30000
 }
 }
