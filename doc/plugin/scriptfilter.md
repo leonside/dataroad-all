@@ -36,6 +36,18 @@
 }
 ```
 
+另外，可通过类静态方法进行参数校验，例如框架内置了hutool工具包，通过cn.hutool.core.util.IdcardUtil进行身份证校验(bsh同样可采用此种方式)，例如：
+```json
+{                        
+  "type": "processor",                      
+  "pluginName": "scriptFilter",            
+  "parameter": {                          
+        "expression": "cn.hutool.core.util.IdcardUtil.isValidCard(row.getField(\"SFZH\")) " ,
+        "language": "groovy" 
+  }
+}
+```
+
 
 #### 2、fel
 
