@@ -221,7 +221,63 @@ java -Dweb-ui=http://10.254.10.32:8081 -Ddataroad.sample-enabled=true -Ddataroad
 
 ​	设计流程JSON，此处可通过Dashboard可视化流程设计器来设计流程（见上），并获取JSON流程配置（Dashboard已内置了一些流程JSON案例，可直接获取）。也可以自行设计流程，如下简要的说明流程JSON结构：
 
-![](http://r938o17k5.hn-bkt.clouddn.com/designer-json.png)
+```java
+{
+	"job" : {
+	  "content" :[{
+    	"mysqlreader1" : {              ---自定义插件名，此处定义读插件
+          "type" : "reader",            ---插件类型
+          "pluginName" : "mysqlReader", ---插件名
+          "parameter" : {               ---插件参数
+          }
+      },
+      "myprocessor1" : {                     ---自定义插件名，此处定义脚本过滤插件
+        "type" : "processor",
+        "pluginName" : "filterProcessor",
+        "parameter" : {
+        }
+      },
+      "deciderFlow_1" : {                         ---自定义插件名，此处定义流程分支
+        "type": "deciderOn",                      ---插件类型
+        "pluginName": "expressionPredicate",      ---插件名，此处采用条件分支插件
+        "dependencies": ["myprocessor1"],         ---指定上级插件名（如果不存在分支的流程无需配置）
+        "parameter": {                            ---插件参数
+          "expression": "row.getField('sex')==1"  ---定义分支表达式
+        }
+      },
+    	"mysqlwriter1" : {                  ---自定义插件名，此处定义写插件
+          "type" : "reader",
+          "pluginName" : "mysqlWriter",
+          "dependencies": ["deciderFlow_1"],
+          "parameter" : {
+          }
+		},
+          "deciderFlow_2" : {                     ---自定义插件名，此处定义流程分支
+            "type": "deciderOn",
+            "pluginName": "expressionPredicate",
+            "dependencies": ["myprocessor1"],
+            "parameter": {
+              "expression": "row.getField('sex')==2"
+            }
+          },
+          "mysqlwriter2" : {                  ---自定义插件名，此处定义写插件
+            "type" : "reader",
+            "pluginName" : "mysqlWriter",
+            "dependencies": ["deciderFlow_2"],---上级插件名（如果不存在分支的流程无需配置）
+            "parameter" : {
+            }
+          }
+    }],
+   "setting" : {
+      "jobName": "myJob",               ---任务名
+      "restore" : {                     ---配置同步任务类型（离线同步、实时采集）和断点续传功能
+      },
+      "speed" : {                       ---配置任务并发数及速率限制
+      }
+    }
+	}
+}
+```
 
 具体可参见[流程设计章节](doc/flow-designer.md)
 
