@@ -50,7 +50,7 @@ Dataroad是一款基于Flink的分布式离线/实时数据ETL工具，可实现
 
 ### 整体架构
 
-![](http://r938o17k5.hn-bkt.clouddn.com/dataroad-arch.png)
+![](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a868e9c2afb243f1b091b25b158c4487~tplv-k3u1fbpfcp-zoom-in-crop-mark:1304:0:0:0.awebp?)
 
 
 
