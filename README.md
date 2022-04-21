@@ -189,17 +189,17 @@ java -Dweb-ui=http://10.254.10.32:8081 -Ddataroad.sample-enabled=true -Ddataroad
 
 通过Dashboard创建并设计流程，本示例实现将学生信息student源表按区划分别抽取至student1、student2目标表中，中间经过数据过滤，流程图如下：
 
-![](http://r938o17k5.hn-bkt.clouddn.com/dashboard-designer.png)
+![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/214d3b47a61b4b9db750e8fe67c777be~tplv-k3u1fbpfcp-zoom-in-crop-mark:1304:0:0:0.awebp)
 
 其中可通过“查看JSON流程”查看设计的流程JSON，如图：
 
-![](http://r938o17k5.hn-bkt.clouddn.com/dashboard-json.png)
+![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/aa3d672b4caa4d7cb0002f0d914da9d2~tplv-k3u1fbpfcp-zoom-in-crop-mark:1304:0:0:0.awebp)
 
 #### 步骤4.3：任务提交
 
 进入Dashboard的流程运行菜单，选中已设计好的流程进行任务提交：
 
-![](http://r938o17k5.hn-bkt.clouddn.com/dashboard-commit.png)
+![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/21f4a3d8cda54e009505834b8e43d530~tplv-k3u1fbpfcp-zoom-in-crop-mark:1304:0:0:0.awebp)
 
 其中：提交流程可设置Flink相关参数，其中更多参数可通过confProp进行设置，例如：{\"parallelism.default\":2}
 
