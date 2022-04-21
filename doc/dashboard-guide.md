@@ -3,29 +3,29 @@
 ### 流程设计
 #### 创建流程
 进入流程设计菜单，点击“新建流程”，进行流程创建，如下：
-![](http://r938o17k5.hn-bkt.clouddn.com/dashboard-create.png)
+![](./images/dashboard-create.png)
 其中，新建流程可进行流程全局配置，详见[流程设计章节](flow-designer.md)
 #### 设计流程
 新建好的流程，点击“设计流程”，进行流程设计，如下：
-![](http://r938o17k5.hn-bkt.clouddn.com/dashboard-guide-designer.png)
+![](./images/dashboard-guide-designer.png)
 其中，可通过切换源码模式，查看流程设计对应存储结构。
 #### 查看流程JSON
 点击查看流程JSON，可查看最终转换成的JSON流程定义，流程JSON格式具体可参见[流程设计章节](flow-designer.md)
-![](http://r938o17k5.hn-bkt.clouddn.com/dashboard-guide-json.png)
+![](./images/dashboard-guide-json.png)
 #### 下载流程JSON
 点击下载流程JSON，可将设计好的流程JSON打包下载至本地
-![](http://r938o17k5.hn-bkt.clouddn.com/dashboard-guide-download.png)
+![](./images/dashboard-guide-download.png)
 注：通常情况下，可直接在Dashboard上设计并运行流程，当然也可以把Dashboard仅当做流程设计器，通过可视化界面设计并最终将流程JSON下载至本地运行。
 #### 删除流程
 点击“删除”按钮进行流程删除。
 ### 流程运行
 #### 上传Jar包
 进入流程运行菜单，点击“上传Jar包”将Dashboard主Jar上传至Flink，“提交Job”前需要先做此操作，也可以自行通过Flink WebUI界面上传Jar包。
-![](http://r938o17k5.hn-bkt.clouddn.com/dashboard-guide-upload.png)
+![](./images/dashboard-guide-upload.png)
 注：点击上传，将会对Flink WebUI服务器上的Dashboard Jar进行校验，当已存在此Jar将确认是否重复上传。
 #### 提交Job
 点击“提交Job”，将会上传此任务至Flink上运行
-![](http://r938o17k5.hn-bkt.clouddn.com/dashboard-guide-commit.png)
+![](./images/dashboard-guide-commit.png)
 
 其中，各个参数说明如下：
 |   参数名    |       是否必填        |                      说明                      |
