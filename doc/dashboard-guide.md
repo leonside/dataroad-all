@@ -22,6 +22,7 @@
 #### 上传Jar包
 进入流程运行菜单，点击“上传Jar包”将Dashboard主Jar上传至Flink，“提交Job”前需要先做此操作，也可以自行通过Flink WebUI界面上传Jar包。
 ![dashboard-guide-upload.png](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9b5aa63ab6cc4dbeaf98226ec0a70400~tplv-k3u1fbpfcp-watermark.image?)
+
 注：点击上传，将会对Flink WebUI服务器上的Dashboard Jar进行校验，当已存在此Jar将确认是否重复上传。
 #### 提交Job
 点击“提交Job”，将会上传此任务至Flink上运行
