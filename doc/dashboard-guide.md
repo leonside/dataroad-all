@@ -9,6 +9,13 @@
 新建好的流程，点击“设计流程”，进行流程设计，如下：
 ![dashboard-guide-designer.png](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5904da10eab24ceebff2a3b371a42eef~tplv-k3u1fbpfcp-watermark.image?)
 其中，可通过切换源码模式，查看流程设计对应存储结构。
+- 双击节点进行流程环节设置
+
+![dashboard-guide-designer-node.png](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/bae323910a0345faade823dde20cea9c~tplv-k3u1fbpfcp-watermark.image?)
+- 双击线条进行流程分支设置
+
+![dashboard-guide-designer-line.png](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d5186bad41324855a1adb133cdeb4dcf~tplv-k3u1fbpfcp-watermark.image?)
+
 #### 查看流程JSON
 点击查看流程JSON，可查看最终转换成的JSON流程定义，流程JSON格式具体可参见[流程设计章节](flow-designer.md)
 ![dashboard-guide-json.png](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/01e7461e41d549aaba1e6058f11f371c~tplv-k3u1fbpfcp-watermark.image?)
